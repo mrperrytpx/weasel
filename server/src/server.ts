@@ -1,8 +1,8 @@
-import * as express from "express";
-import * as dotenv from "dotenv";
+import express from "express";
+import dotenv from "dotenv";
 import { api } from "./api";
 import helmet from "helmet";
-import * as cors from "cors";
+import cors from "cors";
 import { defaultErrorHandler } from "./handlers/defaultErrorHandler";
 import { errorHandler } from "./handlers/errorHandler";
 
