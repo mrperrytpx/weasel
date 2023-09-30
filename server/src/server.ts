@@ -8,7 +8,6 @@ import { errorHandler } from "./handlers/errorHandler";
 import { passportSetup } from "./passport";
 import session from "express-session";
 import passport from "passport";
-import { Strategy } from "passport-google-oauth20";
 
 dotenv.config();
 
@@ -30,14 +29,6 @@ app.use(
         },
     })
 );
-
-// passport.serializeUser((user: any, done: any) => {
-//     return done(null, user);
-// });
-
-// passport.deserializeUser((user: any, done: any) => {
-//     return done(null, user);
-// });
 
 app.use(passport.initialize());
 app.use(passport.session());

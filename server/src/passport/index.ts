@@ -4,7 +4,7 @@ import { googlePassport } from "./googleStrategy";
 class PassportSetup {
     run() {
         this.serialize();
-        this.deserialize;
+        this.deserialize();
         googlePassport();
     }
 
