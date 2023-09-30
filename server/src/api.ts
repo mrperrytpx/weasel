@@ -2,8 +2,11 @@ import { Router } from "express";
 import { createUploadthingExpressHandler } from "uploadthing/express";
 import { uploadRouter } from "./lib/uploadthing";
 import { asyncHandler } from "./handlers/asyncHandler";
+import { authRouter } from "./routers/authRouter";
 
 const api = Router();
+
+api.use("/auth", asyncHandler(authRouter));
 
 api.use("/hello", (_req, res) => {
     res.status(200).json({ message: "world" });

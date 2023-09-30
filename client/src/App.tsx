@@ -1,20 +1,21 @@
-import { apiInstance } from "./utils/axiosClients";
-import { useQuery } from "@tanstack/react-query";
-
 function App() {
-    const helloWorldQuery = useQuery({
-        queryKey: ["yo"],
-        queryFn: async () => {
-            const data = await apiInstance.get("/api/hello");
-            return data.data;
-        },
-    });
+    const googleLogin = () => {
+        window.open(`${import.meta.env.VITE_SERVER_URL}/api/auth/google`, "_self");
+    };
 
     return (
         <div className="mx-auto mb-2 mt-4 flex w-full max-w-screen-md flex-col items-start gap-2 px-2 lg:gap-6">
             <p>Server data is below me:</p>
-            {helloWorldQuery.isLoading && <p>Loading...</p>}
-            {helloWorldQuery.data && <p>{JSON.stringify(helloWorldQuery.data, null, 2)}</p>}
+            <div
+                className="cursor-pointer rounded-md bg-slate-100 p-2 shadow-md"
+                onClick={googleLogin}
+            >
+                <img
+                    src="https://raw.githubusercontent.com/mrperrytpx/garbgarb/main/public/static/default.png"
+                    alt="Google Icon"
+                />
+                <p>Login With Google</p>
+            </div>
         </div>
     );
 }
