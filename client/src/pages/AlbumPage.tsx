@@ -1,7 +1,9 @@
-const AlbumPage = () => {
-  return (
-    <div>AlbumPage</div>
-  )
-}
+import { useParams } from "react-router-dom";
 
-export default AlbumPage
+const AlbumPage = () => {
+    const params = useParams();
+
+    return <div>AlbumPage {params.albumId}</div>;
+};
+
+export default AlbumPage;

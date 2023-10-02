@@ -24,7 +24,7 @@ export const Navbar = () => {
 
     return (
         <div className="border-b border-b-periwinkle-300 bg-white p-2 shadow-md shadow-periwinkle-100 dark:border-b-zinc-600 dark:bg-black dark:shadow-zinc-900">
-            <div className="mx-auto flex w-full max-w-screen-xl items-center justify-between">
+            <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between px-2">
                 <Link to="/">
                     <img
                         src={WeaselImage}
@@ -32,10 +32,10 @@ export const Navbar = () => {
                         alt="A photo of a cartoonish weasel holding a black camera and resting his head on it, looking at the screen."
                     />
                 </Link>
-                <ul className="flex items-center gap-8 font-extrabold">
+                <ul className="flex items-center gap-8">
                     {user?.data?.id && (
                         <li>
-                            <Link className="uppercase" to="/albums">
+                            <Link className="font-extrabold uppercase" to="/albums">
                                 Albums
                             </Link>
                         </li>
@@ -44,7 +44,7 @@ export const Navbar = () => {
                         {user?.data?.id ? (
                             <Link to="/profile">
                                 <img
-                                    className="aspect-square w-10 rounded-full border-2 border-black dark:border-white"
+                                    className="aspect-square w-8 rounded-full"
                                     src={user?.data?.image}
                                     alt="Your profile image."
                                 />
