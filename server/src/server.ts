@@ -5,7 +5,7 @@ import helmet from "helmet";
 import cors from "cors";
 import { defaultErrorHandler } from "./handlers/defaultErrorHandler";
 import { errorHandler } from "./handlers/errorHandler";
-import { passportSetup } from "./passport";
+import { passportStrategies } from "./passport";
 import session from "express-session";
 import passport from "passport";
 
@@ -19,21 +19,16 @@ app.use(cors({ origin: process.env.WEBSITE_URL, credentials: true }));
 
 app.use(
     session({
-        secret: "secretcode",
+        secret: process.env.COOKIE_SECRET,
         resave: true,
         saveUninitialized: true,
-        cookie: {
-            sameSite: "none",
-            secure: true,
-            maxAge: 1000 * 60 * 60 * 24 * 7, // One Week
-        },
     })
 );
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-passportSetup.run();
+passportStrategies.run();
 
 app.use("/api", api);
 

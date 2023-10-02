@@ -1,7 +1,7 @@
 import passport from "passport";
 import { googlePassport } from "./googleStrategy";
 
-class PassportSetup {
+class PassportStrategies {
     run() {
         this.serialize();
         this.deserialize();
@@ -20,6 +20,6 @@ class PassportSetup {
     }
 }
 
-const passportSetup = new PassportSetup();
+const passportStrategies = new PassportStrategies();
 
-export { passportSetup };
+export { passportStrategies };

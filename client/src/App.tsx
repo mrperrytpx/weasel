@@ -1,22 +1,40 @@
+import { Navigate, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import { useUser } from "./hooks/useUser";
+import LoginPage from "./pages/LoginPage";
+import AlbumsPage from "./pages/AlbumsPage";
+import AlbumPage from "./pages/AlbumPage";
+import ProfilePage from "./pages/ProfilePage";
+import { Navbar } from "./components/Navbar";
+
 function App() {
-    const googleLogin = () => {
-        window.open(`${import.meta.env.VITE_SERVER_URL}/api/auth/google`, "_self");
-    };
+    const user = useUser();
+
+    console.log("app user", user);
 
     return (
-        <div className="mx-auto mb-2 mt-4 flex w-full max-w-screen-md flex-col items-start gap-2 px-2 lg:gap-6">
-            <p>Server data is below me:</p>
-            <div
-                className="cursor-pointer rounded-md bg-slate-100 p-2 shadow-md"
-                onClick={googleLogin}
-            >
-                <img
-                    src="https://raw.githubusercontent.com/mrperrytpx/garbgarb/main/public/static/default.png"
-                    alt="Google Icon"
+        <>
+            <Navbar />
+            <Routes>
+                <Route index path="/" element={<HomePage />} />
+                <Route
+                    path="/profile"
+                    element={user?.data?.id ? <ProfilePage /> : <Navigate to="/login" />}
                 />
-                <p>Login With Google</p>
-            </div>
-        </div>
+                <Route
+                    path="/login"
+                    element={user?.data?.id ? <Navigate to="/albums" /> : <LoginPage />}
+                />
+                <Route
+                    path="/albums"
+                    element={user?.data?.id ? <AlbumsPage /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/albums/:albumId"
+                    element={user?.data?.id ? <AlbumPage /> : <Navigate to="/login" />}
+                />
+            </Routes>
+        </>
     );
 }
 
