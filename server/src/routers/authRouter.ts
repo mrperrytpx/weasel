@@ -14,7 +14,7 @@ authRouter.get(
         failureRedirect: "/login",
         session: true,
     }),
-    function (req, res) {
+    function (_req, res) {
         res.redirect(process.env.WEBSITE_URL);
     }
 );

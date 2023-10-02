@@ -10,11 +10,13 @@ class PassportStrategies {
 
     serialize() {
         passport.serializeUser((user: any, done: any) => {
+            // whole user model from DB
             return done(null, user);
         });
     }
     deserialize() {
         passport.deserializeUser((user: any, done: any) => {
+            // whatever comes from frontend
             return done(null, user);
         });
     }

@@ -8,9 +8,11 @@ const googlePassport = () =>
             {
                 clientID: process.env.GOOGLE_CLIENT_ID,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: "http://localhost:3001/api/auth/callback/google",
+                callbackURL: "/api/auth/callback/google",
             },
             (_accTkn: string, _refrTkn: string, profile: Profile, cb) => {
+                // implement user fetching or new user functionality here
+
                 return cb(null, profile);
             }
         )

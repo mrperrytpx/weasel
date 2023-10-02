@@ -10,8 +10,6 @@ import { Navbar } from "./components/Navbar";
 function App() {
     const user = useUser();
 
-    console.log("app user", user);
-
     return (
         <>
             <Navbar />
