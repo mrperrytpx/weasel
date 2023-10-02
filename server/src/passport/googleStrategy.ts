@@ -1,6 +1,9 @@
 import { Profile, Strategy } from "passport-google-oauth20";
 import passport from "passport";
-// import { type User } from "@prisma/client";
+import { prisma } from "../lib/prisma";
+import type { User } from "@prisma/client";
+
+export type TUser = Pick<User, "id" | "image">;
 
 const googlePassport = () =>
     passport.use(
@@ -10,10 +13,35 @@ const googlePassport = () =>
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET,
                 callbackURL: "/api/auth/callback/google",
             },
-            (_accTkn: string, _refrTkn: string, profile: Profile, cb) => {
-                // implement user fetching or new user functionality here
+            async (_accTkn: string, _refrTkn: string, profile: Profile, cb) => {
+                const user = await prisma.user.findFirst({
+                    where: {
+                        id: profile.id,
+                    },
+                    select: {
+                        id: true,
+                        image: true,
+                    },
+                });
 
-                return cb(null, profile);
+                if (!user) {
+                    const newUser = await prisma.user.create({
+                        data: {
+                            id: profile.id,
+                            email: profile._json.email,
+                            image: profile._json.picture,
+                        },
+                    });
+
+                    const newUserData = {
+                        id: newUser.id,
+                        image: newUser.image,
+                    };
+
+                    return cb(null, newUserData);
+                }
+
+                return cb(null, user);
             }
         )
     );

@@ -1,5 +1,6 @@
 import passport from "passport";
-import { googlePassport } from "./googleStrategy";
+import { TUser, googlePassport } from "./googleStrategy";
+import { prisma } from "../lib/prisma";
 
 class PassportStrategies {
     run() {
@@ -9,15 +10,24 @@ class PassportStrategies {
     }
 
     serialize() {
-        passport.serializeUser((user: any, done: any) => {
-            // whole user model from DB
-            return done(null, user);
+        passport.serializeUser((user: TUser, done: any) => {
+            return done(null, user.id);
         });
     }
     deserialize() {
-        passport.deserializeUser((user: any, done: any) => {
+        passport.deserializeUser(async (user: TUser, done: any) => {
+            const dbUser = await prisma.user.findFirst({
+                where: {
+                    id: user.id,
+                },
+                select: {
+                    id: true,
+                    image: true,
+                },
+            });
+
             // whatever comes from frontend
-            return done(null, user);
+            return done(null, dbUser);
         });
     }
 }

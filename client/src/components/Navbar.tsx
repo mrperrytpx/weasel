@@ -23,7 +23,7 @@ export const Navbar = () => {
     };
 
     return (
-        <div className="shadow-periwinkle-100 border-b-periwinkle-300 border-b bg-white p-2 shadow-md dark:border-b-zinc-600 dark:bg-black dark:shadow-zinc-900">
+        <div className="border-b border-b-periwinkle-300 bg-white p-2 shadow-md shadow-periwinkle-100 dark:border-b-zinc-600 dark:bg-black dark:shadow-zinc-900">
             <div className="mx-auto flex w-full max-w-screen-xl items-center justify-between">
                 <Link to="/">
                     <img
@@ -33,7 +33,7 @@ export const Navbar = () => {
                     />
                 </Link>
                 <ul className="flex items-center gap-8 font-extrabold">
-                    {user?.data.id && (
+                    {user?.data?.id && (
                         <li>
                             <Link className="uppercase" to="/albums">
                                 Albums
@@ -45,7 +45,7 @@ export const Navbar = () => {
                             <Link to="/profile">
                                 <img
                                     className="aspect-square w-10 rounded-full border-2 border-black dark:border-white"
-                                    src={user?.data?.photos[0].value}
+                                    src={user?.data?.image}
                                     alt="Your profile image."
                                 />
                             </Link>
