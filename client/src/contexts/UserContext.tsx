@@ -16,9 +16,7 @@ export const UserContextProvider = ({ children }: TUserContextProps) => {
     const userQuery = useQuery({
         queryKey: ["user"],
         queryFn: async () => {
-            const data = await apiInstance.get<TUser>("/api/auth/user", {
-                withCredentials: true,
-            });
+            const data = await apiInstance.get<TUser>("/api/auth/user");
             console.log("data", data);
             return data.data;
         },

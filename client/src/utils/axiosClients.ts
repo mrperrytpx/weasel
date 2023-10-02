@@ -5,5 +5,6 @@ export const apiInstance = axios.create({
     headers: {
         "Content-Type": "application/json",
     },
+    withCredentials: true,
     signal: new AbortController().signal,
 });

@@ -23,4 +23,13 @@ authRouter.get("/user", (req, res) => {
     res.send(req.user);
 });
 
+authRouter.post("/logout", (req, res, next) => {
+    if (req.user) {
+        req.logout((err) => {
+            if (err) return next(err);
+        });
+        res.sendStatus(200);
+    }
+});
+
 export { authRouter };

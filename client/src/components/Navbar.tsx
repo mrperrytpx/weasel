@@ -1,11 +1,24 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
 import { useTheme } from "../hooks/useTheme";
 import { BsMoonStars, BsSun } from "react-icons/bs";
+import { apiInstance } from "../utils/axiosClients";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Navbar = () => {
     const user = useUser();
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
     const { toggleTheme, darkmode } = useTheme();
+
+    const logout = async () => {
+        const data = await apiInstance.post("/api/auth/logout");
+
+        if (data.statusText === "OK") {
+            queryClient.removeQueries(["user"]);
+            navigate(0);
+        }
+    };
 
     return (
         <div>
@@ -19,6 +32,7 @@ export const Navbar = () => {
                             <Link to="/login">Login</Link>
                         )}
                     </li>
+                    <li>{user?.data?.id && <button onClick={logout}>Logout!</button>}</li>
                     <li>
                         <button className="flex text-center" onClick={toggleTheme}>
                             {darkmode ? <BsSun size={20} /> : <BsMoonStars size={20} />}
