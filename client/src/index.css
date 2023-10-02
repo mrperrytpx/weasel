@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body {
-    @apply bg-periwinkle-50 text-periwinkle-950 dark:bg-periwinkle-950 dark:text-periwinkle-50;
+    @apply bg-periwinkle-50 dark:text-periwinkle-50 text-zinc-950 dark:bg-zinc-950;
 }
