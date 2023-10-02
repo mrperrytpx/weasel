@@ -22,6 +22,7 @@ model User {
 
 model Album {
   id          String    @id @default(cuid())
+  cover_image String    @map("coverImage")
   created_at  DateTime  @default(now()) @map("createdAt")
   name        String
   owner       User      @relation(fields: [owner_id], references: [id], onDelete: Cascade)
