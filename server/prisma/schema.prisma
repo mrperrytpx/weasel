@@ -12,8 +12,29 @@ datasource db {
 
 model User {
   id                    String      @unique
-  created_at            DateTime    @default(now())
+  created_at            DateTime    @default(now()) @map("createdAt")
   email                 String?     @unique
   emailVerified         DateTime?
   image                 String?
+  albums                Album[]
+  images                Image[]
+}
+
+model Album {
+  id          String    @id @default(cuid())
+  created_at  DateTime  @default(now()) @map("createdAt")
+  name        String
+  owner       User      @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  owner_id    String    @map("ownerId")
+  images      Image[]
+}
+
+model Image {
+  id          String      @id @default(cuid())
+  created_at  DateTime    @default(now())
+  address     String      @unique
+  album       Album       @relation(fields: [album_id], references: [id], onDelete: Cascade)
+  album_id    String      @map("albumId")
+  owner       User        @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  owner_id    String      @map("ownerId")
 }

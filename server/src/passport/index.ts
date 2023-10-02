@@ -15,10 +15,10 @@ class PassportStrategies {
         });
     }
     deserialize() {
-        passport.deserializeUser(async (user: TUser, done: any) => {
+        passport.deserializeUser(async (id: string, done: any) => {
             const dbUser = await prisma.user.findFirst({
                 where: {
-                    id: user.id,
+                    id,
                 },
                 select: {
                     id: true,
@@ -26,7 +26,6 @@ class PassportStrategies {
                 },
             });
 
-            // whatever comes from frontend
             return done(null, dbUser);
         });
     }
