@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "./useUser";
 import { apiInstance } from "../utils/axiosClients";
+import { TAlbum } from "../../../server/src/routers/albumRouter";
 
 const fetchAlbums = async () => {
-    const data = apiInstance.get("/api/albums");
+    const data = apiInstance.get<TAlbum[]>("/api/albums");
     return data;
 };
 

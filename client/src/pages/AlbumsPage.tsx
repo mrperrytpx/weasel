@@ -2,6 +2,7 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import AlbumCard from "../components/AlbumCard";
 import { Link } from "react-router-dom";
 import { useGetAllAlbumsQuery } from "../hooks/useGetAllAlbumsQuery";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 const AlbumsPage = () => {
     const userAlbums = useGetAllAlbumsQuery();
@@ -18,21 +19,13 @@ const AlbumsPage = () => {
                     </Link>
                 </div>
             </div>
-            <ul className="mx-auto flex max-w-screen-2xl flex-wrap items-center justify-center gap-6 p-4 xl:justify-between xl:gap-16">
-                <AlbumCard />
-                <AlbumCard />
-                <AlbumCard />
-                <AlbumCard />
-                <AlbumCard />
-                <AlbumCard />
-                <AlbumCard />
-                <AlbumCard />
-                <AlbumCard />
-                <AlbumCard />
-                <AlbumCard />
-                <AlbumCard />
-                <AlbumCard />
-            </ul>
+            {userAlbums.isLoading ? (
+                <LoadingSpinner size={60} />
+            ) : (
+                <ul className="mx-auto flex max-w-screen-2xl flex-wrap items-center justify-center gap-6 p-4 xl:justify-between xl:gap-16">
+                    {userAlbums.data?.data.map((album) => <AlbumCard album={album} />)}
+                </ul>
+            )}
         </div>
     );
 };

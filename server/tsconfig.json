@@ -5,7 +5,8 @@
         "outDir": "dist",
         "esModuleInterop": true,
         "sourceMap": true,
-        "types": ["node"]
+        "types": ["node"],
+        "strict": true
     },
     "include": ["./src/**/*.ts", "src/server.ts"]
 }
