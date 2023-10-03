@@ -6,12 +6,15 @@ import { apiInstance } from "../utils/axiosClients";
 import { useQueryClient } from "@tanstack/react-query";
 import WeaselImage from "../assets/weasel.png";
 import { BiLogOut } from "react-icons/bi";
+import { useDeleteUserMutation } from "../hooks/useDeleteUserMutation";
 
 export const Navbar = () => {
     const user = useUser();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     const { toggleTheme, darkmode } = useTheme();
+
+    const deleteUser = useDeleteUserMutation();
 
     const logout = async () => {
         const data = await apiInstance.post("/api/auth/logout");
@@ -38,6 +41,16 @@ export const Navbar = () => {
                             <Link className="font-extrabold uppercase" to="/albums">
                                 Albums
                             </Link>
+                        </li>
+                    )}
+                    {user?.data?.id && (
+                        <li>
+                            <button
+                                onClick={() => deleteUser.mutate()}
+                                className="font-extrabold uppercase"
+                            >
+                                DELETE SELF
+                            </button>
                         </li>
                     )}
                     <li>

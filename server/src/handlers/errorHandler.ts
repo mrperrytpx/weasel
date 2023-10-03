@@ -12,6 +12,7 @@ const errorHandler = (
         res.status(err.code).json(err.message);
         return;
     }
+
     res.status(500).json("Something went wrong");
 };
 
