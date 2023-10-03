@@ -1,12 +1,7 @@
 import { Router } from "express";
-import { albumNameSchema } from "../../../client/src/consts/createAlbumSchema";
+import { albumNameSchema } from "../../../shared/createAlbumSchema";
 import { prisma } from "../lib/prisma";
 import { TUser } from "../passport/googleStrategy";
-import { Album, Image } from "@prisma/client";
-
-export type TAlbum = Pick<Album, "id" | "description" | "name" | "owner_id"> & {
-    images: [Pick<Image, "address">];
-};
 
 const albumRouter = Router();
 

@@ -2,6 +2,12 @@ import passport from "passport";
 import { TUser, googlePassport } from "./googleStrategy";
 import { prisma } from "../lib/prisma";
 
+declare global {
+    namespace Express {
+        interface User extends TUser {}
+    }
+}
+
 class PassportStrategies {
     run() {
         this.serialize();
@@ -10,7 +16,7 @@ class PassportStrategies {
     }
 
     serialize() {
-        passport.serializeUser((user: TUser, done: any) => {
+        passport.serializeUser((user, done) => {
             return done(null, user.id);
         });
     }

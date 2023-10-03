@@ -8,8 +8,8 @@ const AlbumsPage = () => {
     const userAlbums = useGetAllAlbumsQuery();
 
     return (
-        <div className="flex flex-col gap-2">
-            {userAlbums.data && <div>{JSON.stringify(userAlbums.data.data, null, 2)}</div>}
+        <div className="flex flex-1 flex-col gap-2">
+            {/* {userAlbums.data && <div>{JSON.stringify(userAlbums.data.data, null, 2)}</div>} */}
             <div className="sticky top-0 border-b border-periwinkle-300 bg-white dark:border-zinc-600 dark:bg-zinc-950">
                 <div className="mx-auto flex max-w-screen-2xl items-center justify-between p-4">
                     <span className="text-xl">Albums</span>
@@ -19,13 +19,14 @@ const AlbumsPage = () => {
                     </Link>
                 </div>
             </div>
-            {userAlbums.isLoading ? (
-                <LoadingSpinner size={60} />
-            ) : (
-                <ul className="mx-auto flex max-w-screen-2xl flex-wrap items-center justify-center gap-6 p-4 xl:justify-between xl:gap-16">
-                    {userAlbums.data?.data.map((album) => <AlbumCard album={album} />)}
+            {userAlbums.isLoading && <LoadingSpinner size={60} />}
+            {userAlbums.data?.data ? (
+                <ul className="mx-auto flex w-full max-w-screen-2xl flex-wrap justify-center gap-6 p-4 lg:justify-start lg:gap-12">
+                    {userAlbums.data.data.map((album) => (
+                        <AlbumCard key={album.id} album={album} />
+                    ))}
                 </ul>
-            )}
+            ) : null}
         </div>
     );
 };

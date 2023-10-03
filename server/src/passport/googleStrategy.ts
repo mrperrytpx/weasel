@@ -9,8 +9,8 @@ const googlePassport = () =>
     passport.use(
         new Strategy(
             {
-                clientID: process.env.GOOGLE_CLIENT_ID,
-                clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+                clientID: process.env.GOOGLE_CLIENT_ID as string,
+                clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
                 callbackURL: "/api/auth/callback/google",
             },
             async (_accTkn: string, _refrTkn: string, profile: Profile, cb) => {

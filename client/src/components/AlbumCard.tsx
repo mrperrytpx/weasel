@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import DefaultAlbum from "../assets/weasel.webp";
-import { TAlbum } from "../../../server/src/routers/albumRouter";
+import { TAlbum } from "../../../shared/types";
 
 type TAlbumCardProps = {
     album: TAlbum;
@@ -8,12 +8,12 @@ type TAlbumCardProps = {
 
 const AlbumCard = ({ album }: TAlbumCardProps) => {
     return (
-        <li className="flex aspect-square w-full max-w-xs flex-col rounded-md bg-gray-200 dark:bg-gray-700">
+        <li className="flex aspect-square w-full max-w-xs flex-col rounded-md bg-gray-200  dark:bg-gray-700">
             <Link to={`/albums/${album.id}`}>
                 <div className="flex aspect-square w-full items-center justify-center border-b-2 border-black">
                     <img
                         className="aspect-square w-full rounded-t-md object-cover"
-                        src={album.images[0].address || DefaultAlbum}
+                        src={DefaultAlbum}
                         alt="Placeholder"
                     />
                 </div>
@@ -22,9 +22,6 @@ const AlbumCard = ({ album }: TAlbumCardProps) => {
                     <p className="text-xs font-bold uppercase text-gray-600 dark:text-periwinkle-400">
                         {album.description}
                     </p>
-                    {/* <p className="text-xs font-bold uppercase text-gray-600 dark:text-periwinkle-400">
-                        Images: 999
-                    </p> */}
                 </div>
             </Link>
         </li>

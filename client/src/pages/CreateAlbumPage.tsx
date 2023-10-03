@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreateAlbumMutation } from "../hooks/useCreateAlbumMutation";
-import { TCreateAlbumFormVals, albumNameSchema } from "../consts/createAlbumSchema";
+import { TCreateAlbumFormVals, albumNameSchema } from "../../../shared/createAlbumSchema";
 
 const CreateAlbumPage = () => {
     const {

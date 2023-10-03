@@ -19,7 +19,7 @@ app.use(cors({ origin: process.env.WEBSITE_URL, credentials: true }));
 
 app.use(
     session({
-        secret: process.env.COOKIE_SECRET,
+        secret: process.env.COOKIE_SECRET as string,
         resave: true,
         saveUninitialized: true,
     })
