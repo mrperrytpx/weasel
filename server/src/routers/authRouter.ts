@@ -1,6 +1,5 @@
 import { Router } from "express";
 import passport from "passport";
-import { TUser } from "../passport/googleStrategy";
 import { prisma } from "../lib/prisma";
 
 const authRouter = Router();
@@ -35,13 +34,11 @@ authRouter.post("/logout", (req, res, next) => {
 });
 
 authRouter.delete("/profile", async (req, res) => {
-    const reqUser = req.user as TUser;
-
-    if (!reqUser.id) return res.status(403).end("Forbidden");
+    if (!req.user?.id) return res.status(403).end("Forbidden");
 
     await prisma.user.delete({
         where: {
-            id: reqUser.id,
+            id: req.user.id,
         },
     });
 

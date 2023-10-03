@@ -7,6 +7,7 @@ import AlbumPage from "./pages/AlbumPage";
 import ProfilePage from "./pages/ProfilePage";
 import { Navbar } from "./components/Navbar";
 import CreateAlbumPage from "./pages/CreateAlbumPage";
+import AlbumRoutesLayout from "./components/AlbumRoutesLayout";
 
 function App() {
     const user = useUser();
@@ -30,14 +31,16 @@ function App() {
                     element={user?.data?.id ? <CreateAlbumPage /> : <Navigate to="/login" />}
                 />
 
-                <Route
-                    path="/albums"
-                    element={user?.data?.id ? <AlbumsPage /> : <Navigate to="/login" />}
-                />
-                <Route
-                    path="/albums/:albumId"
-                    element={user?.data?.id ? <AlbumPage /> : <Navigate to="/login" />}
-                />
+                <Route path="/albums" element={<AlbumRoutesLayout />}>
+                    <Route
+                        index
+                        element={user?.data?.id ? <AlbumsPage /> : <Navigate to="/login" />}
+                    />
+                    <Route
+                        path=":albumId"
+                        element={user?.data?.id ? <AlbumPage /> : <Navigate to="/login" />}
+                    />
+                </Route>
             </Routes>
         </>
     );

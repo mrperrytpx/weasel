@@ -1,18 +1,15 @@
 import { Router } from "express";
 import { albumNameSchema } from "../../../shared/createAlbumSchema";
 import { prisma } from "../lib/prisma";
-import { TUser } from "../passport/googleStrategy";
 
 const albumRouter = Router();
 
 albumRouter.get("/", async (req, res) => {
-    const reqUser = req.user as TUser;
-
-    if (!reqUser.id) return res.status(401).end("You must be logged in!");
+    if (!req.user?.id) return res.status(401).end("You must be logged in!");
 
     const user = await prisma.user.findFirst({
         where: {
-            id: reqUser.id,
+            id: req.user.id,
         },
         include: {
             albums: {
@@ -31,9 +28,7 @@ albumRouter.get("/", async (req, res) => {
 });
 
 albumRouter.post("/", async (req, res) => {
-    const reqUser = req.user as TUser;
-
-    if (!reqUser.id) return res.status(401).end("You must be logged in!");
+    if (!req.user?.id) return res.status(401).end("You must be logged in!");
 
     const result = albumNameSchema.safeParse(req.body);
 
@@ -53,7 +48,7 @@ albumRouter.post("/", async (req, res) => {
 
     const user = await prisma.user.findFirst({
         where: {
-            id: reqUser.id,
+            id: req.user.id,
         },
     });
 
@@ -65,13 +60,34 @@ albumRouter.post("/", async (req, res) => {
             name: data.name,
             owner: {
                 connect: {
-                    id: reqUser.id,
+                    id: req.user.id,
                 },
             },
         },
     });
 
     res.status(200).json(newAlbum);
+});
+
+albumRouter.get("/:albumId", async (req, res) => {
+    if (!req.user?.id) return res.status(401).end("You must be logged in!");
+
+    const { albumId } = req.params;
+
+    if (!albumId) return res.status(400).end("Provide an album ID!");
+
+    const album = await prisma.album.findFirst({
+        where: {
+            id: albumId,
+        },
+        include: {
+            images: true,
+        },
+    });
+
+    if (!album) return res.status(404).end("Album doesn't exist!");
+
+    return res.status(200).json(album);
 });
 
 export { albumRouter };

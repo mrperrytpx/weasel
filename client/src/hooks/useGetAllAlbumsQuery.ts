@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "./useUser";
 import { apiInstance } from "../utils/axiosClients";
-import { TAlbum } from "../../../shared/types";
+import { TAllAlbums } from "../../../shared/types";
 
 const fetchAlbums = async () => {
-    const data = apiInstance.get<TAlbum[]>("/api/albums");
+    const data = apiInstance.get<TAllAlbums[]>("/api/albums");
     return data;
 };
 
