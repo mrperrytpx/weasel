@@ -33,7 +33,9 @@ model Album {
 model Image {
   id          String      @id @default(cuid())
   created_at  DateTime    @default(now())
-  address     String      @unique
+  url         String      @unique
+  name        String
+  size        Int
   album       Album       @relation(fields: [album_id], references: [id], onDelete: Cascade)
   album_id    String      @map("albumId")
   owner       User        @relation(fields: [owner_id], references: [id], onDelete: Cascade)

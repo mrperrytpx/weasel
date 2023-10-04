@@ -43,7 +43,7 @@ const AlbumPage = () => {
             </div>
             <div className="mx-auto w-full max-w-screen-2xl flex-1 p-4">
                 {album.data?.images.map((image) => (
-                    <img key={image.id} src={image.address} alt="Image" />
+                    <img key={image.id} src={image.url} alt="Image" />
                 ))}
                 <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
                     <input

@@ -38,15 +38,35 @@ export const uploadRouter = {
             const userAlbum = user.albums.find((album) => album.id === albumId);
 
             if (!userAlbum)
-                throw new ApiError("Album doesn't exist!", 404, req.url);
+                throw new ApiError("Album doesn't exist!", 400, req.url);
 
             return {
                 userId: user.id,
                 albumId,
             };
         })
-        .onUploadComplete(async (data) => {
-            console.log("Hey i'm done :)");
-            console.log("DATA", data);
+        .onUploadComplete(async ({ file, metadata }) => {
+            const { key, name, size, url } = file;
+
+            const newImage = await prisma.image.create({
+                data: {
+                    id: key,
+                    name,
+                    size,
+                    url,
+                    owner: {
+                        connect: {
+                            id: metadata.userId,
+                        },
+                    },
+                    album: {
+                        connect: {
+                            id: metadata.albumId,
+                        },
+                    },
+                },
+            });
+
+            console.log(newImage);
         }),
 } satisfies FileRouter;
