@@ -53,7 +53,11 @@ const CreateAlbumPage = () => {
                             </span>
                         )}
                     </div>
-                    <button className="w-full rounded-lg bg-white p-4 text-center text-lg font-medium shadow transition-colors duration-75 hover:bg-periwinkle-600 hover:text-periwinkle-50    focus:outline-periwinkle-600 dark:text-periwinkle-950 dark:hover:text-periwinkle-50 md:text-xl">
+                    <button
+                        type="submit"
+                        disabled={createAlbum.isLoading}
+                        className="w-full rounded-lg bg-white p-4 text-center text-lg font-medium shadow transition-colors duration-75 hover:bg-periwinkle-600 hover:text-periwinkle-50    focus:outline-periwinkle-600 dark:text-periwinkle-950 dark:hover:text-periwinkle-50 md:text-xl"
+                    >
                         Create!
                     </button>
                 </form>
