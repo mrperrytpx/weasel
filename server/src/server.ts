@@ -8,12 +8,19 @@ import { errorHandler } from "./handlers/errorHandler";
 import { passportStrategies } from "./passport";
 import session from "express-session";
 import passport from "passport";
+import { createUploadthingExpressHandler } from "uploadthing/express";
+import { uploadRouter } from "../../shared/uploadthing";
+import bodyParser from "body-parser";
 
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(helmet());
 app.use(cors({ origin: process.env.WEBSITE_URL, credentials: true }));
 
@@ -30,6 +37,12 @@ app.use(passport.session());
 
 passportStrategies.run();
 
+app.use(
+    "/api/uploadthing",
+    createUploadthingExpressHandler({
+        router: uploadRouter,
+    })
+);
 app.use("/api", api);
 
 app.use(defaultErrorHandler);

@@ -7,13 +7,12 @@ const errorHandler = (
     res: Response,
     _next: NextFunction
 ) => {
-    console.log("ERROR:", err);
+    // console.log("ERROR:", err);
     if (err instanceof ApiError) {
-        res.status(err.code).json(err.message);
-        return;
+        return res.status(err.code).end(err.message);
     }
 
-    res.status(500).json("Something went wrong");
+    return res.status(500).end("Something went wrong");
 };
 
 export { errorHandler };

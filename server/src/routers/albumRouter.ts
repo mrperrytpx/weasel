@@ -44,7 +44,7 @@ albumRouter.post("/", async (req, res) => {
 
     const { data } = result;
 
-    console.log("data", data);
+    // console.log("data", data);
 
     const user = await prisma.user.findFirst({
         where: {

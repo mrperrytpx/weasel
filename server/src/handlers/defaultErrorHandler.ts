@@ -7,7 +7,7 @@ const defaultErrorHandler = (
     next: NextFunction
 ) => {
     const err = new ApiError("Resource not found", 404, req.url);
-    console.log("METHOD: ", req.method);
+    // console.log("METHOD: ", req.method);
     next(err);
 };
 
