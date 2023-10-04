@@ -4,6 +4,7 @@ import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUploadFilesMutation } from "../hooks/useUploadFilesMutation";
+import { useUser } from "../hooks/useUser";
 
 const filesFormSchema = z.object({
     files: z.instanceof(FileList),
@@ -12,10 +13,9 @@ const filesFormSchema = z.object({
 export type TUploadFilesFormVals = z.infer<typeof filesFormSchema>;
 
 const AlbumPage = () => {
-    // const [files, setFiles] = useState<File[]>([]);
-
     const params = useParams();
     const navigate = useNavigate();
+    const user = useUser();
 
     if (!params.albumId) navigate("/albums");
     const albumId = z.string().parse(params.albumId);
@@ -23,21 +23,12 @@ const AlbumPage = () => {
 
     const uploadFiles = useUploadFilesMutation();
 
-    // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const selectedFiles = e.target.files;
-    //     if (selectedFiles) {
-    //         setFiles([...files, ...Array.from(selectedFiles)]);
-    //     }
-    // };
-
     const { register, handleSubmit } = useForm<TUploadFilesFormVals>({
         resolver: zodResolver(filesFormSchema),
     });
 
     const onSubmit: SubmitHandler<TUploadFilesFormVals> = async (data) => {
-        // console.log(data);
-
-        await uploadFiles.mutateAsync({ ...data });
+        await uploadFiles.mutateAsync({ ...data, albumId, userId: user?.data?.id as string });
     };
 
     return (

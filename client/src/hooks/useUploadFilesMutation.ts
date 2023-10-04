@@ -3,7 +3,11 @@ import { TUploadFilesFormVals } from "../pages/AlbumPage";
 import { uploadFiles } from "../utils/generateHelpers";
 
 export const useUploadFilesMutation = () => {
-    const func = async ({ files }: TUploadFilesFormVals) => {
+    const func = async ({
+        files,
+        albumId,
+        userId,
+    }: TUploadFilesFormVals & { albumId: string; userId: string }) => {
         // console.log("files", files);
         const data: File[] = [];
 
@@ -17,13 +21,17 @@ export const useUploadFilesMutation = () => {
             {
                 files: data,
                 endpoint: "imageUploader",
+                input: {
+                    albumId,
+                    userId,
+                },
             },
             {
                 url: import.meta.env.VITE_SERVER_URL + "/api/uploadthing",
             },
         );
 
-        // console.log(res);
+        console.log(res);
 
         return res;
     };

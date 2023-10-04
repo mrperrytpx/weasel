@@ -8,8 +8,7 @@ import { errorHandler } from "./handlers/errorHandler";
 import { passportStrategies } from "./passport";
 import session from "express-session";
 import passport from "passport";
-import { createUploadthingExpressHandler } from "uploadthing/express";
-import { uploadRouter } from "../../shared/uploadthing";
+
 import bodyParser from "body-parser";
 
 dotenv.config();
@@ -37,12 +36,6 @@ app.use(passport.session());
 
 passportStrategies.run();
 
-app.use(
-    "/api/uploadthing",
-    createUploadthingExpressHandler({
-        router: uploadRouter,
-    })
-);
 app.use("/api", api);
 
 app.use(defaultErrorHandler);
