@@ -9,17 +9,9 @@ import { passportStrategies } from "./passport";
 import session from "express-session";
 import passport from "passport";
 
-import bodyParser from "body-parser";
-
 dotenv.config();
 
 const app = express();
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(helmet());
 app.use(cors({ origin: process.env.WEBSITE_URL, credentials: true }));
 

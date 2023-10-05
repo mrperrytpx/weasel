@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUploadFilesMutation } from "../hooks/useUploadFilesMutation";
 import { useUser } from "../hooks/useUser";
+// import { useUploadThing} from "../utils/generateHelpers";
 
 const filesFormSchema = z.object({
     files: z.instanceof(FileList),
@@ -17,6 +18,8 @@ const AlbumPage = () => {
     const navigate = useNavigate();
     const user = useUser();
 
+    // const {startUpload} = useUploadThing("imageUploader")
+
     if (!params.albumId) navigate("/albums");
     const albumId = z.string().parse(params.albumId);
     const album = useGetAlbumImagesQuery(albumId);
@@ -28,6 +31,13 @@ const AlbumPage = () => {
     });
 
     const onSubmit: SubmitHandler<TUploadFilesFormVals> = async (data) => {
+        // const filesToUpload: File[] = [];
+
+        // for (let i = 0; i < data.files.length; i++) {
+        //     filesToUpload.push(data.files[i]);
+        // }
+
+        // await startUpload(filesToUpload, {albumId, userId: user?.data?.id as string})
         await uploadFiles.mutateAsync({ ...data, albumId, userId: user?.data?.id as string });
     };
 

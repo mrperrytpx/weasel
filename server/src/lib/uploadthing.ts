@@ -22,6 +22,7 @@ export const uploadRouter = {
     })
         .input(z.object({ albumId: z.string(), userId: z.string() }))
         .middleware(async ({ req, input }) => {
+            console.log("in middleware");
             const { albumId, userId } = input;
 
             const user = await prisma.user.findFirst({
@@ -37,8 +38,7 @@ export const uploadRouter = {
 
             const userAlbum = user.albums.find((album) => album.id === albumId);
 
-            if (!userAlbum)
-                throw new ApiError("Album doesn't exist!", 400, req.url);
+            if (!userAlbum) throw new ApiError("Album exists!", 400, req.url);
 
             return {
                 userId: user.id,
