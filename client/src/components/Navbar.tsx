@@ -60,6 +60,7 @@ export const Navbar = () => {
                                     className="aspect-square w-8 rounded-full"
                                     src={user?.data?.image}
                                     alt="Your profile image."
+                                    referrerPolicy="no-referrer"
                                 />
                             </Link>
                         ) : (
