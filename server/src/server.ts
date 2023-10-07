@@ -12,8 +12,18 @@ import passport from "passport";
 dotenv.config();
 
 const app = express();
+
 app.use(helmet());
 app.use(cors({ origin: process.env.WEBSITE_URL, credentials: true }));
+app.use((req, res, next) => {
+    const uploadHook = req.header("uploadthing-hook");
+
+    if (uploadHook === "callback") {
+        next();
+    } else {
+        express.json()(req, res, next);
+    }
+});
 
 app.use(
     session({
