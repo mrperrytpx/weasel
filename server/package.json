@@ -18,10 +18,12 @@
         "@types/passport": "^1.0.13",
         "@types/passport-google-oauth20": "^2.0.12",
         "node-dev": "^8.0.0",
+        "prisma": "^5.4.0",
         "ts-node": "^10.9.1",
         "typescript": "^5.2.2"
     },
     "dependencies": {
+        "@prisma/client": "^5.4.1",
         "body-parser": "^1.20.2",
         "cors": "^2.8.5",
         "dotenv": "^16.3.1",
