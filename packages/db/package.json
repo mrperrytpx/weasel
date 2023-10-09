@@ -1,0 +1,21 @@
+{
+    "name": "@weasel/db",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "scripts": {
+        "build": "tsc -p ."
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@prisma/client": "^5.4.1",
+        "dotenv": "^16.3.1"
+    },
+    "devDependencies": {
+        "@types/node": "^20.8.3",
+        "prisma": "^5.4.1",
+        "typescript": "^5.2.2"
+    }
+}

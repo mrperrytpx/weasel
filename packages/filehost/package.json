@@ -1,0 +1,17 @@
+{
+    "name": "@weasel/filehost",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "scripts": {
+        "build": "tsc -p ."
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "uploadthing": "^5.7.1",
+        "@weasel/db": "*",
+        "@weasel/schemas": "*"
+    }
+}

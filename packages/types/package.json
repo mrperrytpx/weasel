@@ -1,0 +1,15 @@
+{
+    "name": "@weasel/types",
+    "version": "1.0.0",
+    "description": "",
+    "keywords": [],
+    "scripts": {},
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@weasel/db": "*"
+    },
+    "devDependencies": {
+        "typescript": "^5.2.2"
+    }
+}
