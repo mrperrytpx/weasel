@@ -15,9 +15,9 @@ api.use(
     createUploadthingExpressHandler({
         router: uploadRouter,
         config: {
-            callbackUrl: process.env.UPLOADTHING_URL,
-            uploadthingId: process.env.UPLOADTHING_APP_ID,
-            uploadthingSecret: process.env.UPLOADTHING_SECRET,
+            callbackUrl: process.env.UPLOADTHING_URL as string,
+            uploadthingId: process.env.UPLOADTHING_APP_ID as string,
+            uploadthingSecret: process.env.UPLOADTHING_SECRET as string,
         },
     })
 );

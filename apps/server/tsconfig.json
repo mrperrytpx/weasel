@@ -1,11 +1,30 @@
 {
     "compilerOptions": {
-        "target": "es6",
         "module": "commonjs",
+        "target": "esnext",
+        "moduleResolution": "node",
+        "sourceMap": true,
         "outDir": "dist",
+        "allowJs": true,
+        "lib": ["ES2022", "DOM"],
         "esModuleInterop": true,
         "types": ["node"],
-        "strict": true
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictBindCallApply": true,
+        "strictPropertyInitialization": true,
+        "noImplicitThis": true,
+        "useUnknownInCatchVariables": true,
+        "alwaysStrict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitOverride": true,
+        "allowUnusedLabels": true,
+        "allowUnreachableCode": true
     },
-    "include": ["./src/**/*.ts", "src/server.ts"]
+    "exclude": ["node_modules", "dist"],
+    "include": ["src/**/*.ts"]
 }

@@ -57,8 +57,6 @@ export const useUploadFilesMutation = () => {
                 } satisfies Image;
             }) satisfies Image[];
 
-            console.log("newImages", newImages);
-
             queryClient.setQueryData<TFullAlbum>(["album", context.albumId], () => {
                 return {
                     ...albumData,
