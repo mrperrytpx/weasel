@@ -12,9 +12,6 @@ const AlbumPage = () => {
     const navigate = useNavigate();
     const user = useUser();
 
-    console.log(filesFormSchema);
-
-    if (!params.albumId) navigate("/albums");
     const albumId = z.string().parse(params.albumId);
     const album = useGetAlbumImagesQuery(albumId);
 
@@ -23,6 +20,8 @@ const AlbumPage = () => {
     const { register, handleSubmit } = useForm<TUploadFilesFormVals>({
         resolver: zodResolver(filesFormSchema),
     });
+
+    if (!params.albumId) navigate("/albums");
 
     const onSubmit: SubmitHandler<TUploadFilesFormVals> = async (data) => {
         await uploadFiles.mutateAsync({ ...data, albumId, userId: user?.data?.id as string });
@@ -38,20 +37,25 @@ const AlbumPage = () => {
                     }).format(new Date(album.data!.created_at))}
                 </span>
             </div>
-            <div className="mx-auto w-full max-w-screen-2xl flex-1 p-4">
+            <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+                <input {...register("files")} type="file" multiple={true} />
+                <button
+                    type="submit"
+                    disabled={uploadFiles.isLoading}
+                    className="w-full max-w-[8rem] rounded-lg bg-white p-2 text-center text-lg font-medium shadow transition-colors duration-75 hover:bg-periwinkle-600 hover:text-periwinkle-50 focus:outline-periwinkle-600 dark:text-periwinkle-950 dark:hover:text-periwinkle-50 md:text-xl"
+                >
+                    Submit!
+                </button>
+            </form>
+            <div className="mx-auto flex w-full max-w-screen-2xl flex-wrap gap-4 p-4">
                 {album.data?.images.map((image) => (
-                    <img key={image.id} src={image.url} alt="Image" />
+                    <img
+                        key={image.id}
+                        className="inline self-baseline"
+                        src={image.url}
+                        alt="Image"
+                    />
                 ))}
-                <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-                    <input {...register("files")} type="file" multiple={true} />
-                    <button
-                        type="submit"
-                        disabled={uploadFiles.isLoading}
-                        className="w-full max-w-[8rem] rounded-lg bg-white p-2 text-center text-lg font-medium shadow transition-colors duration-75 hover:bg-periwinkle-600 hover:text-periwinkle-50 focus:outline-periwinkle-600 dark:text-periwinkle-950 dark:hover:text-periwinkle-50 md:text-xl"
-                    >
-                        Submit!
-                    </button>
-                </form>
             </div>
         </div>
     );

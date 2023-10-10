@@ -1,7 +1,7 @@
 import { Album, Image, User } from "@weasel/db";
 
 export type TAlbum = Album & {
-    images: [Pick<Image, "url"> | null];
+    images: [Image];
 };
 
 export type TFullAlbum = Album & {

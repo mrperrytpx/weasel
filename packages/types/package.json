@@ -2,6 +2,7 @@
     "name": "@weasel/types",
     "version": "1.0.0",
     "description": "",
+    "private": true,
     "keywords": [],
     "scripts": {},
     "author": "",

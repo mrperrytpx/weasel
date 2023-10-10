@@ -2,6 +2,7 @@
     "name": "@weasel/schemas",
     "version": "1.0.0",
     "description": "",
+    "private": true,
     "main": "dist/index.js",
     "keywords": [],
     "scripts": {

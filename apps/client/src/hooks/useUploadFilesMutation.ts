@@ -1,8 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadFiles } from "../utils/generateHelpers";
 import { TUploadFileMutation } from "@weasel/schemas";
+import { TFullAlbum } from "@weasel/types";
+import { Image } from ".prisma/client";
 
 export const useUploadFilesMutation = () => {
+    const queryClient = useQueryClient();
+
     const func = async ({ files, albumId, userId }: TUploadFileMutation) => {
         const data: File[] = [];
 
@@ -10,7 +14,7 @@ export const useUploadFilesMutation = () => {
             data.push(files[i]);
         }
 
-        const res = await uploadFiles(
+        const images = await uploadFiles(
             {
                 files: data,
                 endpoint: "imageUploader",
@@ -24,10 +28,45 @@ export const useUploadFilesMutation = () => {
             },
         );
 
-        console.log(res);
+        console.log("res", images);
 
-        return res;
+        return images;
     };
 
-    return useMutation(func);
+    return useMutation(func, {
+        onMutate: (input) => {
+            const { albumId, userId } = input;
+
+            return { albumId, userId };
+        },
+        onSuccess: async (data, _vars, context) => {
+            if (!context) return;
+            const albumData = queryClient.getQueryData<TFullAlbum>(["album", context.albumId]);
+
+            if (!albumData) return;
+
+            const newImages = data.map((img) => {
+                return {
+                    album_id: context.albumId,
+                    created_at: new Date(),
+                    id: img.key,
+                    name: img.name,
+                    owner_id: context.userId,
+                    size: img.size,
+                    url: img.url,
+                } satisfies Image;
+            }) satisfies Image[];
+
+            console.log("newImages", newImages);
+
+            queryClient.setQueryData<TFullAlbum>(["album", context.albumId], () => {
+                return {
+                    ...albumData,
+                    images: albumData.images.length
+                        ? [...albumData.images, ...newImages]
+                        : [...newImages],
+                };
+            });
+        },
+    });
 };

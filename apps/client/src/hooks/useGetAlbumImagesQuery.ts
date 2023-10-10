@@ -28,7 +28,7 @@ export const useGetAlbumImagesQuery = (albumId: string) => {
 
             if (!album) return;
 
-            return { ...album, images: [album.image] } satisfies TFullAlbum;
+            return { ...album, images: album.images.length ? [...album.images] : [] } satisfies TFullAlbum;
         },
     });
 };

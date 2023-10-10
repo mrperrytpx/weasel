@@ -16,9 +16,6 @@ albumRouter.get("/", async (req, res) => {
                 include: {
                     images: {
                         take: 1,
-                        select: {
-                            url: true,
-                        },
                     },
                 },
             },
