@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadFiles } from "../utils/generateHelpers";
 import { TUploadFileMutation } from "@weasel/schemas";
-import { TFullAlbum } from "@weasel/types";
-import { Image } from ".prisma/client";
+import { TFullAlbum, Image } from "@weasel/types";
 
 export const useUploadFilesMutation = () => {
     const queryClient = useQueryClient();

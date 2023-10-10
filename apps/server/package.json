@@ -5,7 +5,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "node-dev ./src/index.ts --notify=false",
+        "dev": "ts-node-dev ./src/index.ts",
         "build": "tsc -p .",
         "start": "node ./dist/index.js"
     },
@@ -19,13 +19,16 @@
         "@types/node": "^20.8.0",
         "@types/passport": "^1.0.13",
         "@types/passport-google-oauth20": "^2.0.12",
-        "node-dev": "^8.0.0",
+        "@weasel/types": "*",
         "prisma": "^5.4.0",
         "ts-node": "^10.9.1",
-        "typescript": "^5.2.2",
-        "@weasel/types": "*"
+        "ts-node-dev": "^2.0.0",
+        "typescript": "^5.2.2"
     },
     "dependencies": {
+        "@weasel/db": "*",
+        "@weasel/filehost": "*",
+        "@weasel/schemas": "*",
         "cors": "^2.8.5",
         "dotenv": "^16.3.1",
         "express": "^4.18.2",
@@ -33,9 +36,6 @@
         "helmet": "^7.0.0",
         "passport": "^0.6.0",
         "passport-google-oauth20": "^2.0.0",
-        "uploadthing": "^5.7.1",
-        "@weasel/db": "*",
-        "@weasel/filehost": "*",
-        "@weasel/schemas": "*"
+        "uploadthing": "^5.7.1"
     }
 }

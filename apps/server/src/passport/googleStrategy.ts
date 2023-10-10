@@ -1,7 +1,7 @@
 import { Profile, Strategy } from "passport-google-oauth20";
 import passport from "passport";
-import type { User } from "@prisma/client";
 import { prisma } from "@weasel/db";
+import { User } from "@weasel/types";
 
 export type TUser = Pick<User, "id" | "image">;
 

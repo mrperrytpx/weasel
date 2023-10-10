@@ -11,3 +11,5 @@ export type TFullAlbum = Album & {
 export type TBaseAlbum = Album;
 
 export type TUser = Pick<User, "id" | "image">;
+
+export { type User, type Image };

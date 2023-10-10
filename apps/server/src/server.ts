@@ -8,6 +8,7 @@ import { errorHandler } from "./handlers/errorHandler";
 import { passportStrategies } from "./passport";
 import session from "express-session";
 import passport from "passport";
+import { asyncHandler } from "./handlers/asyncHandler";
 
 dotenv.config();
 
@@ -38,7 +39,7 @@ app.use(passport.session());
 
 passportStrategies.run();
 
-app.use("/api", api);
+app.use("/api", asyncHandler(api));
 
 app.use(defaultErrorHandler);
 app.use(errorHandler);

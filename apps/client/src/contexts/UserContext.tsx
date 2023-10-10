@@ -16,6 +16,7 @@ export const UserContextProvider = ({ children }: TUserContextProps) => {
             const data = await apiInstance.get<TUser>("/api/auth/user");
             return data.data;
         },
+        refetchOnWindowFocus: true,
     });
 
     return <UserContext.Provider value={userQuery}>{children}</UserContext.Provider>;
