@@ -7,7 +7,12 @@
         "packages/*",
         "apps/*"
     ],
-    "scripts": {},
+    "scripts": {
+        "ptypes": "cd ./packages/db/ && npx prisma generate",
+        "build:db": "cd ./packages/db/ && npm run build",
+        "build:filehost": "cd ./packages/filehost/ && npm run build",
+        "build:schemas": "cd ./packages/schemas/ && npm run build"
+    },
     "keywords": [],
     "author": "",
     "license": "ISC"

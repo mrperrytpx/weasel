@@ -62,6 +62,9 @@ albumRouter.post("/", async (req, res) => {
                 },
             },
         },
+        include: {
+            images: true,
+        },
     });
 
     res.status(200).json(newAlbum);

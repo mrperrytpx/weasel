@@ -2,8 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreateAlbumMutation } from "../hooks/useCreateAlbumMutation";
 import { TCreateAlbumFormVals, albumNameSchema } from "@weasel/schemas";
+import { useNavigate } from "react-router-dom";
 
 const CreateAlbumPage = () => {
+    const navigate = useNavigate();
+
     const {
         register,
         handleSubmit,
@@ -15,7 +18,10 @@ const CreateAlbumPage = () => {
     const createAlbum = useCreateAlbumMutation();
 
     const onSubmit: SubmitHandler<TCreateAlbumFormVals> = async (data) => {
-        await createAlbum.mutateAsync({ ...data });
+        const response = await createAlbum.mutateAsync({ ...data });
+        if (response.id) {
+            navigate("/albums");
+        }
     };
 
     return (
@@ -56,9 +62,9 @@ const CreateAlbumPage = () => {
                     <button
                         type="submit"
                         disabled={createAlbum.isLoading}
-                        className="w-full rounded-lg bg-white p-4 text-center text-lg font-medium shadow transition-colors duration-75 hover:bg-periwinkle-600 hover:text-periwinkle-50    focus:outline-periwinkle-600 dark:text-periwinkle-950 dark:hover:text-periwinkle-50 md:text-xl"
+                        className="w-full rounded-lg bg-white p-4 text-center text-lg font-medium shadow transition-colors duration-75 enabled:hover:bg-periwinkle-600 enabled:hover:text-periwinkle-50 enabled:focus:outline-periwinkle-600 disabled:opacity-50 dark:text-periwinkle-950 enabled:dark:hover:text-periwinkle-50 md:text-xl"
                     >
-                        Create!
+                        {createAlbum.isLoading ? "Creating your album..." : "Create!"}
                     </button>
                 </form>
             </div>
