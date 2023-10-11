@@ -6,6 +6,29 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useUploadFilesMutation } from "../hooks/useUploadFilesMutation";
 import { useUser } from "../hooks/useUser";
 import { TUploadFilesFormVals, filesFormSchema } from "@weasel/schemas";
+import { Image } from "@weasel/types";
+
+type TAlbumImageProps = {
+    image: Image;
+};
+
+const AlbumImage = ({ image }: TAlbumImageProps) => {
+    return (
+        <div className="my-4 flex break-inside-avoid flex-col items-start justify-start">
+            <a
+                href={image.url}
+                target="_blank"
+                referrerPolicy="no-referrer"
+                className=" border-2 border-periwinkle-50 hover:border-periwinkle-500 dark:border-zinc-950 dark:hover:border-white"
+            >
+                <img src={image.url} alt="image" className="select-none object-cover" />
+            </a>
+            <p className="line-clamp-1 break-all pl-0.5 font-semibold text-black dark:text-periwinkle-50">
+                {image.name}
+            </p>
+        </div>
+    );
+};
 
 const AlbumPage = () => {
     const params = useParams();
@@ -37,36 +60,22 @@ const AlbumPage = () => {
                     }).format(new Date(album.data!.created_at))}
                 </span>
             </div>
-            <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-                <input {...register("files")} type="file" multiple={true} />
-                <button
-                    type="submit"
-                    disabled={uploadFiles.isLoading}
-                    className="w-full max-w-[8rem] rounded-lg bg-white p-2 text-center text-lg font-medium shadow transition-colors duration-75 hover:bg-periwinkle-600 hover:text-periwinkle-50 focus:outline-periwinkle-600 dark:text-periwinkle-950 dark:hover:text-periwinkle-50 md:text-xl"
+
+            <div className="my-8 columns-1 gap-4 md:columns-2 md:gap-6 lg:columns-3 lg:gap-8">
+                <form
+                    className="flex flex-col items-center justify-center gap-4"
+                    onSubmit={handleSubmit(onSubmit)}
                 >
-                    Submit!
-                </button>
-            </form>
-            <div className="grid w-full grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3 ">
-                {album.data?.images.map((image) => (
-                    <div
-                        key={image.id}
-                        className="relative h-44 overflow-hidden rounded-lg border-2 border-periwinkle-50 hover:border-periwinkle-500 dark:border-zinc-950 dark:hover:border-white"
+                    <input {...register("files")} type="file" multiple={true} />
+                    <button
+                        type="submit"
+                        disabled={uploadFiles.isLoading}
+                        className="w-full max-w-[8rem] rounded-lg bg-white p-2 text-center text-lg font-medium shadow transition-colors duration-75 hover:bg-periwinkle-600 hover:text-periwinkle-50 focus:outline-periwinkle-600 dark:text-periwinkle-950 dark:hover:text-periwinkle-50 md:text-xl"
                     >
-                        <a
-                            href={image.url}
-                            target="_blank"
-                            referrerPolicy="no-referrer"
-                            className="h-full w-full"
-                        >
-                            <img
-                                src={image.url}
-                                alt="image"
-                                className="h-full w-full object-cover"
-                            />
-                        </a>
-                    </div>
-                ))}
+                        Submit!
+                    </button>
+                </form>
+                {album.data?.images.map((image) => <AlbumImage image={image} key={image.id} />)}
             </div>
         </div>
     );
