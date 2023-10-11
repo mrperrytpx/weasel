@@ -49,12 +49,10 @@ const AlbumPage = () => {
             </form>
             <div className="mx-auto flex w-full max-w-screen-2xl flex-wrap gap-4 p-4">
                 {album.data?.images.map((image) => (
-                    <img
-                        key={image.id}
-                        className="inline self-baseline"
-                        src={image.url}
-                        alt="Image"
-                    />
+                    <div className="relative flex w-full" key={image.id}>
+                        <img className="inline self-baseline" src={image.url} alt="Image" />
+                        <button className="absolute z-10 bg-red-200 p-2">DELETE</button>
+                    </div>
                 ))}
             </div>
         </div>

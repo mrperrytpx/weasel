@@ -11,8 +11,9 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "uploadthing": "^5.7.1",
         "@weasel/db": "*",
-        "@weasel/schemas": "*"
+        "@weasel/schemas": "*",
+        "undici": "^5.26.0",
+        "uploadthing": "^5.7.1"
     }
 }

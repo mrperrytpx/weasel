@@ -1,6 +1,7 @@
 import { prisma } from "@weasel/db";
 import { Router } from "express";
 import passport from "passport";
+import { utapi } from "@weasel/filehost";
 
 const authRouter = Router();
 
@@ -36,11 +37,18 @@ authRouter.post("/logout", (req, res, next) => {
 authRouter.delete("/profile", async (req, res) => {
     if (!req.user?.id) return res.status(403).end("Forbidden");
 
-    await prisma.user.delete({
+    const deletedUser = await prisma.user.delete({
         where: {
             id: req.user.id,
         },
+        include: {
+            images: true,
+        },
     });
+
+    if (deletedUser.images.length) {
+        await utapi.deleteFiles(deletedUser.images.map((image) => image.id));
+    }
 
     res.status(200).end();
 });
