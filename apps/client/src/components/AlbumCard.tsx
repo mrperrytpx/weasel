@@ -17,7 +17,7 @@ const AlbumCard = ({ album }: TAlbumCardProps) => {
                         alt="Placeholder"
                     />
                 </div>
-                <div className="space-y-1 rounded-b-md  p-2 text-black shadow-md shadow-periwinkle-200 dark:text-periwinkle-50 dark:shadow-zinc-800">
+                <div className="space-y-1 rounded-b-md p-2 text-black shadow-md shadow-periwinkle-200 dark:text-periwinkle-50 dark:shadow-zinc-800">
                     <p className="break-word line-clamp-2 font-medium">{album.name}</p>
                     <p className="text-xs font-bold uppercase text-zinc-600 dark:text-periwinkle-400">
                         {album.description}

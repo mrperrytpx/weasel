@@ -47,11 +47,24 @@ const AlbumPage = () => {
                     Submit!
                 </button>
             </form>
-            <div className="mx-auto flex w-full max-w-screen-2xl flex-wrap gap-4 p-4">
+            <div className="grid w-full grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3 ">
                 {album.data?.images.map((image) => (
-                    <div className="relative flex w-full" key={image.id}>
-                        <img className="inline self-baseline" src={image.url} alt="Image" />
-                        <button className="absolute z-10 bg-red-200 p-2">DELETE</button>
+                    <div
+                        key={image.id}
+                        className="relative h-44 overflow-hidden rounded-lg border-2 border-periwinkle-50 hover:border-periwinkle-500 dark:border-zinc-950 dark:hover:border-white"
+                    >
+                        <a
+                            href={image.url}
+                            target="_blank"
+                            referrerPolicy="no-referrer"
+                            className="h-full w-full"
+                        >
+                            <img
+                                src={image.url}
+                                alt="image"
+                                className="h-full w-full object-cover"
+                            />
+                        </a>
                     </div>
                 ))}
             </div>
