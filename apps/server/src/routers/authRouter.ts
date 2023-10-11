@@ -47,9 +47,8 @@ authRouter.delete("/profile", async (req, res) => {
     });
 
     if (deletedUser.images.length) {
-        await utapi.deleteFiles(deletedUser.images.map((image) => image.id));
+        utapi.deleteFiles(deletedUser.images.map((image) => image.id));
     }
-
     res.status(200).end();
 });
 
