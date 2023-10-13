@@ -28,13 +28,13 @@ const ImageCard = ({ image }: TImageCardProps) => {
                 target="_blank"
                 aria-label="Open the image link in a new tab."
                 referrerPolicy="no-referrer"
-                className="h-full w-full self-center "
+                className="aspect-square w-full self-center "
             >
                 <img
                     src={image.url}
                     loading="lazy"
                     alt={`Image you uploaded with the name ${image.name}`}
-                    className="h-full w-full select-none rounded-t-md object-cover"
+                    className="aspect-square w-full select-none rounded-t-md object-cover"
                 />
             </a>
             <div className="w-full space-y-2 rounded-b-md bg-white p-2 dark:bg-zinc-900 dark:text-periwinkle-50">
@@ -103,16 +103,17 @@ const AlbumPage = () => {
             </div>
 
             {album.data?.images?.length ? (
-                <div className="mx-auto mb-8 mt-4 columns-1 gap-4 p-4 md:columns-2 md:gap-6 lg:columns-3 lg:gap-8 xl:columns-4">
+                <div className="mx-auto mb-8 mt-4 w-full columns-1 gap-4 p-4 md:columns-2 md:gap-6 lg:columns-3 lg:gap-8 xl:columns-4">
                     <UploadFilesForm />
 
                     {album.data?.images.map((image) => <ImageCard image={image} key={image.id} />)}
                 </div>
             ) : (
                 <div className="mb-8 flex flex-col items-center justify-center gap-1 p-4">
-                    <div className="w-full max-w-md">
+                    <div className="aspect-square w-full max-w-xs">
                         <img
                             src={EmptyFolderImage}
+                            className="h-full"
                             alt="Illustration of a male with black hair, glasses, light-green jumper and black pants looking into a big blue folder that is infront of him. The folder is empty and the man has a concerned look on his face. There's a question mark in a speech bubble right of his head."
                         />
                     </div>

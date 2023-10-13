@@ -16,15 +16,18 @@ const AlbumsPage = () => {
                 {userAlbums.isLoading ? (
                     <div className="mx-auto mt-20 space-y-4 p-4">
                         <LoadingSpinner color={darkmode ? "white" : "#4666e5"} size={60} />
-                        <p className="text-lg font-medium text-periwinkle-900">Loading albums...</p>
+                        <p className="text-lg font-medium text-periwinkle-900 dark:text-white">
+                            Loading albums...
+                        </p>
                     </div>
                 ) : userAlbums.data?.length ? (
                     userAlbums.data.map((album) => <AlbumCard key={album.id} album={album} />)
                 ) : (
-                    <div className="mx-auto mb-8 gap-1 p-4">
-                        <div className="flex w-full max-w-xs flex-col items-center justify-center gap-2">
+                    <div className="mx-auto mb-8 w-full max-w-xs gap-1 p-4">
+                        <div className="flex w-full flex-col items-center gap-2">
                             <img
                                 src={WeaselOnAShelfImage}
+                                className="aspect-square w-full"
                                 alt="Illustration of an orange weasel looking out of the frame to the left, sitting on a woooden bookshelf. The bookshelf has 5 books in it. White, orange, white with an orange stripe at the bottom, yellow with an orange stripe at the bottom, orange with 2 small yellow stripes near the top and near the bottom of the book cover."
                             />
                             <Link

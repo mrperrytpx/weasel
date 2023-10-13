@@ -17,7 +17,6 @@ export const UserContextProvider = ({ children }: TUserContextProps) => {
             return data.data;
         },
         refetchOnReconnect: true,
-        refetchOnMount: true,
         refetchOnWindowFocus: true,
     });
 
