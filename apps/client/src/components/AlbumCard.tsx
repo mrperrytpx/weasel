@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
-import PlayfulWeaselImage from "../assets/playful-weasel.webp";
 import { TAlbum } from "@weasel/types";
 import { BsTrash } from "react-icons/bs";
 import { useDeleteAlbumMutation } from "../hooks/useDeleteAlbumMutation";
+import { Link } from "react-router-dom";
+import SolidColorImage from "../assets/solid-color.jpeg";
 
 type TAlbumCardProps = {
     album: TAlbum;
@@ -17,12 +17,12 @@ const AlbumCard = ({ album }: TAlbumCardProps) => {
     };
 
     return (
-        <li className="relative flex aspect-square w-full max-w-xs flex-col self-start rounded-md bg-zinc-200 transition-all duration-75 hover:scale-[101%] hover:bg-zinc-300 dark:bg-zinc-700  dark:hover:bg-zinc-600">
+        <li className="relative flex aspect-square w-full max-w-xs flex-col self-start rounded-md bg-white transition-all duration-75 hover:scale-[101%] hover:bg-zinc-200 dark:bg-zinc-700  dark:hover:bg-zinc-600">
             <Link to={`/albums/${album.id}`}>
-                <div className="flex aspect-square w-full items-center justify-center border-b-2 border-black">
+                <div className="flex aspect-square w-full items-center justify-center">
                     <img
                         className="aspect-square w-full rounded-t-md object-cover"
-                        src={album.images[0]?.url ? album.images[0]?.url : PlayfulWeaselImage}
+                        src={album.images[0]?.url ? album.images[0]?.url : SolidColorImage}
                         alt="Placeholder"
                     />
                 </div>

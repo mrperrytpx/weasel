@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 export const useTheme = () => {
-    const [darkmode, setDarkmode] = useState(
+    const [darkmode, setDarkmode] = useState<boolean>(
         JSON.parse(localStorage.getItem("weasel-album-theme")!) ?? false,
     );
 
@@ -15,18 +15,10 @@ export const useTheme = () => {
 
     const toggleTheme = useCallback(() => {
         if (typeof window !== "undefined") {
-            const isDarkmode = document.documentElement.classList.contains("dark");
-
-            if (isDarkmode) {
-                document.documentElement.classList.remove("dark");
-            } else {
-                document.documentElement.classList.add("dark");
-            }
-
-            setDarkmode(!isDarkmode);
-            localStorage.setItem("weasel-album-theme", JSON.stringify(!isDarkmode));
+            setDarkmode((old) => !old);
+            localStorage.setItem("weasel-album-theme", JSON.stringify(!darkmode));
         }
-    }, []);
+    }, [darkmode]);
 
     return { toggleTheme, darkmode };
 };
