@@ -1,4 +1,5 @@
 import { prisma } from "@weasel/db";
+import { utapi } from "@weasel/filehost";
 import { albumNameSchema } from "@weasel/schemas";
 import { Router } from "express";
 
@@ -80,6 +81,7 @@ albumRouter.get("/:albumId", async (req, res) => {
     const album = await prisma.album.findFirst({
         where: {
             id: albumId,
+            owner_id: req.user.id,
         },
         include: {
             images: true,
@@ -89,6 +91,32 @@ albumRouter.get("/:albumId", async (req, res) => {
     if (!album) return res.status(404).end("Album doesn't exist!");
 
     return res.status(200).json(album);
+});
+
+albumRouter.delete("/:albumId", async (req, res) => {
+    if (!req.user?.id) return res.status(401).end("You must be logged in!");
+
+    const { albumId } = req.params;
+
+    if (!albumId) return res.status(400).end("Provide an album ID!");
+
+    const albumToDelete = await prisma.album.delete({
+        where: {
+            id: albumId,
+            owner_id: req.user.id,
+        },
+        include: {
+            images: true,
+        },
+    });
+
+    if (!albumToDelete) return res.status(404).end("Album doesn't exist!");
+
+    if (albumToDelete.images.length) {
+        utapi.deleteFiles(albumToDelete.images.map((image) => image.id));
+    }
+
+    return res.status(200).end();
 });
 
 export { albumRouter };

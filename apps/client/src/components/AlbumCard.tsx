@@ -1,14 +1,23 @@
 import { Link } from "react-router-dom";
 import DefaultAlbum from "../assets/weasel.webp";
 import { TAlbum } from "@weasel/types";
+import { BsTrash } from "react-icons/bs";
+import { useDeleteAlbumMutation } from "../hooks/useDeleteAlbumMutation";
 
 type TAlbumCardProps = {
     album: TAlbum;
 };
 
 const AlbumCard = ({ album }: TAlbumCardProps) => {
+    const deleteAlbum = useDeleteAlbumMutation();
+
+    const handleDeleteAlbum = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.stopPropagation();
+        await deleteAlbum.mutateAsync({ albumId: album.id });
+    };
+
     return (
-        <li className="flex aspect-square w-full max-w-xs flex-col self-start rounded-md bg-zinc-200 transition-all duration-75 hover:scale-[101%] hover:bg-zinc-300 dark:bg-zinc-700  dark:hover:bg-zinc-600">
+        <li className="relative flex aspect-square w-full max-w-xs flex-col self-start rounded-md bg-zinc-200 transition-all duration-75 hover:scale-[101%] hover:bg-zinc-300 dark:bg-zinc-700  dark:hover:bg-zinc-600">
             <Link to={`/albums/${album.id}`}>
                 <div className="flex aspect-square w-full items-center justify-center border-b-2 border-black">
                     <img
@@ -24,6 +33,13 @@ const AlbumCard = ({ album }: TAlbumCardProps) => {
                     </p>
                 </div>
             </Link>
+            <button
+                aria-label="Delete the album."
+                onClick={handleDeleteAlbum}
+                className="group absolute right-2 top-2 rounded-md bg-white p-2 shadow"
+            >
+                <BsTrash size={20} className="fill-black group-hover:fill-red-600" />
+            </button>
         </li>
     );
 };

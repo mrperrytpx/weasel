@@ -27,7 +27,7 @@ const LoginPage = () => {
                         provider="Google"
                         signIn={googleLogin}
                     />
-                    <SocialMediaLoginButton
+                    {/* <SocialMediaLoginButton
                         src="https://authjs.dev/img/providers/google.svg"
                         provider="Google"
                         signIn={googleLogin}
@@ -36,7 +36,7 @@ const LoginPage = () => {
                         src="https://authjs.dev/img/providers/google.svg"
                         provider="Google"
                         signIn={googleLogin}
-                    />
+                    /> */}
                 </div>
             </div>
         </div>

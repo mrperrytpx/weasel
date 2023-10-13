@@ -1,9 +1,12 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetAlbumImagesQuery } from "../hooks/useGetAlbumImagesQuery";
 import { Image } from "@weasel/types";
 import EmptyFolderImage from "../assets/empty-folder.webp";
 import { UploadFilesForm } from "../components/UploadFilesForm";
 import { z } from "zod";
+import { BsTrash } from "react-icons/bs";
+import { useDeleteAlbumMutation } from "../hooks/useDeleteAlbumMutation";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 type TAlbumImageProps = {
     image: Image;
@@ -34,19 +37,43 @@ const AlbumImage = ({ image }: TAlbumImageProps) => {
 
 const AlbumPage = () => {
     const params = useParams();
+    const navigate = useNavigate();
 
     const albumId = z.string().parse(params.albumId);
     const album = useGetAlbumImagesQuery(albumId);
 
+    const deleteAlbum = useDeleteAlbumMutation();
+
+    const handleDeleteAlbum = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.stopPropagation();
+        await deleteAlbum.mutateAsync({ albumId });
+        navigate("/albums");
+    };
+
     return (
         <div className="mx-auto flex w-full max-w-screen-2xl flex-1 flex-col">
             <div className="flex flex-wrap items-center justify-between border-b border-periwinkle-300 px-4 py-2 dark:border-zinc-600">
-                <span className="text-xl font-bold">{album.data?.name}</span>
-                <span>
-                    {new Intl.DateTimeFormat("en-GB", {
-                        dateStyle: "long",
-                    }).format(new Date(album.data!.created_at))}
+                <span className="peer line-clamp-1 flex-1 break-all text-lg font-bold hover:line-clamp-none">
+                    {album.data?.name}
                 </span>
+                <div className="flex items-center gap-2">
+                    <button
+                        aria-label="Delete album."
+                        onClick={handleDeleteAlbum}
+                        className="group p-2"
+                    >
+                        {deleteAlbum.isLoading ? (
+                            <LoadingSpinner size={20} color="rgb(70 102 229)" />
+                        ) : (
+                            <BsTrash size={20} className="fill-black group-hover:fill-red-600" />
+                        )}
+                    </button>
+                    <span className="text-lg peer-hover:self-start">
+                        {new Intl.DateTimeFormat("en-GB", {
+                            dateStyle: "long",
+                        }).format(new Date(album.data!.created_at))}
+                    </span>
+                </div>
             </div>
 
             {album.data?.images?.length ? (
