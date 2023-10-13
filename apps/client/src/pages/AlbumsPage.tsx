@@ -24,7 +24,7 @@ const AlbumsPage = () => {
                     userAlbums.data.map((album) => <AlbumCard key={album.id} album={album} />)
                 ) : (
                     <div className="mx-auto mb-8 w-full max-w-xs gap-1 p-4">
-                        <div className="flex w-full flex-col gap-2">
+                        <div className="mt-8 flex w-full flex-col items-center justify-center gap-2 lg:mt-16 ">
                             <div className="aspect-square w-full">
                                 <img
                                     src={WeaselOnAShelfImage}
