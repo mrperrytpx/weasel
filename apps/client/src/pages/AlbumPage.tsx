@@ -116,7 +116,6 @@ const AlbumPage = () => {
                     <div className="aspect-square w-full max-w-xs">
                         <img
                             src={EmptyFolderImage}
-                            className="h-full"
                             alt="Illustration of a male with black hair, glasses, light-green jumper and black pants looking into a big blue folder that is infront of him. The folder is empty and the man has a concerned look on his face. There's a question mark in a speech bubble right of his head."
                         />
                     </div>

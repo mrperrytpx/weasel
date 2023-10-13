@@ -24,12 +24,13 @@ const AlbumsPage = () => {
                     userAlbums.data.map((album) => <AlbumCard key={album.id} album={album} />)
                 ) : (
                     <div className="mx-auto mb-8 w-full max-w-xs gap-1 p-4">
-                        <div className="flex w-full flex-col items-center gap-2">
-                            <img
-                                src={WeaselOnAShelfImage}
-                                className="aspect-square w-full"
-                                alt="Illustration of an orange weasel looking out of the frame to the left, sitting on a woooden bookshelf. The bookshelf has 5 books in it. White, orange, white with an orange stripe at the bottom, yellow with an orange stripe at the bottom, orange with 2 small yellow stripes near the top and near the bottom of the book cover."
-                            />
+                        <div className="flex w-full flex-col gap-2">
+                            <div className="aspect-square w-full">
+                                <img
+                                    src={WeaselOnAShelfImage}
+                                    alt="Illustration of an orange weasel looking out of the frame to the left, sitting on a woooden bookshelf. The bookshelf has 5 books in it. White, orange, white with an orange stripe at the bottom, yellow with an orange stripe at the bottom, orange with 2 small yellow stripes near the top and near the bottom of the book cover."
+                                />
+                            </div>
                             <Link
                                 to="/albums/create"
                                 className="flex items-center justify-center gap-2 rounded-lg bg-white p-2 text-center shadow transition-colors duration-75 hover:bg-periwinkle-600 hover:text-periwinkle-50 focus:outline-periwinkle-600 dark:text-periwinkle-950 dark:hover:text-periwinkle-50"

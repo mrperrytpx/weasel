@@ -11,15 +11,12 @@ const LoginPage = () => {
     return (
         <div className="flex items-center justify-center">
             <div className="mx-auto mt-4 flex w-full max-w-md flex-col items-center gap-4 p-8">
-                <div className="flex flex-col items-center gap-2">
-                    <Link to="/">
-                        <img
-                            src={PlayfulWeaselImage}
-                            className="aspect-square"
-                            alt="A photo of a cartoonish weasel holding a black camera and resting his head on it, looking at the screen."
-                        />
-                    </Link>
-                </div>
+                <Link className="aspect-square w-full max-w-sm" to="/">
+                    <img
+                        src={PlayfulWeaselImage}
+                        alt="A photo of a cartoonish weasel holding a black camera and resting his head on it, looking at the screen."
+                    />
+                </Link>
                 <div className="flex w-full flex-col gap-2">
                     <SocialMediaLoginButton
                         src="https://authjs.dev/img/providers/google.svg"
