@@ -1,6 +1,6 @@
 import { SocialMediaLoginButton } from "../components/SocialMediaLoginButton";
 import { useCallback } from "react";
-import WeaselImage from "../assets/weasel.png";
+import PlayfulWeaselImage from "../assets/playful-weasel.webp";
 import { Link } from "react-router-dom";
 
 const LoginPage = () => {
@@ -10,16 +10,15 @@ const LoginPage = () => {
 
     return (
         <div className="flex items-center justify-center">
-            <div className="mx-auto mt-4 flex w-full max-w-md flex-col items-center gap-8 p-8 md:mt-20">
+            <div className="mx-auto mt-4 flex w-full max-w-md flex-col items-center gap-4 p-8">
                 <div className="flex flex-col items-center gap-2">
                     <Link to="/">
                         <img
-                            src={WeaselImage}
-                            className="aspect-square w-16"
+                            src={PlayfulWeaselImage}
+                            className="aspect-square"
                             alt="A photo of a cartoonish weasel holding a black camera and resting his head on it, looking at the screen."
                         />
                     </Link>
-                    <span className="text-2xl font-extrabold uppercase">Weasel Albums</span>
                 </div>
                 <div className="flex w-full flex-col gap-2">
                     <SocialMediaLoginButton
