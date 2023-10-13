@@ -22,7 +22,7 @@ const ImageCard = ({ image }: TImageCardProps) => {
     };
 
     return (
-        <div className="relative my-8 flex aspect-square w-full max-w-sm break-inside-avoid flex-col items-start justify-start rounded-md border-2 border-periwinkle-50 bg-white transition-all duration-75 hover:border-periwinkle-500 dark:border-zinc-950 dark:bg-zinc-900 dark:hover:border-periwinkle-500">
+        <div className="relative my-8 flex aspect-square w-full max-w-sm break-inside-avoid flex-col items-start justify-start rounded-lg border-2 border-periwinkle-50 bg-white transition-all duration-75 hover:border-periwinkle-500 dark:border-zinc-950 dark:bg-zinc-900 dark:hover:border-periwinkle-500">
             <a
                 href={image.url}
                 target="_blank"
@@ -38,7 +38,7 @@ const ImageCard = ({ image }: TImageCardProps) => {
                 />
             </a>
             <div className="w-full space-y-2 rounded-b-md bg-white p-2 dark:bg-zinc-900 dark:text-periwinkle-50">
-                <p className="line-clamp-1 self-center break-all rounded-b-md font-semibold hover:line-clamp-none">
+                <p className="line-clamp-1 self-center break-all rounded-b-md font-semibold">
                     {image.name}
                 </p>
                 <p className="line-clamp-1 break-all rounded-b-md pr-1 text-right text-xs font-semibold italic opacity-80">
@@ -50,9 +50,12 @@ const ImageCard = ({ image }: TImageCardProps) => {
             <button
                 aria-label="Delete the album."
                 onClick={handleDeleteImage}
-                className="group absolute right-2 top-2 rounded-md bg-white p-2 shadow"
+                className="group absolute right-2 top-2 rounded-md bg-white p-2 shadow dark:bg-zinc-900"
             >
-                <BsTrash size={20} className="fill-black group-hover:fill-red-500" />
+                <BsTrash
+                    size={20}
+                    className="fill-black group-hover:fill-red-500 dark:fill-white"
+                />
             </button>
         </div>
     );

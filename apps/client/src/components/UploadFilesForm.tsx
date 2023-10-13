@@ -52,21 +52,26 @@ export const UploadFilesForm = () => {
                         type="submit"
                         aria-label="Upload files."
                         disabled={uploadFiles.isLoading}
-                        className="flex w-[8rem] items-center justify-center gap-2 rounded-lg bg-white p-2 text-center text-lg font-medium shadow transition-colors duration-75 enabled:hover:bg-periwinkle-600 enabled:hover:text-periwinkle-50 enabled:focus:outline-periwinkle-600 disabled:opacity-50 dark:text-periwinkle-950 enabled:dark:hover:text-periwinkle-50 md:text-xl"
+                        className="flex h-10 w-[8rem] items-center justify-center gap-2 rounded-lg bg-white p-2 text-center text-lg font-medium shadow transition-colors duration-75 enabled:hover:bg-periwinkle-600 enabled:hover:text-periwinkle-50 enabled:focus:outline-periwinkle-600 disabled:opacity-50 dark:text-periwinkle-950 enabled:dark:hover:text-periwinkle-50 md:text-xl"
                     >
-                        <span className="text-sm">
-                            {uploadFiles.isLoading ? "Uploading..." : "Upload"}
+                        <span className="flex items-center gap-2 text-sm">
+                            {uploadFiles.isLoading ? (
+                                "Uploading..."
+                            ) : (
+                                <>
+                                    Upload <BsUpload size={24} />
+                                </>
+                            )}
                         </span>
-                        <BsUpload size={24} />
                     </button>
                 )}
             </fieldset>
             {files?.length > 0 && (
-                <div className="w-full max-w-sm rounded-lg bg-white p-2 font-medium dark:text-periwinkle-800">
+                <div className="w-full max-w-sm rounded-lg bg-white p-2 font-medium dark:bg-zinc-900 dark:text-periwinkle-100">
                     {[...files].map((file) => (
-                        <span className="line-clamp-1 break-all py-0.5 pl-1" key={file.name}>
+                        <p className="line-clamp-1 break-all py-0.5 pl-1" key={file.name}>
                             {file.name}
-                        </span>
+                        </p>
                     ))}
                 </div>
             )}

@@ -36,9 +36,12 @@ const AlbumCard = ({ album }: TAlbumCardProps) => {
             <button
                 aria-label="Delete the album."
                 onClick={handleDeleteAlbum}
-                className="group absolute right-2 top-2 rounded-md bg-white p-2 shadow"
+                className="group absolute right-2 top-2 rounded-md bg-white p-2 shadow dark:bg-zinc-900"
             >
-                <BsTrash size={20} className="fill-black group-hover:fill-red-500" />
+                <BsTrash
+                    size={20}
+                    className="fill-black group-hover:fill-red-500 dark:fill-white"
+                />
             </button>
         </li>
     );
