@@ -16,6 +16,8 @@ export const UserContextProvider = ({ children }: TUserContextProps) => {
             const data = await apiInstance.get<TUser>("/api/auth/user");
             return data.data;
         },
+        refetchOnReconnect: true,
+        refetchOnMount: true,
         refetchOnWindowFocus: true,
     });
 
