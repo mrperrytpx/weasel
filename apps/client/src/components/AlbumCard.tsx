@@ -38,7 +38,7 @@ const AlbumCard = ({ album }: TAlbumCardProps) => {
                 onClick={handleDeleteAlbum}
                 className="group absolute right-2 top-2 rounded-md bg-white p-2 shadow"
             >
-                <BsTrash size={20} className="fill-black group-hover:fill-red-600" />
+                <BsTrash size={20} className="fill-black group-hover:fill-red-500" />
             </button>
         </li>
     );

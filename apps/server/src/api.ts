@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { authRouter } from "./routers/authRouter";
-import { albumRouter } from "./routers/albumRouter";
 import { createUploadthingExpressHandler } from "uploadthing/express";
 import { uploadRouter } from "@weasel/filehost";
+import { albumRouter, authRouter, imageRouter } from "./routers";
 
 const api = Router();
 
 api.use("/auth", authRouter);
 api.use("/albums", albumRouter);
+api.use("/images", imageRouter);
 
 api.use(
     "/uploadthing",

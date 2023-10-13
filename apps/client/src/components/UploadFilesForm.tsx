@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TUploadFilesFormVals, filesFormSchema } from "@weasel/schemas";
 import { z } from "zod";
-
 import { useForm, SubmitHandler } from "react-hook-form";
 import { BsUpload } from "react-icons/bs";
 import { useParams, useNavigate } from "react-router-dom";
