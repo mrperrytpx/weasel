@@ -4,7 +4,7 @@ import { useTheme } from "../hooks/useTheme";
 import { BsMoonStars, BsSun } from "react-icons/bs";
 import { apiInstance } from "../utils/axiosClients";
 import { useQueryClient } from "@tanstack/react-query";
-import WeaselImage from "../assets/weasel.png";
+import WeaselImage from "../assets/weasel.webp";
 import { BiLogOut } from "react-icons/bi";
 import { useDeleteUserMutation } from "../hooks/useDeleteUserMutation";
 

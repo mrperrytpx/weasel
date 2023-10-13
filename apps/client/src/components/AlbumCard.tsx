@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import DefaultAlbum from "../assets/weasel.webp";
+import PlayfulWeaselImage from "../assets/playful-weasel.webp";
 import { TAlbum } from "@weasel/types";
 import { BsTrash } from "react-icons/bs";
 import { useDeleteAlbumMutation } from "../hooks/useDeleteAlbumMutation";
@@ -22,7 +22,7 @@ const AlbumCard = ({ album }: TAlbumCardProps) => {
                 <div className="flex aspect-square w-full items-center justify-center border-b-2 border-black">
                     <img
                         className="aspect-square w-full rounded-t-md object-cover"
-                        src={album.images[0]?.url ? album.images[0]?.url : DefaultAlbum}
+                        src={album.images[0]?.url ? album.images[0]?.url : PlayfulWeaselImage}
                         alt="Placeholder"
                     />
                 </div>
