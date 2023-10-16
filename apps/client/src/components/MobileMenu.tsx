@@ -63,7 +63,7 @@ export const MobileMenu = ({ isMenuExpanded, setIsMenuExpanded }: TMobileMenuPro
                             className="p-2 text-center text-2xl transition-all duration-75 hover:text-periwinkle-600 hover:underline focus:text-periwinkle-600 focus:underline"
                             to="/albums"
                         >
-                            Albums
+                            My Albums
                         </Link>
 
                         <button

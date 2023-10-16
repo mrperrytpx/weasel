@@ -67,9 +67,12 @@ export const UploadFilesForm = () => {
                 )}
             </fieldset>
             {files?.length > 0 && (
-                <div className="w-full max-w-sm rounded-lg bg-white p-2 font-medium dark:bg-zinc-900 dark:text-periwinkle-100">
+                <div className="w-full max-w-md space-y-2 rounded-lg bg-white p-2 font-medium dark:bg-zinc-900 dark:text-periwinkle-100">
                     {[...files].map((file) => (
-                        <p className="line-clamp-1 break-all py-0.5 pl-1" key={file.name}>
+                        <p
+                            key={file.name}
+                            className="line-clamp-1 break-all py-0.5 pl-1 hover:line-clamp-none"
+                        >
                             {file.name}
                         </p>
                     ))}

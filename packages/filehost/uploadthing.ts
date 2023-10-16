@@ -36,11 +36,11 @@ export const uploadRouter = {
                 },
             });
 
-            if (!user) throw new Error("Unauthorized");
+            if (!user) throw new Error("Unauthorized!");
 
             const userAlbum = user.albums.find((album) => album.id === albumId);
 
-            if (!userAlbum) throw new Error("Album exists!");
+            if (!userAlbum) throw new Error("Album doesn't exist!");
 
             return {
                 userId: user.id,
@@ -49,8 +49,26 @@ export const uploadRouter = {
         })
         .onUploadComplete(async ({ file, metadata }) => {
             const { key, name, size, url } = file;
+            console.log("filekey", key);
 
-            const newImage = await prisma.image.create({
+            const album = await prisma.album.findFirst({
+                where: {
+                    id: metadata.albumId,
+                    owner_id: metadata.userId,
+                },
+            });
+
+            if (!album && name) {
+                try {
+                    await utapi.deleteFiles(key);
+                    console.log("album got deleted before image got uploaded.");
+                } catch (e) {
+                    console.log(e);
+                }
+                return;
+            }
+
+            await prisma.image.create({
                 data: {
                     id: key,
                     name,
@@ -68,8 +86,6 @@ export const uploadRouter = {
                     },
                 },
             });
-
-            console.log(newImage);
         }),
 } satisfies FileRouter;
 
