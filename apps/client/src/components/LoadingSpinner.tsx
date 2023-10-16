@@ -1,8 +1,12 @@
+import { useTheme } from "../hooks/useTheme";
+
 type TLoadingSpinnerProps = {
     size?: number;
     color?: string;
 };
 export const LoadingSpinner = ({ size = 32, color }: TLoadingSpinnerProps) => {
+    const { darkmode } = useTheme();
+
     return (
         <div className="flex items-center justify-center">
             <div
@@ -11,7 +15,7 @@ export const LoadingSpinner = ({ size = 32, color }: TLoadingSpinnerProps) => {
                 style={{
                     width: size / 16 + "rem",
                     height: size / 16 + "rem",
-                    borderColor: color ? color : "black",
+                    borderColor: color ? color : darkmode ? "white" : "black",
                     borderRightColor: "transparent",
                 }}
             />

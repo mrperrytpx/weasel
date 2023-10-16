@@ -1,10 +1,10 @@
-import { SocialMediaLoginButton } from "../components/SocialMediaLoginButton";
+import { SocialMediaSignInButton } from "../components/SocialMediaSignInButton";
 import { useCallback } from "react";
 import PlayfulWeaselImage from "../assets/playful-weasel.webp";
 import { Link } from "react-router-dom";
 
-const LoginPage = () => {
-    const googleLogin = useCallback(() => {
+const SignInPage = () => {
+    const googleSignIn = useCallback(() => {
         window.open(`${import.meta.env.VITE_SERVER_URL}/api/auth/google`, "_self");
     }, []);
 
@@ -18,25 +18,15 @@ const LoginPage = () => {
                     />
                 </Link>
                 <div className="flex w-full flex-col gap-2">
-                    <SocialMediaLoginButton
+                    <SocialMediaSignInButton
                         src="https://authjs.dev/img/providers/google.svg"
                         provider="Google"
-                        signIn={googleLogin}
+                        signIn={googleSignIn}
                     />
-                    {/* <SocialMediaLoginButton
-                        src="https://authjs.dev/img/providers/google.svg"
-                        provider="Google"
-                        signIn={googleLogin}
-                    />
-                    <SocialMediaLoginButton
-                        src="https://authjs.dev/img/providers/google.svg"
-                        provider="Google"
-                        signIn={googleLogin}
-                    /> */}
                 </div>
             </div>
         </div>
     );
 };
 
-export default LoginPage;
+export default SignInPage;

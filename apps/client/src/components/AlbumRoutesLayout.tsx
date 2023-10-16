@@ -4,8 +4,8 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 const AlbumRoutesLayout = () => {
     return (
         <>
-            <div className="sticky top-0 z-50 border-b border-periwinkle-300 bg-white dark:border-zinc-600 dark:bg-zinc-950">
-                <div className="mx-auto flex max-w-screen-2xl items-center justify-between bg-white p-2 px-4 dark:bg-zinc-950">
+            <div className="sticky top-0 z-10 border-b border-periwinkle-300 bg-white dark:border-zinc-600 dark:bg-zinc-950">
+                <div className="max-w-responsive-screen-2xl mx-auto flex flex-wrap items-center justify-between bg-white p-2 px-4 dark:bg-zinc-950">
                     <Link
                         to="/albums"
                         className="py-2 text-xl hover:text-periwinkle-600 hover:underline dark:hover:text-white"

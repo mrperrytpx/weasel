@@ -26,7 +26,7 @@ const CreateAlbumPage = () => {
 
     return (
         <div className="p-4">
-            <div className="mx-auto mt-4 max-w-screen-sm md:mt-20">
+            <div className="max-w-responsive-screen-sm mx-auto mt-4 md:mt-20">
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                     <div>
                         <input

@@ -1,12 +1,16 @@
 type TProviders = "Google" | "Facebook";
 
-type TSocialMediaLoginButtonProps = {
+type TSocialMediaSignInButtonProps = {
     provider: TProviders;
     signIn: () => void;
     src: string;
 };
 
-export const SocialMediaLoginButton = ({ provider, signIn, src }: TSocialMediaLoginButtonProps) => {
+export const SocialMediaSignInButton = ({
+    provider,
+    signIn,
+    src,
+}: TSocialMediaSignInButtonProps) => {
     return (
         <button
             aria-label={`${provider} sign in.`}

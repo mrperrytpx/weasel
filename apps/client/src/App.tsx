@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import { useUser } from "./hooks/useUser";
-import LoginPage from "./pages/LoginPage";
+import SignInPage from "./pages/SignInPage";
 import AlbumsPage from "./pages/AlbumsPage";
 import AlbumPage from "./pages/AlbumPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -18,27 +18,27 @@ function App() {
             <Routes>
                 <Route index path="/" element={<HomePage />} />
                 <Route
-                    path="/login"
-                    element={user?.data?.id ? <Navigate to="/albums" /> : <LoginPage />}
+                    path="/sign-in"
+                    element={user?.data?.id ? <Navigate to="/albums" /> : <SignInPage />}
                 />
                 <Route
                     path="/profile"
-                    element={user?.data?.id ? <ProfilePage /> : <Navigate to="/login" />}
+                    element={user?.data?.id ? <ProfilePage /> : <Navigate to="/sign-in" />}
                 />
 
                 <Route
                     path="/albums/create"
-                    element={user?.data?.id ? <CreateAlbumPage /> : <Navigate to="/login" />}
+                    element={user?.data?.id ? <CreateAlbumPage /> : <Navigate to="/sign-in" />}
                 />
 
                 <Route path="/albums" element={<AlbumRoutesLayout />}>
                     <Route
                         index
-                        element={user?.data?.id ? <AlbumsPage /> : <Navigate to="/login" />}
+                        element={user?.data?.id ? <AlbumsPage /> : <Navigate to="/sign-in" />}
                     />
                     <Route
                         path=":albumId"
-                        element={user?.data?.id ? <AlbumPage /> : <Navigate to="/login" />}
+                        element={user?.data?.id ? <AlbumPage /> : <Navigate to="/sign-in" />}
                     />
                 </Route>
             </Routes>

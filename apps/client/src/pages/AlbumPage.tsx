@@ -24,7 +24,7 @@ const AlbumPage = () => {
     };
 
     return (
-        <div className="mx-auto flex w-full max-w-screen-2xl flex-1 flex-col">
+        <div className="max-w-responsive-screen-2xl mx-auto flex w-full flex-1 flex-col">
             <div className="flex flex-wrap items-center justify-between gap-1 border-b border-periwinkle-300 px-4 py-2 dark:border-zinc-600">
                 <span className="peer line-clamp-1 flex-1 break-all text-lg font-bold hover:line-clamp-none">
                     {album.data?.name}
