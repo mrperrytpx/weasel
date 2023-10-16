@@ -8,8 +8,10 @@ export type TNewAlbum = Album & {
     images: [];
 };
 
+export type TNewImage = Image & { isUploaded?: boolean };
+
 export type TFullAlbum = Album & {
-    images: Image[] | [];
+    images: TNewImage[] | [];
 };
 
 export type TUser = Pick<User, "id" | "image">;

@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiInstance } from "../utils/axiosClients";
 import { useUser } from "./useUser";
 import { TAlbum } from "@weasel/types";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type TDeleteAlbumInput = {
     albumId: string;
@@ -11,6 +11,7 @@ type TDeleteAlbumInput = {
 export const useDeleteAlbumMutation = () => {
     const user = useUser();
     const queryClient = useQueryClient();
+    const location = useLocation();
     const navigate = useNavigate();
 
     const deleteAlbum = async ({ albumId }: TDeleteAlbumInput) => {
@@ -40,7 +41,9 @@ export const useDeleteAlbumMutation = () => {
         },
         onSuccess: async (_data, vars) => {
             await queryClient.invalidateQueries(["albums", user?.data?.id]);
-            navigate("/albums");
+            if (location.pathname !== "/albums") {
+                navigate("/albums");
+            }
             queryClient.removeQueries(["album", vars.albumId]);
         },
     });

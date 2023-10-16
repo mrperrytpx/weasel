@@ -1,9 +1,10 @@
-import { Image } from "@weasel/types";
+import { TNewImage } from "@weasel/types";
 import { useDeleteImageMutation } from "../hooks/useDeleteImageMutation";
 import { BsTrash } from "react-icons/bs";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 type TImageCardProps = {
-    image: Image;
+    image: TNewImage;
 };
 
 export const ImageCard = ({ image }: TImageCardProps) => {
@@ -50,6 +51,12 @@ export const ImageCard = ({ image }: TImageCardProps) => {
                     className="fill-black group-hover:fill-red-500 dark:fill-white"
                 />
             </button>
+            {image.isUploaded === false && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/50">
+                    <LoadingSpinner color="white" size={56} />
+                    <p className="text-center text-white">Uploading...</p>
+                </div>
+            )}
         </div>
     );
 };
