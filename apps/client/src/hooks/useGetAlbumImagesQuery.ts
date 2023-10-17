@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { InfiniteData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiInstance } from "../utils/axiosClients";
 import { useUser } from "./useUser";
 import { TAlbum, TFullAlbum } from "@weasel/types";
@@ -17,18 +17,23 @@ export const useGetAlbumImagesQuery = (albumId: string) => {
         queryFn: async () => fetchImages(albumId),
         enabled: !!albumId,
         initialData: () => {
-            const allAlbums: TAlbum[] | undefined = queryClient.getQueryData([
+            const allAlbums: InfiniteData<TAlbum[]> | undefined = queryClient.getQueryData([
                 "albums",
                 user?.data?.id,
             ]);
 
             if (!allAlbums) return;
 
-            const album = allAlbums.find((album) => album.id === albumId);
+            const album = allAlbums.pages.find((page) =>
+                page.find((album) => album.id === albumId),
+            )?.[0];
 
             if (!album) return;
 
-            return { ...album, images: album.images.length ? [...album.images] : [] } satisfies TFullAlbum;
+            return {
+                ...album,
+                images: album.images.length ? [...album.images] : [],
+            } satisfies TFullAlbum;
         },
     });
 };

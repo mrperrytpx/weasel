@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreateAlbumMutation } from "../hooks/useCreateAlbumMutation";
-import { TCreateAlbumFormVals, albumNameSchema } from "@weasel/schemas";
 import { useNavigate } from "react-router-dom";
+import { TCreateAlbumFormVals, albumNameSchema } from "@weasel/schemas";
 
 const CreateAlbumPage = () => {
     const navigate = useNavigate();
@@ -28,22 +28,20 @@ const CreateAlbumPage = () => {
         <div className="p-4">
             <div className="mx-auto mt-4 max-w-responsive-screen-sm md:mt-20">
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-                    <div>
-                        <input
-                            aria-label="Album name."
-                            {...register("name")}
-                            className="w-full rounded-lg p-4 text-center text-lg font-semibold shadow focus:outline-periwinkle-600 dark:text-periwinkle-950 md:text-xl"
-                            placeholder="Album name..."
-                            type="text"
-                            maxLength={50}
-                            minLength={1}
-                        />
-                        {errors.name && (
-                            <span className="pl-1 text-xs font-semibold text-red-500">
-                                {errors.name.message}
-                            </span>
-                        )}
-                    </div>
+                    <input
+                        aria-label="Album name."
+                        {...register("name")}
+                        className="w-full rounded-lg p-4 text-center text-lg font-semibold shadow focus:outline-periwinkle-600 dark:text-periwinkle-950 md:text-xl"
+                        placeholder="Album name..."
+                        type="text"
+                        maxLength={50}
+                        minLength={1}
+                    />
+                    {errors.name && (
+                        <span className="pl-1 text-xs font-semibold text-red-500">
+                            {errors.name.message}
+                        </span>
+                    )}
 
                     <button
                         type="submit"

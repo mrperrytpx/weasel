@@ -8,6 +8,8 @@ const albumRouter = Router();
 albumRouter.get("/", async (req, res) => {
     if (!req.user?.id) return res.status(401).end("You must be logged in!");
 
+    const { offset } = req.query;
+
     const user = await prisma.user.findFirst({
         where: {
             id: req.user.id,
@@ -18,7 +20,10 @@ albumRouter.get("/", async (req, res) => {
                     images: {
                         take: 1,
                     },
+                    _count: true,
                 },
+                take: 8,
+                skip: offset ? +offset : 0,
             },
         },
     });
@@ -83,7 +88,12 @@ albumRouter.get("/:albumId", async (req, res) => {
             owner_id: req.user.id,
         },
         include: {
-            images: true,
+            images: {
+                take: 20,
+                orderBy: {
+                    created_at: "asc",
+                },
+            },
         },
     });
 

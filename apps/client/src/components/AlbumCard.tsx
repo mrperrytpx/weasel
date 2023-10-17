@@ -17,7 +17,7 @@ const AlbumCard = ({ album }: TAlbumCardProps) => {
     };
 
     return (
-        <li className="relative flex aspect-square w-full max-w-xs flex-col self-start rounded-md bg-white transition-all duration-75 hover:scale-[101%] hover:bg-zinc-200 dark:bg-zinc-700  dark:hover:bg-zinc-600">
+        <article className="relative flex aspect-square w-full max-w-xs flex-col self-start rounded-md bg-white transition-all duration-75 hover:scale-[101%] dark:bg-zinc-900">
             <Link to={`/albums/${album.id}`}>
                 <div className="flex aspect-square w-full items-center justify-center">
                     <img
@@ -26,8 +26,16 @@ const AlbumCard = ({ album }: TAlbumCardProps) => {
                         alt="Placeholder"
                     />
                 </div>
-                <div className="space-y-1 rounded-b-md p-2 text-black shadow-md shadow-periwinkle-200 dark:text-periwinkle-50 dark:shadow-zinc-800">
-                    <p className="break-word line-clamp-2 font-medium">{album.name}</p>
+                <div className="space-y-1 rounded-b-md border-t-2 border-periwinkle-50  p-2 text-black dark:border-zinc-950 dark:text-periwinkle-50 dark:shadow-zinc-800">
+                    <p title={album.name} className="break-word line-clamp-1 font-medium">
+                        {album.name}
+                    </p>
+                    <p className="text-sm font-medium">Images: {album._count?.images}</p>
+                    <p className="line-clamp-1 break-all rounded-b-md pr-1 text-right text-xs font-semibold italic opacity-80">
+                        {new Intl.DateTimeFormat("en-GB", {
+                            dateStyle: "long",
+                        }).format(new Date(album.created_at))}
+                    </p>
                 </div>
             </Link>
             <button
@@ -40,7 +48,7 @@ const AlbumCard = ({ album }: TAlbumCardProps) => {
                     className="fill-black group-hover:fill-red-500 dark:fill-white"
                 />
             </button>
-        </li>
+        </article>
     );
 };
 

@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiInstance } from "../utils/axiosClients";
 import { useUser } from "./useUser";
 import { TAlbum } from "@weasel/types";
@@ -23,15 +23,22 @@ export const useDeleteAlbumMutation = () => {
         onMutate: async (vars) => {
             await queryClient.cancelQueries(["albums", user?.data?.id]);
 
-            const previousAllAlbums = queryClient.getQueryData<TAlbum[]>([
+            const previousAllAlbums = queryClient.getQueryData<InfiniteData<TAlbum[]>>([
                 "albums",
                 user?.data?.id,
             ]);
 
             if (!previousAllAlbums) return;
 
-            queryClient.setQueryData<TAlbum[]>(["albums", user?.data?.id], () => {
-                return previousAllAlbums.filter((album) => album.id !== vars.albumId);
+            queryClient.setQueryData<InfiniteData<TAlbum[]>>(["albums", user?.data?.id], () => {
+                const newData = previousAllAlbums.pages.map((page) =>
+                    page.filter((album) => album.id !== vars.albumId),
+                );
+
+                return {
+                    pages: newData,
+                    pageParams: previousAllAlbums.pageParams,
+                };
             });
 
             return { previousAllAlbums };

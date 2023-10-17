@@ -54,7 +54,7 @@ export const useUploadFilesMutation = () => {
                     owner_id: vars.userId,
                     size: img.size,
                     url: URL.createObjectURL(img),
-                    isUploaded: false,
+                    isUploading: true,
                 } satisfies TNewImage;
             }) satisfies TNewImage[];
 
@@ -62,7 +62,7 @@ export const useUploadFilesMutation = () => {
                 return {
                     ...albumData,
                     images: albumData.images.length
-                        ? [...albumData.images, ...newImages]
+                        ? [...newImages, ...albumData.images]
                         : [...newImages],
                 };
             });
@@ -84,8 +84,8 @@ export const useUploadFilesMutation = () => {
                                 id: image.key,
                                 name: image.name,
                                 size: image.size,
-                                isUploaded: true,
-                            };
+                                isUploading: false,
+                            } satisfies TNewImage;
                         } else {
                             return img;
                         }
