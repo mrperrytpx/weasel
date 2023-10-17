@@ -36,6 +36,28 @@ albumRouter.get("/", async (req, res) => {
     res.status(200).json(user.albums);
 });
 
+albumRouter.get("/:albumId", async (req, res) => {
+    if (!req.user?.id) return res.status(401).end("You must be logged in!");
+
+    const { albumId } = req.params;
+
+    if (!albumId) return res.status(400).end("Provide an album ID!");
+
+    const album = await prisma.album.findFirst({
+        where: {
+            id: albumId,
+            owner_id: req.user.id,
+        },
+        include: {
+            images: true,
+        },
+    });
+
+    if (!album) return res.status(404).end("Album doesn't exist!");
+
+    return res.status(200).json(album);
+});
+
 albumRouter.post("/", async (req, res) => {
     if (!req.user?.id) return res.status(401).end("You must be logged in!");
 

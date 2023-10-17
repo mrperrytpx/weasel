@@ -7,21 +7,14 @@ import { BsTrash } from "react-icons/bs";
 import { useDeleteAlbumMutation } from "../hooks/useDeleteAlbumMutation";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { ImageCard } from "../components/ImageCard";
-import { InfiniteData, useQueryClient } from "@tanstack/react-query";
-import { TAlbum } from "@weasel/types";
-import { useUser } from "../hooks/useUser";
 import { Fragment } from "react";
+import { useGetAlbumQuery } from "../hooks/useGetAlbumQuery";
 
 const AlbumPage = () => {
     const params = useParams();
-    const queryClient = useQueryClient();
-    const user = useUser();
 
     const albumId = z.string().parse(params.albumId);
-
-    const album = queryClient
-        .getQueryData<InfiniteData<TAlbum[]>>(["albums", user?.data?.id])
-        ?.pages.find((page) => page.find((album) => album.id === albumId))?.[0];
+    const album = useGetAlbumQuery(albumId);
 
     const albumInfiniteImages = useGetAlbumImagesInfQuery(albumId);
 
@@ -32,13 +25,11 @@ const AlbumPage = () => {
         await deleteAlbum.mutateAsync({ albumId });
     };
 
-    if (!album) return;
-
     return (
         <div className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-col">
             <div className="flex flex-wrap items-center justify-between gap-1 border-b border-periwinkle-300 px-4 py-2 dark:border-zinc-600">
                 <span className="peer line-clamp-1 flex-1 break-all text-lg font-bold hover:line-clamp-none">
-                    {album.name}
+                    {album.data?.name}
                 </span>
                 <div className="flex items-center gap-2">
                     <button
@@ -58,7 +49,7 @@ const AlbumPage = () => {
                     <span className="text-lg peer-hover:self-start">
                         {new Intl.DateTimeFormat("en-GB", {
                             dateStyle: "long",
-                        }).format(new Date(album.created_at))}
+                        }).format(new Date(album.data!.created_at!))}
                     </span>
                 </div>
             </div>
