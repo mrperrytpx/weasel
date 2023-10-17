@@ -33,7 +33,7 @@ export const Navbar = () => {
 
     return (
         <header className="relative flex h-14 items-center border-b border-b-periwinkle-300 bg-white p-2 shadow-md shadow-periwinkle-100 dark:border-b-zinc-600 dark:bg-black dark:shadow-zinc-900">
-            <div className="max-w-responsive-screen-2xl mx-auto flex w-full items-center justify-between px-2">
+            <div className="mx-auto flex w-full max-w-responsive-screen-2xl items-center justify-between px-2">
                 <Link to="/">
                     <img
                         src={WeaselImage}
@@ -50,19 +50,19 @@ export const Navbar = () => {
                             {user?.data?.id && (
                                 <li className="hidden sm:inline">
                                     <Link
-                                        className="hidden font-extrabold uppercase sm:inline"
+                                        className="hidden text-lg font-medium hover:underline sm:inline"
                                         to="/albums"
                                     >
-                                        Albums
+                                        My Albums
                                     </Link>
                                 </li>
                             )}
                             {user?.data?.id ? (
-                                <li>
+                                <li className="group">
                                     <Link to="/profile">
                                         <img
                                             title="Go to profile"
-                                            className="aspect-square w-8 select-none rounded-full"
+                                            className="aspect-square w-9 select-none rounded-full border-2 border-white group-hover:border-periwinkle-600 dark:border-zinc-950 dark:group-hover:border-periwinkle-500"
                                             src={user?.data?.image as string}
                                             alt="Your profile image."
                                             referrerPolicy="no-referrer"
@@ -75,27 +75,40 @@ export const Navbar = () => {
                                 )
                             )}
                             {user?.data?.id && (
-                                <li className="hidden items-center justify-center sm:flex">
+                                <li className="group hidden items-center justify-center sm:flex">
                                     <button
                                         title="Logout"
                                         aria-label="Logout"
                                         className="p-2"
                                         onClick={logout}
                                     >
-                                        <BiLogOut size={28} />
+                                        <BiLogOut
+                                            className="group-hover:fill-periwinkle-600 dark:group-hover:fill-periwinkle-500"
+                                            size={28}
+                                        />
                                     </button>
                                 </li>
                             )}
                         </>
                     )}
-                    <li className="flex items-center justify-center">
+                    <li className="group flex items-center justify-center">
                         <button
                             title={darkmode ? "Swap to light mode." : "Swap to darkmode."}
                             aria-label="Toggle theme change."
                             className="p-2"
                             onClick={toggleTheme}
                         >
-                            {darkmode ? <BsSun size={24} /> : <BsMoonStars size={24} />}
+                            {darkmode ? (
+                                <BsSun
+                                    className="group-hover:fill-periwinkle-600 dark:group-hover:fill-periwinkle-500"
+                                    size={24}
+                                />
+                            ) : (
+                                <BsMoonStars
+                                    className="group-hover:fill-periwinkle-600 dark:group-hover:fill-periwinkle-500"
+                                    size={24}
+                                />
+                            )}
                         </button>
                     </li>
                     <li className="flex items-center justify-center sm:hidden">

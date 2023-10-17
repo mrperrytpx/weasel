@@ -26,7 +26,6 @@ model Album {
   owner       User      @relation(fields: [owner_id], references: [id], onDelete: Cascade)
   owner_id    String    @map("ownerId")
   name        String
-  description String
   images      Image[]   
 }
 

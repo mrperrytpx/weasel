@@ -12,7 +12,7 @@ const AlbumsPage = () => {
 
     return (
         <div className="flex flex-1 flex-col gap-2">
-            <div className="max-w-responsive-screen-2xl mx-auto flex w-full flex-1 flex-wrap justify-center gap-6 p-4 lg:justify-start lg:gap-12">
+            <div className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-wrap justify-center gap-6 p-4 lg:justify-start lg:gap-12">
                 {userAlbums.isLoading ? (
                     <div className="mx-auto mt-20 space-y-4 p-4">
                         <LoadingSpinner color={darkmode ? "white" : "#4666e5"} size={60} />

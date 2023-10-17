@@ -34,10 +34,25 @@ export const MobileMenu = ({ isMenuExpanded, setIsMenuExpanded }: TMobileMenuPro
             }
         }
 
+        const resizeWindow = () => {
+            const html = document.querySelector("html");
+
+            if (!html) return;
+            const widthInRem = window.innerWidth / parseFloat(getComputedStyle(html).fontSize);
+
+            if (widthInRem >= 40 && isMenuExpanded) {
+                document.body.style.overflow = "unset";
+                setIsMenuExpanded(false);
+            }
+        };
+
+        window.addEventListener("resize", resizeWindow);
+
         return () => {
             document.body.style.overflow = "unset";
+            window.removeEventListener("resize", resizeWindow);
         };
-    }, [isMenuExpanded]);
+    }, [isMenuExpanded, setIsMenuExpanded]);
 
     useEffect(() => {
         mobileRef.current = document.querySelector<HTMLDivElement>("#menu");
@@ -45,22 +60,22 @@ export const MobileMenu = ({ isMenuExpanded, setIsMenuExpanded }: TMobileMenuPro
     }, [setIsMenuExpanded]);
 
     return (
-        <div
+        <aside
             id="menu"
             ref={mobileRef}
-            className="absolute inset-0 top-14 z-50 flex h-[100svh] w-full flex-col items-center bg-periwinkle-50 px-4 py-8 dark:bg-zinc-950"
+            className="absolute inset-0 top-14 z-50 flex h-[100svh] w-full flex-col items-center bg-periwinkle-50 px-4 py-8 dark:bg-zinc-950 sm:hidden"
         >
             {user?.data?.id ? (
                 <>
                     <div className="flex h-full w-full flex-1 flex-col items-center justify-center gap-4">
                         <Link
-                            className="p-2 text-center text-2xl transition-all duration-75 hover:text-periwinkle-600 hover:underline focus:text-periwinkle-600 focus:underline"
+                            className="p-2 text-center text-2xl transition-all duration-75 hover:text-periwinkle-600 hover:underline focus:text-periwinkle-600 focus:underline dark:hover:text-periwinkle-400 dark:focus:text-periwinkle-400"
                             to="/profile"
                         >
                             Profile
                         </Link>
                         <Link
-                            className="p-2 text-center text-2xl transition-all duration-75 hover:text-periwinkle-600 hover:underline focus:text-periwinkle-600 focus:underline"
+                            className="p-2 text-center text-2xl transition-all duration-75 hover:text-periwinkle-600 hover:underline focus:text-periwinkle-600 focus:underline dark:hover:text-periwinkle-400 dark:focus:text-periwinkle-400"
                             to="/albums"
                         >
                             My Albums
@@ -68,7 +83,7 @@ export const MobileMenu = ({ isMenuExpanded, setIsMenuExpanded }: TMobileMenuPro
 
                         <button
                             onClick={logout}
-                            className="p-2 text-center text-2xl transition-all duration-75 hover:text-periwinkle-600 hover:underline focus:text-periwinkle-600 focus:underline"
+                            className="p-2 text-center text-2xl transition-all duration-75 hover:text-periwinkle-600 hover:underline focus:text-periwinkle-600 focus:underline dark:hover:text-periwinkle-400 dark:focus:text-periwinkle-400"
                         >
                             Sign Out
                         </button>
@@ -77,7 +92,7 @@ export const MobileMenu = ({ isMenuExpanded, setIsMenuExpanded }: TMobileMenuPro
             ) : (
                 <div className="flex h-full w-full flex-1 flex-col items-center justify-center gap-4">
                     <Link
-                        className="select-none p-2 text-center text-2xl transition-all duration-75 hover:text-periwinkle-600 hover:underline focus:text-periwinkle-600 focus:underline"
+                        className="p-2 text-center text-2xl transition-all duration-75 hover:text-periwinkle-600 hover:underline focus:text-periwinkle-600 focus:underline dark:hover:text-periwinkle-400 dark:focus:text-periwinkle-400"
                         to="/sign-in"
                     >
                         Sign In
@@ -91,9 +106,9 @@ export const MobileMenu = ({ isMenuExpanded, setIsMenuExpanded }: TMobileMenuPro
                 aria-label="Github"
                 className="group mt-auto select-none rounded-full "
             >
-                <VscGithub className="h-10 w-10 group-hover:scale-105 group-hover:fill-periwinkle-600 group-focus:scale-105 group-focus:fill-periwinkle-600" />
+                <VscGithub className="h-10 w-10 group-hover:scale-105 group-hover:fill-periwinkle-600 group-focus:scale-105 group-focus:fill-periwinkle-600 group-hover:dark:fill-periwinkle-400 dark:group-focus:fill-periwinkle-400" />
             </a>
             <div className="h-14" />
-        </div>
+        </aside>
     );
 };

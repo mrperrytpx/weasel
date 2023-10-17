@@ -55,7 +55,6 @@ albumRouter.post("/", async (req, res) => {
 
     const newAlbum = await prisma.album.create({
         data: {
-            description: data.description,
             name: data.name,
             owner: {
                 connect: {

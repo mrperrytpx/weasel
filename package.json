@@ -9,6 +9,7 @@
     ],
     "scripts": {
         "ptypes": "cd ./packages/db/ && npx prisma generate",
+        "migrate": "cd ./packages/db/ && npx prisma migrate dev",
         "build:db": "cd ./packages/db/ && npm run build",
         "build:filehost": "cd ./packages/filehost/ && npm run build",
         "build:schemas": "cd ./packages/schemas/ && npm run build",

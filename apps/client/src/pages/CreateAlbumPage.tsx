@@ -26,7 +26,7 @@ const CreateAlbumPage = () => {
 
     return (
         <div className="p-4">
-            <div className="max-w-responsive-screen-sm mx-auto mt-4 md:mt-20">
+            <div className="mx-auto mt-4 max-w-responsive-screen-sm md:mt-20">
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                     <div>
                         <input
@@ -44,21 +44,7 @@ const CreateAlbumPage = () => {
                             </span>
                         )}
                     </div>
-                    <div className="flex flex-col gap-1">
-                        <textarea
-                            aria-label="Album description."
-                            {...register("description")}
-                            className="min-h-[8rem] w-full rounded-lg p-4 font-semibold shadow focus:outline-periwinkle-600 dark:text-periwinkle-950 md:text-lg"
-                            placeholder="Describe your album..."
-                            maxLength={500}
-                            minLength={1}
-                        />
-                        {errors.description && (
-                            <span className="pl-1 text-xs font-semibold text-red-500">
-                                {errors.description.message}
-                            </span>
-                        )}
-                    </div>
+
                     <button
                         type="submit"
                         disabled={createAlbum.isLoading}
