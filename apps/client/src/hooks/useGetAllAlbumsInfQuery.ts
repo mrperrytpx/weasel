@@ -13,7 +13,7 @@ const fetchAlbums = async (pageParam: number) => {
 
 const ALBUM_OFFSET = 8;
 
-export const useGetAllAlbumsInfiniteQuery = () => {
+export const useGetAllAlbumsInfQuery = () => {
     const user = useUser();
 
     return useInfiniteQuery({

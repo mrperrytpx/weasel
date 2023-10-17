@@ -13,8 +13,8 @@ export const UserContextProvider = ({ children }: TUserContextProps) => {
     const userQuery = useQuery({
         queryKey: ["user"],
         queryFn: async () => {
-            const data = await apiInstance.get<TUser>("/api/auth/user");
-            return data.data;
+            const response = await apiInstance.get<TUser>("/api/auth/user");
+            return response.data;
         },
         refetchOnReconnect: true,
         refetchOnWindowFocus: true,

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useGetAlbumImagesQuery } from "../hooks/useGetAlbumImagesQuery";
+import { useGetAlbumImagesInfQuery } from "../hooks/useGetAlbumImagesInfQuery";
 import EmptyFolderImage from "../assets/empty-folder.webp";
 import { UploadFilesForm } from "../components/UploadFilesForm";
 import { z } from "zod";
@@ -7,12 +7,23 @@ import { BsTrash } from "react-icons/bs";
 import { useDeleteAlbumMutation } from "../hooks/useDeleteAlbumMutation";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { ImageCard } from "../components/ImageCard";
+import { InfiniteData, useQueryClient } from "@tanstack/react-query";
+import { TAlbum } from "@weasel/types";
+import { useUser } from "../hooks/useUser";
+import { Fragment } from "react";
 
 const AlbumPage = () => {
     const params = useParams();
+    const queryClient = useQueryClient();
+    const user = useUser();
 
     const albumId = z.string().parse(params.albumId);
-    const album = useGetAlbumImagesQuery(albumId);
+
+    const album = queryClient
+        .getQueryData<InfiniteData<TAlbum[]>>(["albums", user?.data?.id])
+        ?.pages.find((page) => page.find((album) => album.id === albumId))?.[0];
+
+    const albumInfiniteImages = useGetAlbumImagesInfQuery(albumId);
 
     const deleteAlbum = useDeleteAlbumMutation();
 
@@ -21,11 +32,13 @@ const AlbumPage = () => {
         await deleteAlbum.mutateAsync({ albumId });
     };
 
+    if (!album) return;
+
     return (
         <div className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-col">
             <div className="flex flex-wrap items-center justify-between gap-1 border-b border-periwinkle-300 px-4 py-2 dark:border-zinc-600">
                 <span className="peer line-clamp-1 flex-1 break-all text-lg font-bold hover:line-clamp-none">
-                    {album.data?.name}
+                    {album.name}
                 </span>
                 <div className="flex items-center gap-2">
                     <button
@@ -45,16 +58,22 @@ const AlbumPage = () => {
                     <span className="text-lg peer-hover:self-start">
                         {new Intl.DateTimeFormat("en-GB", {
                             dateStyle: "long",
-                        }).format(new Date(album.data!.created_at))}
+                        }).format(new Date(album.created_at))}
                     </span>
                 </div>
             </div>
 
-            {album.data?.images?.length ? (
+            {albumInfiniteImages.data?.pages.flat().length ? (
                 <div className="mx-auto mb-8 mt-4 w-full items-center gap-4 p-4 sm:columns-2 sm:gap-6 lg:columns-3 lg:gap-8 xl:columns-4">
                     <UploadFilesForm />
 
-                    {album.data?.images.map((image) => <ImageCard image={image} key={image.id} />)}
+                    {albumInfiniteImages.data?.pages.map((page, i) => (
+                        <Fragment key={i}>
+                            {page.map((image) => (
+                                <ImageCard image={image} key={image.id} />
+                            ))}
+                        </Fragment>
+                    ))}
                 </div>
             ) : (
                 <div className="mb-8 flex flex-col items-center justify-center gap-1 p-4">

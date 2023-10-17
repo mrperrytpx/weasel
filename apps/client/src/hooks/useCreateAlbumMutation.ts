@@ -9,11 +9,11 @@ export const useCreateAlbumMutation = () => {
     const user = useUser();
 
     const createAlbum = async ({ name }: TCreateAlbumFormVals) => {
-        const data = await apiInstance.post<TNewAlbum>("/api/albums", {
+        const response = await apiInstance.post<TNewAlbum>("/api/albums", {
             name,
         });
 
-        return data.data;
+        return response.data;
     };
 
     return useMutation(createAlbum, {
@@ -31,7 +31,10 @@ export const useCreateAlbumMutation = () => {
                     if (!oldData) {
                         return { pages: [[newAlbum]], pageParams: [0] };
                     } else {
-                        return { ...oldData, pages: [...oldData.pages, [newAlbum]] };
+                        const lastPage = oldData.pages[oldData.pages.length - 1];
+                        lastPage.push(newAlbum);
+
+                        return oldData;
                     }
                 },
             );

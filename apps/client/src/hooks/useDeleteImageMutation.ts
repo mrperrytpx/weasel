@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiInstance } from "../utils/axiosClients";
-import { TFullAlbum } from "@weasel/types";
+import { Image } from "@weasel/types";
 
 type TDeleteImageInput = {
     imageId: string;
@@ -16,24 +16,38 @@ export const useDeleteImageMutation = () => {
     };
 
     return useMutation(deleteImage, {
-        onMutate: async (vars) => {
-            await queryClient.cancelQueries(["album", vars.albumId]);
+        onMutate: async (input) => {
+            await queryClient.cancelQueries(["images", input.albumId]);
 
-            const previousAlbumData = queryClient.getQueryData<TFullAlbum>(["album", vars.albumId]);
+            const previousAlbumData = queryClient.getQueryData<InfiniteData<Image[]>>([
+                "images",
+                input.albumId,
+            ]);
 
-            if (!previousAlbumData?.images.length) return;
+            if (!previousAlbumData?.pages.flat().length) return;
 
-            queryClient.setQueryData<TFullAlbum>(["album", vars.albumId], () => {
-                return {
-                    ...previousAlbumData,
-                    images: previousAlbumData.images.filter((img) => img.id !== vars.imageId),
-                };
-            });
+            queryClient.setQueryData<InfiniteData<Image[]>>(
+                ["images", input.albumId],
+                (oldData) => {
+                    if (!oldData)
+                        return {
+                            pageParams: [0],
+                            pages: [[]],
+                        };
+
+                    return {
+                        ...oldData,
+                        pages: oldData.pages.map((page) =>
+                            page.filter((img) => img.id !== input.imageId),
+                        ),
+                    };
+                },
+            );
 
             return { previousAlbumData };
         },
-        onError: (_err, vars, context) => {
-            queryClient.setQueryData(["album", vars.albumId], context?.previousAlbumData);
+        onError: (_err, input, context) => {
+            queryClient.setQueryData(["images", input.albumId], context?.previousAlbumData);
         },
     });
 };

@@ -1,6 +1,6 @@
 import AlbumCard from "../components/AlbumCard";
 import WeaselOnAShelfImage from "../assets/weasel-shelf.webp";
-import { useGetAllAlbumsInfiniteQuery } from "../hooks/useGetAllAlbumsInfiniteQuery";
+import { useGetAllAlbumsInfQuery } from "../hooks/useGetAllAlbumsInfQuery";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { Link } from "react-router-dom";
@@ -9,7 +9,7 @@ import { Fragment, useEffect, useRef } from "react";
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 
 const AlbumsPage = () => {
-    const userAlbums = useGetAllAlbumsInfiniteQuery();
+    const userInfiniteAlbums = useGetAllAlbumsInfQuery();
     const { darkmode } = useTheme();
 
     const endRef = useRef<HTMLDivElement>(null);
@@ -17,25 +17,25 @@ const AlbumsPage = () => {
     const isIntersecting = useIntersectionObserver(endRef);
 
     useEffect(() => {
-        if (userAlbums.hasNextPage) {
+        if (userInfiniteAlbums.hasNextPage) {
             if (isIntersecting) {
-                userAlbums.fetchNextPage();
+                userInfiniteAlbums.fetchNextPage();
             }
         }
-    }, [isIntersecting, userAlbums]);
+    }, [isIntersecting, userInfiniteAlbums]);
 
     return (
         <div className="flex flex-1 flex-col gap-2">
-            <div className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-wrap justify-center gap-6 p-4 md:justify-start lg:gap-12">
-                {userAlbums.isLoading ? (
+            <div className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-wrap justify-center gap-6 p-4 lg:gap-16">
+                {userInfiniteAlbums.isLoading ? (
                     <div className="mx-auto mt-20 space-y-4 p-4">
                         <LoadingSpinner color={darkmode ? "white" : "#4666e5"} size={60} />
                         <p className="text-lg font-medium text-periwinkle-900 dark:text-white">
                             Loading albums...
                         </p>
                     </div>
-                ) : userAlbums.data?.pages.length ? (
-                    userAlbums.data.pages.map((page, i) => (
+                ) : userInfiniteAlbums.data?.pages.flat().length ? (
+                    userInfiniteAlbums.data.pages.map((page, i) => (
                         <Fragment key={i}>
                             {page.map((album) => (
                                 <AlbumCard key={album.id} album={album} />
