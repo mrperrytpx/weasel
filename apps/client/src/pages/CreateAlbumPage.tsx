@@ -25,7 +25,7 @@ const CreateAlbumPage = () => {
     };
 
     return (
-        <div className="p-4">
+        <main className="p-4">
             <div className="mx-auto mt-4 max-w-responsive-screen-sm md:mt-20">
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                     <input
@@ -52,7 +52,7 @@ const CreateAlbumPage = () => {
                     </button>
                 </form>
             </div>
-        </div>
+        </main>
     );
 };
 

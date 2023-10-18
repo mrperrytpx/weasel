@@ -9,7 +9,7 @@ const SignInPage = () => {
     }, []);
 
     return (
-        <div className="flex items-center justify-center">
+        <main className="flex items-center justify-center">
             <div className="mx-auto mt-4 flex w-full max-w-md flex-col items-center gap-4 p-8">
                 <Link className="aspect-square w-full max-w-sm" to="/">
                     <img
@@ -25,7 +25,7 @@ const SignInPage = () => {
                     />
                 </div>
             </div>
-        </div>
+        </main>
     );
 };
 

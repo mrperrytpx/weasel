@@ -25,8 +25,8 @@ const AlbumsPage = () => {
     }, [isIntersecting, userInfiniteAlbums]);
 
     return (
-        <div className="flex flex-1 flex-col gap-2">
-            <div className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-wrap justify-center gap-6 p-4 lg:gap-16">
+        <main className="flex flex-1 flex-col gap-2">
+            <div className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-wrap justify-center gap-6 p-4 md:justify-start lg:gap-16">
                 {userInfiniteAlbums.isLoading ? (
                     <div className="mx-auto mt-20 space-y-4 p-4">
                         <LoadingSpinner color={darkmode ? "white" : "#4666e5"} size={60} />
@@ -44,7 +44,7 @@ const AlbumsPage = () => {
                     ))
                 ) : (
                     <div className="mx-auto mb-8 w-full max-w-xs gap-1 p-4">
-                        <div className="mt-8 flex w-full flex-col items-center justify-center gap-2 lg:mt-16 ">
+                        <div className="mt-8 flex w-full flex-col items-center justify-center gap-2 lg:mt-16">
                             <div className="aspect-square w-full">
                                 <img
                                     src={WeaselOnAShelfImage}
@@ -63,7 +63,7 @@ const AlbumsPage = () => {
                 )}
             </div>
             <div ref={endRef} />
-        </div>
+        </main>
     );
 };
 

@@ -26,7 +26,7 @@ const AlbumPage = () => {
     };
 
     return (
-        <div className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-col">
+        <main className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-col">
             <div className="flex flex-wrap items-center justify-between gap-1 border-b border-periwinkle-300 px-4 py-2 dark:border-zinc-600">
                 <span className="peer line-clamp-1 flex-1 break-all text-lg font-bold hover:line-clamp-none">
                     {album.data?.name}
@@ -46,7 +46,7 @@ const AlbumPage = () => {
                             />
                         )}
                     </button>
-                    <span className="text-lg peer-hover:self-start">
+                    <span className="text-sm peer-hover:self-start">
                         {new Intl.DateTimeFormat("en-GB", {
                             dateStyle: "long",
                         }).format(new Date(album.data!.created_at!))}
@@ -80,7 +80,7 @@ const AlbumPage = () => {
                     <UploadFilesForm />
                 </div>
             )}
-        </div>
+        </main>
     );
 };
 

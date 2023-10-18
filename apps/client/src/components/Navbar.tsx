@@ -58,7 +58,7 @@ export const Navbar = () => {
                                 </li>
                             )}
                             {user?.data?.id ? (
-                                <li className="group">
+                                <li className="group hidden sm:inline">
                                     <Link to="/profile">
                                         <img
                                             title="Go to profile"
