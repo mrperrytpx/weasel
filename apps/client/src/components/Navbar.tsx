@@ -32,8 +32,8 @@ export const Navbar = () => {
     useEffect(() => setIsMenuExpanded(false), [location]);
 
     return (
-        <header className="relative flex h-14 items-center border-b border-b-periwinkle-300 bg-white p-2 shadow-md shadow-periwinkle-100 dark:border-b-zinc-600 dark:bg-black dark:shadow-zinc-900">
-            <div className="mx-auto flex w-full max-w-responsive-screen-2xl items-center justify-between px-2">
+        <header className="relative flex h-14 items-center border-b border-b-periwinkle-300 bg-white shadow-md shadow-periwinkle-100 dark:border-b-zinc-600 dark:bg-black dark:shadow-zinc-900">
+            <div className="mx-auto flex w-full max-w-responsive-screen-2xl items-center justify-between px-4 py-2">
                 <Link to="/">
                     <img
                         src={WeaselImage}

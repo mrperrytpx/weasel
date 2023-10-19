@@ -4,13 +4,11 @@ import { useGetAllAlbumsInfQuery } from "../hooks/useGetAllAlbumsInfQuery";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { useTheme } from "../hooks/useTheme";
 import { Fragment, useEffect, useRef } from "react";
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 
 const AlbumsPage = () => {
     const userInfiniteAlbums = useGetAllAlbumsInfQuery();
-    const { darkmode } = useTheme();
 
     const endRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +27,7 @@ const AlbumsPage = () => {
             <div className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-wrap justify-center gap-6 p-4 md:justify-start lg:gap-16">
                 {userInfiniteAlbums.isLoading ? (
                     <div className="mx-auto mt-20 space-y-4 p-4">
-                        <LoadingSpinner color={darkmode ? "white" : "#4666e5"} size={60} />
+                        <LoadingSpinner color="#637ff1" size={60} />
                         <p className="text-lg font-medium text-periwinkle-900 dark:text-white">
                             Loading albums...
                         </p>

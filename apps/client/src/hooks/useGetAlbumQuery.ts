@@ -22,6 +22,14 @@ export const useGetAlbumQuery = (albumId: string) => {
             };
         });
 
+        // queryClient.setQueryData<InfiniteData<TAlbum[]>>(["albums", user?.data?.id], (oldData) => {
+        //     if (!oldData) return {
+        //         pageParams: [0],
+        //         pages: [[response.data]]
+        //     }
+
+        // })
+
         return response.data;
     };
 

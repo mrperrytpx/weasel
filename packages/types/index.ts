@@ -19,4 +19,19 @@ export type TFullAlbum = Album & {
 
 export type TUser = Pick<User, "id" | "image">;
 
+export type TProfileStats = {
+    numOfAlbums: number;
+    numOfImages: number;
+    albumWithMostImages: {
+        name: string;
+        numOfImages: number;
+        id: string;
+    } | null;
+    largestImage: {
+        name: string;
+        size: number;
+        url: string;
+    } | null;
+};
+
 export { type User, type Image, type Album };

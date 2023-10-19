@@ -65,15 +65,17 @@ export const MobileMenu = ({ isMenuExpanded, setIsMenuExpanded }: TMobileMenuPro
             ref={mobileRef}
             className="absolute inset-0 top-14 z-50 flex h-[100svh] w-full flex-col items-center gap-4 bg-periwinkle-50 px-4 py-8 dark:bg-zinc-950 sm:hidden"
         >
-            <Link to="/profile">
-                <img
-                    title="Go to profile"
-                    className="aspect-square w-16 select-none rounded-full border-2 border-white group-hover:border-periwinkle-600 dark:border-zinc-950 dark:group-hover:border-periwinkle-500"
-                    src={user?.data?.image as string}
-                    alt="Your profile image."
-                    referrerPolicy="no-referrer"
-                />
-            </Link>
+            {user?.data?.id && (
+                <Link to="/profile">
+                    <img
+                        title="Go to profile"
+                        className="aspect-square w-16 select-none rounded-full border-2 border-white group-hover:border-periwinkle-600 dark:border-zinc-950 dark:group-hover:border-periwinkle-500"
+                        src={user?.data?.image as string}
+                        alt="Your profile image."
+                        referrerPolicy="no-referrer"
+                    />
+                </Link>
+            )}
             {user?.data?.id ? (
                 <>
                     <div className="flex h-full w-full flex-1 flex-col items-center justify-center gap-4">

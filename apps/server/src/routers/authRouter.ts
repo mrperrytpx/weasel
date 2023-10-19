@@ -25,16 +25,7 @@ authRouter.get("/user", (req, res) => {
     res.send(req.user);
 });
 
-authRouter.post("/logout", (req, res, next) => {
-    if (req.user) {
-        req.logout((err) => {
-            if (err) return next(err);
-        });
-        res.sendStatus(200);
-    }
-});
-
-authRouter.delete("/profile", async (req, res) => {
+authRouter.delete("/user", async (req, res) => {
     if (!req.user?.id) return res.status(403).end("Forbidden");
 
     const deletedUser = await prisma.user.delete({
@@ -50,6 +41,15 @@ authRouter.delete("/profile", async (req, res) => {
         utapi.deleteFiles(deletedUser.images.map((image) => image.id));
     }
     res.status(200).end();
+});
+
+authRouter.post("/logout", (req, res, next) => {
+    if (req.user) {
+        req.logout((err) => {
+            if (err) return next(err);
+        });
+        res.sendStatus(200);
+    }
 });
 
 export { authRouter };

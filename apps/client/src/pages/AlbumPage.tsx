@@ -25,9 +25,19 @@ const AlbumPage = () => {
         await deleteAlbum.mutateAsync({ albumId });
     };
 
+    if (album.isLoading)
+        return (
+            <div className="mx-auto mt-20 space-y-4 p-4">
+                <LoadingSpinner size={60} />
+                <p className="text-lg font-medium text-periwinkle-900 dark:text-white">
+                    Loading album...
+                </p>
+            </div>
+        );
+
     return (
         <main className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-col">
-            <div className="flex flex-wrap items-center justify-between gap-1 border-b border-periwinkle-300 px-4 py-2 dark:border-zinc-600">
+            <header className="flex flex-wrap items-center justify-between gap-1 border-b border-periwinkle-300 px-4 py-2 dark:border-zinc-600">
                 <span className="peer line-clamp-1 flex-1 break-all text-lg font-bold hover:line-clamp-none">
                     {album.data?.name}
                 </span>
@@ -38,7 +48,7 @@ const AlbumPage = () => {
                         className="group p-2 disabled:opacity-50"
                     >
                         {deleteAlbum.isLoading ? (
-                            <LoadingSpinner size={20} color="rgb(70 102 229)" />
+                            <LoadingSpinner size={20} color="#637ff1" />
                         ) : (
                             <BsTrash
                                 size={20}
@@ -52,7 +62,7 @@ const AlbumPage = () => {
                         }).format(new Date(album.data!.created_at!))}
                     </span>
                 </div>
-            </div>
+            </header>
 
             {albumInfiniteImages.data?.pages.flat().length ? (
                 <div className="mx-auto mb-8 mt-4 w-full items-center gap-4 p-4 sm:columns-2 sm:gap-6 lg:columns-3 lg:gap-8 xl:columns-4">

@@ -7,7 +7,7 @@ export const useDeleteUserMutation = () => {
     const navigate = useNavigate();
 
     const deleteUser = async () => {
-        const data = await apiInstance.delete("/api/auth/profile");
+        const data = await apiInstance.delete("/api/auth/user");
         return data;
     };
 
