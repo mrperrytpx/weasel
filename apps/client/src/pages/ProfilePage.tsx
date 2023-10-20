@@ -3,7 +3,7 @@ import DefaultProfileSvg from "../assets/default-profile.webp";
 import { useGetProfileStatsQuery } from "../hooks/useGetProfileStatsQuery";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Link } from "react-router-dom";
-import { roundBytesToMegabytes } from "../utils/roundBytesToMegabytes";
+import { roundBytesToKilobytes } from "../utils/roundBytesToKilobytes";
 import { useDeleteUserMutation } from "../hooks/useDeleteUserMutation";
 
 const STORAGE_PER_USER = 262_144_000;
@@ -18,13 +18,13 @@ const ProfilePage = () => {
     const largerProfileImageUrl = user.data?.image?.replace("s96-c", "s500-c");
 
     return (
-        <main className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-col gap-16 px-4 md:gap-32">
-            <article className="mx-auto mt-8 grid w-full max-w-responsive-screen-md gap-8 rounded-lg py-2 md:grid-cols-2 lg:mt-20">
+        <main className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-col gap-4 px-4 md:gap-32">
+            <article className="mx-auto mt-8 grid w-full max-w-responsive-screen-md gap-4 rounded-lg md:grid-cols-2 lg:mt-20">
                 <div className="grid grid-cols-1 place-content-start">
                     <img
                         src={largerProfileImageUrl || DefaultProfileSvg}
                         alt={"Your profile image."}
-                        className="aspect-square w-64 select-none place-self-center rounded-full shadow"
+                        className="aspect-square w-48 select-none place-self-center rounded-full shadow md:w-64"
                     />
                 </div>
                 {profileStats.isLoading ? (
@@ -34,25 +34,25 @@ const ProfilePage = () => {
                     </div>
                 ) : (
                     <div className="space-y-4">
-                        <div className="flex flex-wrap items-center gap-1">
+                        <div className="flex flex-wrap items-center justify-center gap-1 md:justify-normal">
                             <span className="text-lg font-medium">Storage used:</span>
                             <span>
                                 {profileStats.data?.storage} out of {STORAGE_PER_USER} bytes
                             </span>
                         </div>
-                        <div className="flex flex-wrap items-center gap-1">
+                        <div className="flex flex-wrap items-center justify-center gap-1 md:justify-normal">
                             <span className="text-lg font-medium">Number of albums:</span>
                             <span>{profileStats.data?.numOfAlbums}</span>
                         </div>
-                        <div className="flex flex-wrap items-center gap-1">
+                        <div className="flex flex-wrap items-center justify-center gap-1 md:justify-normal">
                             <span className="text-lg font-medium">Number of images:</span>
                             <span>{profileStats.data?.numOfImages}</span>
                         </div>
-                        <div className="flex flex-col items-start gap-1">
+                        <div className="flex flex-col items-center gap-1 md:items-start">
                             <p className="text-lg font-medium">Album with most images:</p>
                             <div>
                                 {profileStats.data?.albumWithMostImages ? (
-                                    <div>
+                                    <>
                                         <div className="space-x-2">
                                             <span className="text-lg font-medium">Name:</span>
                                             <Link
@@ -68,14 +68,14 @@ const ProfilePage = () => {
                                                 {profileStats.data?.albumWithMostImages.numOfImages}
                                             </span>
                                         </div>
-                                    </div>
+                                    </>
                                 ) : (
                                     <p>No albums with images!</p>
                                 )}
                             </div>
                         </div>
-                        <div className="flex flex-col items-start gap-1">
-                            <p className="text-lg font-medium">Largest iamge:</p>
+                        <div className="flex flex-col items-center gap-1 md:items-start">
+                            <p className="text-lg font-medium">Largest image:</p>
                             <div>
                                 {profileStats.data?.largestImage ? (
                                     <div>
@@ -91,10 +91,10 @@ const ProfilePage = () => {
                                         <div className="space-x-2">
                                             <span className="text-lg font-medium">Size:</span>
                                             <span>
-                                                {roundBytesToMegabytes(
+                                                {roundBytesToKilobytes(
                                                     profileStats.data?.largestImage.size,
                                                 )}{" "}
-                                                Megabytes
+                                                Kilobytes
                                             </span>
                                         </div>
                                     </div>
@@ -109,7 +109,7 @@ const ProfilePage = () => {
             <button
                 disabled={deleteUser.isLoading}
                 onClick={async () => await deleteUser.mutateAsync()}
-                className="disabled:opacity-500 transition-color w-full select-none self-center rounded-md bg-white p-2 font-medium shadow duration-75 enabled:hover:bg-red-500 enabled:hover:text-white enabled:focus:bg-red-500 enabled:focus:text-white disabled:opacity-50 dark:bg-zinc-800 sm:max-w-[12rem]"
+                className="disabled:opacity-500 transition-color mb-8 mt-auto w-full select-none self-center rounded-md bg-white p-2 font-medium shadow duration-75 enabled:hover:bg-red-500 enabled:hover:text-white enabled:focus:bg-red-500 enabled:focus:text-white disabled:opacity-50 dark:bg-zinc-800 sm:max-w-[12rem] md:mt-0"
             >
                 {deleteUser.isLoading ? "Goodbye..." : "DELETE ACCOUNT"}
             </button>
