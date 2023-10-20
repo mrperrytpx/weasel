@@ -41,6 +41,7 @@ export const UploadFilesForm = () => {
                         multiple
                         type="file"
                         id="file"
+                        accept="image/*"
                         aria-hidden
                         aria-label="File browser example"
                         className="h-full w-full opacity-0"

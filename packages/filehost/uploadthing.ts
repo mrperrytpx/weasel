@@ -10,6 +10,7 @@ const f = createUploadthing({
     errorFormatter: (err) => {
         return {
             message: err.message,
+            file: err.data?.message,
             zodError:
                 err.cause instanceof z.ZodError ? err.cause.flatten() : null,
         };
@@ -19,7 +20,7 @@ const f = createUploadthing({
 export const uploadRouter = {
     imageUploader: f({
         image: {
-            maxFileSize: "4MB",
+            maxFileSize: "16KB",
             maxFileCount: 4,
         },
     })
@@ -49,7 +50,6 @@ export const uploadRouter = {
         })
         .onUploadComplete(async ({ file, metadata }) => {
             const { key, name, size, url } = file;
-            console.log("filekey", key);
 
             const album = await prisma.album.findFirst({
                 where: {

@@ -2,6 +2,7 @@ import { TNewImage } from "@weasel/types";
 import { useDeleteImageMutation } from "../hooks/useDeleteImageMutation";
 import { BsTrash } from "react-icons/bs";
 import { LoadingSpinner } from "./LoadingSpinner";
+import { TbFaceIdError } from "react-icons/tb";
 
 type TImageCardProps = {
     image: TNewImage;
@@ -44,20 +45,29 @@ export const ImageCard = ({ image }: TImageCardProps) => {
                     }).format(new Date(image.created_at))}
                 </p>
             </figcaption>
-            <button
-                aria-label="Delete the album."
-                onClick={handleDeleteImage}
-                className="group absolute right-2 top-2 rounded-md bg-white p-2 shadow dark:bg-zinc-900"
-            >
-                <BsTrash
-                    size={20}
-                    className="fill-black group-hover:fill-red-500 dark:fill-white"
-                />
-            </button>
-            {image.isUploading && (
+            {(!Object.prototype.hasOwnProperty.call(image, "uploadStatus") ||
+                image.uploadStatus === "finished") && (
+                <button
+                    aria-label="Delete the album."
+                    onClick={handleDeleteImage}
+                    className="group absolute right-2 top-2 rounded-md bg-white p-2 shadow dark:bg-zinc-900"
+                >
+                    <BsTrash
+                        size={20}
+                        className="fill-black group-hover:fill-red-500 dark:fill-white"
+                    />
+                </button>
+            )}
+            {image.uploadStatus === "uploading" && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/50">
                     <LoadingSpinner color="white" size={56} />
                     <p className="text-center text-white">Uploading...</p>
+                </div>
+            )}
+            {image.uploadStatus === "failed" && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/80">
+                    <TbFaceIdError size={56} color="rgb(239 68 68)" />
+                    <p className="text-center text-white">Failed to upload</p>
                 </div>
             )}
         </figure>

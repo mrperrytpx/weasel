@@ -4,10 +4,12 @@ import { useGetProfileStatsQuery } from "../hooks/useGetProfileStatsQuery";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Link } from "react-router-dom";
 import { roundBytesToMegabytes } from "../utils/roundBytesToMegabytes";
+import { useDeleteUserMutation } from "../hooks/useDeleteUserMutation";
 
 const ProfilePage = () => {
     const user = useUser();
     const profileStats = useGetProfileStatsQuery();
+    const deleteUser = useDeleteUserMutation();
 
     if (!user?.data) return null;
 
@@ -96,8 +98,12 @@ const ProfilePage = () => {
                     </div>
                 )}
             </article>
-            <button className="disabled:opacity-500 transition-color w-full select-none self-center rounded-md bg-white p-2 shadow duration-75 enabled:hover:bg-red-500 enabled:hover:text-white enabled:focus:bg-red-500 enabled:focus:text-white dark:bg-zinc-800 sm:max-w-[12rem]">
-                DELETE ACCOUNT
+            <button
+                disabled={deleteUser.isLoading}
+                onClick={async () => await deleteUser.mutateAsync()}
+                className="disabled:opacity-500 transition-color w-full select-none self-center rounded-md bg-white p-2 font-medium shadow duration-75 enabled:hover:bg-red-500 enabled:hover:text-white enabled:focus:bg-red-500 enabled:focus:text-white disabled:opacity-50 dark:bg-zinc-800 sm:max-w-[12rem]"
+            >
+                {deleteUser.isLoading ? "Goodbye..." : "DELETE ACCOUNT"}
             </button>
         </main>
     );

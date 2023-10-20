@@ -47,7 +47,7 @@ export const Navbar = () => {
                         <LoadingSpinner size={28} />
                     ) : (
                         <>
-                            {user?.data?.id && (
+                            {user?.data?.id && location.pathname !== "/albums" && (
                                 <li className="hidden sm:inline">
                                     <Link
                                         className="hidden text-lg font-medium hover:underline sm:inline"
@@ -93,7 +93,7 @@ export const Navbar = () => {
                     )}
                     <li className="group flex items-center justify-center">
                         <button
-                            title={darkmode ? "Swap to light mode." : "Swap to darkmode."}
+                            title={darkmode ? "Swap to light mode." : "Swap to dark mode."}
                             aria-label="Toggle theme change."
                             className="p-2"
                             onClick={toggleTheme}

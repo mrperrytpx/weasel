@@ -4,6 +4,13 @@ import { TUploadFileMutation } from "@weasel/schemas";
 import { Image, TNewImage } from "@weasel/types";
 import { randomString } from "../utils/randomString";
 
+type TCUploadFileResponse = {
+    key: string;
+    name: string;
+    url: string;
+    size: number;
+};
+
 export const useUploadFilesMutation = () => {
     const queryClient = useQueryClient();
 
@@ -14,23 +21,31 @@ export const useUploadFilesMutation = () => {
             data.push(files[i]);
         }
 
-        const images = await uploadFiles(
-            {
-                files: data,
-                endpoint: "imageUploader",
-                input: {
-                    albumId,
-                    userId,
-                },
-            },
-            {
-                url: import.meta.env.VITE_SERVER_URL + "/api/uploadthing",
-            },
-        );
+        const uploadedFiles: TCUploadFileResponse[] = [];
 
-        console.log("res", images);
+        for (const file of data) {
+            try {
+                const images = await uploadFiles(
+                    {
+                        files: [file],
+                        endpoint: "imageUploader",
+                        input: {
+                            albumId,
+                            userId,
+                        },
+                    },
+                    {
+                        url: import.meta.env.VITE_SERVER_URL + "/api/uploadthing",
+                    },
+                );
 
-        return images;
+                uploadedFiles.push(...images);
+            } catch (err) {
+                console.log(JSON.stringify(err, null, 2));
+            }
+        }
+
+        return uploadedFiles;
     };
 
     return useMutation(uploadMutation, {
@@ -55,7 +70,7 @@ export const useUploadFilesMutation = () => {
                     owner_id: input.userId,
                     size: img.size,
                     url: URL.createObjectURL(img),
-                    isUploading: true,
+                    uploadStatus: "uploading",
                 } satisfies TNewImage;
             }) satisfies TNewImage[];
 
@@ -74,40 +89,54 @@ export const useUploadFilesMutation = () => {
                 },
             );
 
-            return { albumImages };
+            return { albumImages, newImages };
         },
-        onSuccess: async (data, input) => {
-            const albumImages = queryClient.getQueryData<InfiniteData<Image[]>>([
-                "images",
-                input.albumId,
-            ]);
-            if (!albumImages) return;
+        onSuccess: async (data, input, context) => {
+            if (!data) return;
 
-            queryClient.setQueryData<InfiniteData<Image[]>>(["images", input.albumId], () => {
-                return {
-                    ...albumImages,
-                    pages: albumImages.pages.map((page) =>
-                        page.map((img) => {
-                            const image = data.find((uploadedImg) => uploadedImg.name === img.name);
-                            if (image) {
-                                return {
-                                    ...img,
-                                    id: image.key,
-                                    name: image.name,
-                                    size: image.size,
-                                    isUploading: false,
-                                } satisfies TNewImage;
-                            } else {
-                                return img;
-                            }
-                        }),
-                    ),
-                };
-            });
+            if (!context?.newImages.length) return;
+
+            queryClient.setQueryData<InfiniteData<TNewImage[]>>(
+                ["images", input.albumId],
+                (oldData) => {
+                    if (!oldData) return;
+
+                    return {
+                        ...oldData,
+                        pages: oldData.pages.map((page) =>
+                            page.map((img) => {
+                                const image = data.find(
+                                    (uploadedImg) => uploadedImg.name === img.name,
+                                );
+
+                                if (image) {
+                                    return {
+                                        ...img,
+                                        id: image.key,
+                                        name: image.name,
+                                        size: image.size,
+                                        uploadStatus: "finished",
+                                    } satisfies TNewImage;
+                                } else {
+                                    return {
+                                        ...img,
+                                        uploadStatus:
+                                            img.uploadStatus === "uploading" ? "failed" : undefined,
+                                    } satisfies TNewImage;
+                                }
+                            }),
+                        ),
+                    };
+                },
+            );
         },
-        onError: async (_err, input, context) => {
-            queryClient.setQueryData(["album", input.albumId], context?.albumImages);
-            await queryClient.invalidateQueries(["album", input.albumId]);
+        onError: (_err, input, context) => {
+            queryClient.setQueryData(["images", input.albumId], context?.albumImages);
+        },
+        onSettled: (_data, _err, input) => {
+            setTimeout(async () => {
+                await queryClient.invalidateQueries(["images", input.albumId]);
+            }, 5000);
         },
     });
 };

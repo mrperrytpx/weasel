@@ -9,14 +9,12 @@ import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 
 const AlbumsPage = () => {
     const userInfiniteAlbums = useGetAllAlbumsInfQuery();
-
     const endRef = useRef<HTMLDivElement>(null);
-
     const isIntersecting = useIntersectionObserver(endRef);
 
     useEffect(() => {
         if (userInfiniteAlbums.hasNextPage) {
-            if (isIntersecting) {
+            if (isIntersecting && !userInfiniteAlbums.isFetchingNextPage) {
                 userInfiniteAlbums.fetchNextPage();
             }
         }

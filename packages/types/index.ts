@@ -11,7 +11,9 @@ export type TNewAlbum = Album & {
     images: [];
 };
 
-export type TNewImage = Image & { isUploading?: boolean };
+export type TNewImage = Image & {
+    uploadStatus?: "failed" | "finished" | "uploading";
+};
 
 export type TUser = Pick<User, "id" | "image">;
 
