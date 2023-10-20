@@ -45,7 +45,7 @@ export const UploadFilesForm = () => {
                         aria-label="File browser example"
                         className="h-full w-full opacity-0"
                     />
-                    <span className="absolute inset-0 z-10 h-10 w-full select-none rounded-md bg-white px-4 py-2 shadow after:inset-0 after:line-clamp-1 after:w-full after:break-all after:content-['Choose_files...'] hover:bg-gray-200 dark:text-zinc-950" />
+                    <span className="absolute inset-0 z-10 h-10 w-full select-none rounded-md bg-white px-4 py-2 shadow after:inset-0 after:line-clamp-1 after:w-full after:break-all after:content-['Choose_files...'] hover:bg-periwinkle-600 hover:text-white dark:bg-zinc-800 dark:text-white dark:hover:bg-periwinkle-600" />
                 </label>
                 {files?.length > 0 && (
                     <button

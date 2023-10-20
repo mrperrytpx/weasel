@@ -26,7 +26,7 @@ const AlbumCard = ({ album }: TAlbumCardProps) => {
                         alt="Placeholder"
                     />
                 </div>
-                <div className="space-y-1 rounded-b-md border-t-2 border-periwinkle-50  p-2 text-black dark:border-zinc-950 dark:text-periwinkle-50 dark:shadow-zinc-800">
+                <div className="space-y-1 rounded-b-md border-t-2 border-periwinkle-50 p-2 text-black dark:border-zinc-950 dark:text-periwinkle-50 dark:shadow-zinc-800">
                     <p title={album.name} className="break-word line-clamp-1 font-medium">
                         {album.name}
                     </p>
@@ -41,7 +41,7 @@ const AlbumCard = ({ album }: TAlbumCardProps) => {
             <button
                 aria-label="Delete the album."
                 onClick={handleDeleteAlbum}
-                className="group absolute right-2 top-2 rounded-md bg-white p-2 shadow dark:bg-zinc-900"
+                className="group absolute right-2 top-2 rounded-md bg-white p-2 shadow dark:bg-zinc-800"
             >
                 <BsTrash
                     size={20}

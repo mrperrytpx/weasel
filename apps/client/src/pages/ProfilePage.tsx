@@ -46,7 +46,7 @@ const ProfilePage = () => {
                                         <div className="space-x-2">
                                             <span className="text-lg font-medium">Name:</span>
                                             <Link
-                                                className="hover:underline"
+                                                className="hover:text-periwinkle-600 hover:underline"
                                                 to={`/albums/${profileStats.data?.albumWithMostImages.id}`}
                                             >
                                                 {profileStats.data?.albumWithMostImages.name}
@@ -60,7 +60,7 @@ const ProfilePage = () => {
                                         </div>
                                     </div>
                                 ) : (
-                                    <p>No albums!</p>
+                                    <p>No albums with images!</p>
                                 )}
                             </div>
                         </div>
@@ -72,7 +72,7 @@ const ProfilePage = () => {
                                         <div className="space-x-2">
                                             <span className="text-lg font-medium">Name:</span>
                                             <a
-                                                className="underline"
+                                                className="underline hover:text-periwinkle-600"
                                                 href={profileStats.data?.largestImage.url}
                                             >
                                                 {profileStats.data?.largestImage.name}
@@ -83,7 +83,8 @@ const ProfilePage = () => {
                                             <span>
                                                 {roundBytesToMegabytes(
                                                     profileStats.data?.largestImage.size,
-                                                )}
+                                                )}{" "}
+                                                Megabytes
                                             </span>
                                         </div>
                                     </div>
@@ -95,7 +96,7 @@ const ProfilePage = () => {
                     </div>
                 )}
             </article>
-            <button className="disabled:opacity-500 transition-color w-full select-none self-center rounded-md bg-white p-2  shadow duration-75 enabled:hover:bg-red-500 enabled:hover:text-white enabled:focus:bg-red-500 enabled:focus:text-white dark:bg-zinc-900 sm:max-w-[12rem]">
+            <button className="disabled:opacity-500 transition-color w-full select-none self-center rounded-md bg-white p-2 shadow duration-75 enabled:hover:bg-red-500 enabled:hover:text-white enabled:focus:bg-red-500 enabled:focus:text-white dark:bg-zinc-800 sm:max-w-[12rem]">
                 DELETE ACCOUNT
             </button>
         </main>
