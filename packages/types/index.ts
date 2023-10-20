@@ -30,6 +30,7 @@ export type TProfileStats = {
         size: number;
         url: string;
     } | null;
+    storage: number;
 };
 
 export { type User, type Image, type Album };

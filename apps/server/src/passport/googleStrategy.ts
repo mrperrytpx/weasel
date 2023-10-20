@@ -1,9 +1,6 @@
 import { Profile, Strategy } from "passport-google-oauth20";
 import passport from "passport";
 import { prisma } from "@weasel/db";
-import { User } from "@weasel/types";
-
-export type TUser = Pick<User, "id" | "image">;
 
 const googlePassport = () =>
     passport.use(

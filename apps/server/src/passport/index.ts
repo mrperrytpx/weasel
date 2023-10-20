@@ -1,6 +1,7 @@
 import passport from "passport";
-import { TUser, googlePassport } from "./googleStrategy";
+import { googlePassport } from "./googleStrategy";
 import { prisma } from "@weasel/db";
+import { TUser } from "@weasel/types";
 
 declare global {
     namespace Express {

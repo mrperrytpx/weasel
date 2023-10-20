@@ -20,6 +20,9 @@ export type TUploadFileMutation = TUploadFilesFormVals & TUploadFilesInput;
 export const uploadInputSchema = z.object({
     albumId: z.string().min(1, "Please provide an album ID!"),
     userId: z.string().min(1, "Please provide a user ID!"),
+    fileSize: z
+        .number()
+        .min(1, "How are you even uploading files without a sizu???"),
 });
 
 export type TUploadFilesInput = z.infer<typeof uploadInputSchema>;

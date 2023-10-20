@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { roundBytesToMegabytes } from "../utils/roundBytesToMegabytes";
 import { useDeleteUserMutation } from "../hooks/useDeleteUserMutation";
 
+const STORAGE_PER_USER = 262_144_000;
+
 const ProfilePage = () => {
     const user = useUser();
     const profileStats = useGetProfileStatsQuery();
@@ -32,6 +34,12 @@ const ProfilePage = () => {
                     </div>
                 ) : (
                     <div className="space-y-4">
+                        <div className="flex flex-wrap items-center gap-1">
+                            <span className="text-lg font-medium">Storage used:</span>
+                            <span>
+                                {profileStats.data?.storage} out of {STORAGE_PER_USER} bytes
+                            </span>
+                        </div>
                         <div className="flex flex-wrap items-center gap-1">
                             <span className="text-lg font-medium">Number of albums:</span>
                             <span>{profileStats.data?.numOfAlbums}</span>

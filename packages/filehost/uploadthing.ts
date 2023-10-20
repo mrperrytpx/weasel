@@ -6,6 +6,8 @@ import { UTApi } from "uploadthing/server";
 
 export const utapi = new UTApi();
 
+export const STORAGE_PER_USER = 262144000;
+
 const f = createUploadthing({
     errorFormatter: (err) => {
         return {
@@ -20,13 +22,13 @@ const f = createUploadthing({
 export const uploadRouter = {
     imageUploader: f({
         image: {
-            maxFileSize: "16KB",
-            maxFileCount: 4,
+            maxFileSize: "4MB",
+            maxFileCount: 10,
         },
     })
         .input(uploadInputSchema)
         .middleware(async ({ input }) => {
-            const { albumId, userId } = input;
+            const { albumId, userId, fileSize } = input;
 
             const user = await prisma.user.findFirst({
                 where: {
@@ -34,10 +36,19 @@ export const uploadRouter = {
                 },
                 include: {
                     albums: true,
+                    images: true,
                 },
             });
 
             if (!user) throw new Error("Unauthorized!");
+
+            if (
+                user.images.reduce((prev, curr) => curr.size + prev, 0) +
+                    fileSize >
+                STORAGE_PER_USER
+            ) {
+                throw new Error("Storage limit reached!");
+            }
 
             const userAlbum = user.albums.find((album) => album.id === albumId);
 
@@ -46,10 +57,15 @@ export const uploadRouter = {
             return {
                 userId: user.id,
                 albumId,
+                fileSize: input.fileSize,
             };
         })
         .onUploadComplete(async ({ file, metadata }) => {
             const { key, name, size, url } = file;
+
+            if (size !== metadata.fileSize) {
+                utapi.deleteFiles(name);
+            }
 
             const album = await prisma.album.findFirst({
                 where: {

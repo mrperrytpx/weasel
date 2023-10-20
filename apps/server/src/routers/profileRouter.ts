@@ -60,6 +60,7 @@ profileRouter.get("/", async (req, res) => {
     const profileStats = {
         numOfAlbums: data.albums.length,
         numOfImages: data.images.length,
+        storage: data.images.reduce((prev, curr) => curr.size + prev, 0),
         albumWithMostImages: albumWithMostImages
             ? {
                   name: albumWithMostImages.name,

@@ -14,7 +14,11 @@ type TCUploadFileResponse = {
 export const useUploadFilesMutation = () => {
     const queryClient = useQueryClient();
 
-    const uploadMutation = async ({ files, albumId, userId }: TUploadFileMutation) => {
+    const uploadMutation = async ({
+        files,
+        albumId,
+        userId,
+    }: Omit<TUploadFileMutation, "fileSize">) => {
         const data: File[] = [];
 
         for (let i = 0; i < files.length; i++) {
@@ -32,6 +36,7 @@ export const useUploadFilesMutation = () => {
                         input: {
                             albumId,
                             userId,
+                            fileSize: file.size,
                         },
                     },
                     {
