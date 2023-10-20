@@ -3,7 +3,7 @@ import DefaultProfileSvg from "../assets/default-profile.webp";
 import { useGetProfileStatsQuery } from "../hooks/useGetProfileStatsQuery";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Link } from "react-router-dom";
-import { roundBytesToMegabytes } from "../utils/roundBytestoMegabytes";
+import { roundBytesToMegabytes } from "../utils/roundBytesToMegabytes";
 
 const ProfilePage = () => {
     const user = useUser();
