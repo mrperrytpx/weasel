@@ -41,7 +41,14 @@ function App() {
                     }
                 />
 
-                <Route path="/albums" element={<AlbumRoutesLayout />}>
+                <Route
+                    path="/albums"
+                    element={
+                        <ProtectedRoute>
+                            <AlbumRoutesLayout />
+                        </ProtectedRoute>
+                    }
+                >
                     <Route
                         index
                         element={
