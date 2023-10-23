@@ -11,6 +11,8 @@ type TCUploadFileResponse = {
     size: number;
 };
 
+const IMAGE_MAX_SIZE = 4_194_304;
+
 export const useUploadFilesMutation = () => {
     const queryClient = useQueryClient();
 
@@ -25,30 +27,38 @@ export const useUploadFilesMutation = () => {
             data.push(files[i]);
         }
 
-        const uploadedFiles: TCUploadFileResponse[] = [];
+        const uploadedFiles: TCUploadFileResponse[] = (
+            await Promise.allSettled(
+                data.map(async (file) => {
+                    if (file.size >= IMAGE_MAX_SIZE) {
+                        return {
+                            status: "rejected",
+                            reason: "File size too big",
+                        } satisfies PromiseRejectedResult;
+                    }
 
-        for (const file of data) {
-            try {
-                const images = await uploadFiles(
-                    {
-                        files: [file],
-                        endpoint: "imageUploader",
-                        input: {
-                            albumId,
-                            userId,
-                            fileSize: file.size,
+                    const res = await uploadFiles(
+                        {
+                            files: [file],
+                            endpoint: "imageUploader",
+                            input: {
+                                albumId,
+                                userId,
+                                fileSize: file.size,
+                            },
                         },
-                    },
-                    {
-                        url: import.meta.env.VITE_SERVER_URL + "/api/uploadthing",
-                    },
-                );
+                        {
+                            url: import.meta.env.VITE_SERVER_URL + "/api/uploadthing",
+                        },
+                    );
 
-                uploadedFiles.push(...images);
-            } catch (err) {
-                console.log(JSON.stringify(err, null, 2));
-            }
-        }
+                    return res.flat();
+                }),
+            )
+        )
+            .filter((x) => x.status === "fulfilled")
+            .map((x) => (x as PromiseFulfilledResult<TCUploadFileResponse[]>).value)
+            .flat();
 
         return uploadedFiles;
     };
