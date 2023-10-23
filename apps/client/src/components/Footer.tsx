@@ -6,7 +6,7 @@ export const Footer = () => {
         <footer className="w-full border-t border-t-periwinkle-300 bg-white dark:border-t-zinc-600 dark:bg-zinc-900">
             <div className="mx-auto flex max-w-screen-2xl flex-col items-center justify-center gap-4 px-4 py-16">
                 <div className="flex w-full flex-col items-center gap-4 md:flex-row md:justify-between">
-                    <div className="text-glacier-50 flex flex-col items-center justify-center gap-4 md:flex-row md:gap-6">
+                    <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:gap-6">
                         <Link
                             className="rounded-md text-center transition-all duration-75 hover:text-periwinkle-600 hover:underline dark:hover:text-periwinkle-400 sm:inline-block"
                             to="/tos"

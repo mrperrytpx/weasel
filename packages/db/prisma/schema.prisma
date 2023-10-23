@@ -18,6 +18,7 @@ model User {
   image                 String?
   albums                Album[]
   images                Image[]
+  isPremium             Boolean     @default(false)
 }
 
 model Album {
