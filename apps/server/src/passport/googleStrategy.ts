@@ -18,6 +18,7 @@ const googlePassport = () =>
                     select: {
                         id: true,
                         image: true,
+                        isPremium: true,
                     },
                 });
 
@@ -33,6 +34,7 @@ const googlePassport = () =>
                     const newUserData = {
                         id: newUser.id,
                         image: newUser.image,
+                        isPremium: newUser.isPremium,
                     };
 
                     return cb(null, newUserData);

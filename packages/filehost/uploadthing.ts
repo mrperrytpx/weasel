@@ -6,7 +6,7 @@ import { UTApi } from "uploadthing/server";
 
 export const utapi = new UTApi();
 
-export const STORAGE_PER_USER = 262144000;
+const STORAGE_PER_USER = 262144000;
 
 const f = createUploadthing({
     errorFormatter: (err) => {
@@ -42,12 +42,18 @@ export const uploadRouter = {
 
             if (!user) throw new Error("Unauthorized!");
 
+            const totalUserStorage = user.images.reduce(
+                (prev, curr) => curr.size + prev,
+                0
+            );
+
             if (
-                user.images.reduce((prev, curr) => curr.size + prev, 0) +
-                    fileSize >
-                STORAGE_PER_USER
+                !user.isPremium &&
+                totalUserStorage + fileSize > STORAGE_PER_USER
             ) {
-                throw new Error("Storage limit reached!");
+                throw new Error(
+                    "Storage limit reached! Upgrade to premium for more storage!"
+                );
             }
 
             const userAlbum = user.albums.find((album) => album.id === albumId);

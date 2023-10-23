@@ -15,7 +15,7 @@ export type TNewImage = Image & {
     uploadStatus?: "failed" | "finished" | "uploading";
 };
 
-export type TUser = Pick<User, "id" | "image">;
+export type TUser = Pick<User, "id" | "image" | "isPremium">;
 
 export type TProfileStats = {
     numOfAlbums: number;

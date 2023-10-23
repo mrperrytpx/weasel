@@ -5,6 +5,8 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Link } from "react-router-dom";
 import { roundBytesToKilobytes } from "../utils/roundBytesToKilobytes";
 import { useDeleteUserMutation } from "../hooks/useDeleteUserMutation";
+// import { useTogglePremiumMutation } from "../hooks/useTogglePremiumMutation";
+import { useCompleteOrderMutation } from "../hooks/useCompleteOrderMutation";
 
 const STORAGE_PER_USER = 262_144_000;
 
@@ -12,6 +14,8 @@ const ProfilePage = () => {
     const user = useUser();
     const profileStats = useGetProfileStatsQuery();
     const deleteUser = useDeleteUserMutation();
+    // const togglePremium = useTogglePremiumMutation();
+    const completeOrder = useCompleteOrderMutation();
 
     if (!user?.data) return null;
 
@@ -34,12 +38,25 @@ const ProfilePage = () => {
                     </div>
                 ) : (
                     <div className="space-y-4">
+                        <button
+                            disabled={completeOrder.isLoading}
+                            onClick={async () => completeOrder.mutateAsync()}
+                            className="rounded-md bg-white px-4 py-2 shadow"
+                        >
+                            {completeOrder.isLoading ? "Changing plans..." : "Toggle premium"}
+                        </button>
+                        <div className="flex flex-wrap items-center justify-center gap-1 md:justify-normal">
+                            <span className="text-lg font-medium">Current plan:</span>
+                            <span>{user.data.isPremium ? "Premium plan" : "Free plan"}</span>
+                        </div>
                         <div className="flex flex-wrap items-center justify-center gap-1 md:justify-normal">
                             <span className="text-lg font-medium">Storage used:</span>
                             <span>
-                                {profileStats.data?.storage} out of {STORAGE_PER_USER} bytes
+                                {profileStats.data?.storage} bytes
+                                {!user.data.isPremium && ` out of ${STORAGE_PER_USER} bytes`}
                             </span>
                         </div>
+
                         <div className="flex flex-wrap items-center justify-center gap-1 md:justify-normal">
                             <span className="text-lg font-medium">Number of albums:</span>
                             <span>{profileStats.data?.numOfAlbums}</span>

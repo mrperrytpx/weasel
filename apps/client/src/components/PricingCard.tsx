@@ -1,4 +1,5 @@
 import { FcCheckmark } from "react-icons/fc";
+import { Link } from "react-router-dom";
 
 type TPricingCardProps = {
     premium?: boolean;
@@ -12,7 +13,7 @@ export const PricingCard = ({ premium }: TPricingCardProps) => {
             }`}
         >
             <h3 className="text-2xl font-semibold">{premium ? "Premium Plan" : "Free Plan"}</h3>
-            <p className="text-xl">{premium ? "$10" : "$0"}</p>
+            <p className="text-xl">{premium ? "€10" : "€0"} / month</p>
             <ul className="space-y-2">
                 <li className="flex items-center gap-4">
                     <FcCheckmark size={20} /> <span>Unlimited Albums</span>
@@ -28,9 +29,12 @@ export const PricingCard = ({ premium }: TPricingCardProps) => {
 
                 <li className="flex items-center gap-4"></li>
             </ul>
-            <button className="transition-color inline-block w-full rounded-full bg-periwinkle-600 px-4 py-2 text-white shadow duration-75 hover:bg-periwinkle-700 hover:text-white ">
+            <Link
+                to="/profile"
+                className="transition-color mt-auto inline-block w-full rounded-full bg-periwinkle-600 px-4 py-2 text-white shadow duration-75 enabled:hover:bg-periwinkle-700 enabled:hover:text-white disabled:opacity-50 "
+            >
                 Get Started
-            </button>
+            </Link>
         </article>
     );
 };
