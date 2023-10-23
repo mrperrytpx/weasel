@@ -21,6 +21,7 @@
         "@types/passport-google-oauth20": "^2.0.12",
         "@weasel/types": "*",
         "prisma": "^5.4.0",
+        "stripe-event-types": "^3.0.0",
         "ts-node": "^10.9.1",
         "ts-node-dev": "^2.0.0",
         "typescript": "^5.2.2"
@@ -34,8 +35,10 @@
         "express": "^4.18.2",
         "express-session": "^1.17.3",
         "helmet": "^7.0.0",
+        "micro": "^10.0.1",
         "passport": "^0.6.0",
         "passport-google-oauth20": "^2.0.0",
+        "stripe": "^14.1.0",
         "uploadthing": "^5.7.1"
     }
 }

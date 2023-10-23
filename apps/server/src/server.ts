@@ -18,8 +18,8 @@ app.use(helmet());
 app.use(cors({ origin: process.env.WEBSITE_URL, credentials: true }));
 app.use((req, res, next) => {
     const uploadHook = req.header("uploadthing-hook");
-
-    if (uploadHook === "callback") {
+    const stripe = req.headers["stripe-signature"];
+    if (uploadHook === "callback" || stripe) {
         next();
     } else {
         express.json()(req, res, next);
