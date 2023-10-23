@@ -9,6 +9,9 @@ import AlbumRoutesLayout from "./components/AlbumRoutesLayout";
 import { ProtectedRoute } from "./utils/ProtectedRoute";
 import { Navbar } from "./components/Navbar";
 import { useUser } from "./hooks/useUser";
+import TosPage from "./pages/TosPage";
+import ContactPage from "./pages/ContactPage";
+import PrivacyPage from "./pages/PrivacyPage";
 
 function App() {
     const user = useUser();
@@ -19,6 +22,9 @@ function App() {
 
             <Routes>
                 <Route index path="/" element={<HomePage />} />
+                <Route path="/tos" element={<TosPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/privacy" element={<PrivacyPage />} />
                 <Route
                     path="/sign-in"
                     element={user?.data?.id ? <Navigate to="/albums" /> : <SignInPage />}
