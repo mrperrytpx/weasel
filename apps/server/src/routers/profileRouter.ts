@@ -88,9 +88,9 @@ profileRouter.patch("/", async (req, res) => {
             id: req.user.id,
         },
         data: {
-            isPremium: !req.user.isPremium,
+            isSubscriptionActive: !req.user.isSubscriptionActive,
         },
-        select: { id: true, image: true, isPremium: true },
+        select: { id: true, image: true, isSubscriptionActive: true },
     });
 
     return res.status(200).json(user);

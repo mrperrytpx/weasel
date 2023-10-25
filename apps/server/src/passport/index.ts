@@ -30,7 +30,7 @@ class PassportStrategies {
                 select: {
                     id: true,
                     image: true,
-                    isPremium: true,
+                    isSubscriptionActive: true,
                 },
             });
 

@@ -2,6 +2,7 @@ import { prisma } from "@weasel/db";
 import { Router } from "express";
 import passport from "passport";
 import { utapi } from "@weasel/filehost";
+import { stripe } from "../lib/stripe";
 
 const authRouter = Router();
 
@@ -40,6 +41,13 @@ authRouter.delete("/user", async (req, res) => {
     if (deletedUser.images.length) {
         utapi.deleteFiles(deletedUser.images.map((image) => image.id));
     }
+
+    if (deletedUser.subscriptionId) {
+        stripe.subscriptions.cancel(deletedUser.subscriptionId);
+    }
+
+    stripe.customers.del(deletedUser.customerId);
+
     res.status(200).end();
 });
 

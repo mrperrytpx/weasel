@@ -19,29 +19,18 @@ stripeRouter.post("/checkout_session", async (req, res) => {
     if (!user) return res.status(404).end("User not found!");
 
     const params: Stripe.Checkout.SessionCreateParams = {
-        submit_type: "pay",
-        mode: "payment",
+        mode: "subscription",
+        customer: user.customerId,
         billing_address_collection: "auto",
         payment_method_types: ["card"],
         line_items: [
             {
-                price_data: {
-                    currency: "eur",
-                    unit_amount: 1000,
-                    product_data: {
-                        name: "Weasel Albums Premium Membership",
-                        description:
-                            "Upgrading your Weasel Albums plan to Premium",
-                    },
-                },
+                price: process.env.STRIPE_PRICE_ID as string,
                 quantity: 1,
             },
         ],
         success_url: `${process.env.CLIENT_URL}/?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: process.env.CLIENT_URL,
-        invoice_creation: {
-            enabled: true,
-        },
         metadata: {
             userId: req?.user?.id,
         },
@@ -50,6 +39,31 @@ stripeRouter.post("/checkout_session", async (req, res) => {
     const checkoutSession = await stripe.checkout.sessions.create(params);
 
     res.status(200).json(checkoutSession);
+});
+
+stripeRouter.delete("/subscription", async (req, res) => {
+    if (!req.user?.id) return res.status(401).end("You must be logged in!");
+
+    const user = await prisma.user.findFirst({
+        where: {
+            id: req.user.id,
+        },
+    });
+
+    if (!user) return res.status(404).end("User not found!");
+    if (!user.subscriptionId)
+        return res.status(400).end("User isn't subscribed!");
+
+    const subscription = await stripe.subscriptions.update(
+        user.subscriptionId,
+        {
+            cancel_at_period_end: true,
+        }
+    );
+
+    console.log("subscription", subscription);
+
+    return res.status(200);
 });
 
 stripeRouter.post("/webhooks", async (req, res) => {
@@ -73,49 +87,68 @@ stripeRouter.post("/webhooks", async (req, res) => {
         return res.status(400).end(`"Webhook error:" ${message}`);
     }
 
-    console.log("event", event);
+    switch (event.type) {
+        case "customer.subscription.created": {
+            const { id, customer } = event.data.object;
 
-    if (event.type === "checkout.session.completed") {
-        const session = await stripe.checkout.sessions.retrieve(
-            event.data.object.id,
-            {
-                expand: ["line_items"],
-            }
-        );
+            console.log("create sub", id, customer);
 
-        if (!session?.line_items) {
-            console.log("No line items");
-            return res
-                .status(500)
-                .end("How did you place an order without items???");
+            await prisma.user.update({
+                where: {
+                    customerId: customer as string,
+                },
+                data: {
+                    isSubscriptionActive: true,
+                    subscriptionId: id,
+                },
+            });
+            break;
         }
 
-        if (!session) res.status(500).end();
+        case "customer.deleted": {
+            const { id } = event.data.object;
 
-        const userId = session.metadata?.userId;
+            const user = await prisma.user.findFirst({
+                where: { customerId: id },
+            });
 
-        if (!userId) return res.status(404).end("No user ID provided?!");
+            if (user?.subscriptionId) {
+                await stripe.subscriptions.cancel(user.subscriptionId);
+            }
 
-        const user = await prisma.user.findFirst({
-            where: {
-                id: userId,
-            },
-        });
+            break;
+        }
 
-        if (!user) return res.status(404).end("User not found!");
+        case "customer.subscription.deleted": {
+            const { customer } = event.data.object;
 
-        await prisma.user.update({
-            where: {
-                id: userId,
-            },
-            data: {
-                isPremium: true,
-            },
-        });
-    } else if (event.type === "invoice.sent") {
-        console.log("invoice sent", event.data.object.id);
-    } else {
-        console.log(`Unhandled event type ${event.type}`);
+            console.log("delete sub", customer);
+
+            const user = await prisma.user.findFirst({
+                where: {
+                    customerId: customer as string,
+                },
+            });
+
+            if (!user) {
+                console.log("User not found");
+                break;
+            }
+
+            await prisma.user.update({
+                where: {
+                    id: user.id,
+                },
+                data: {
+                    isSubscriptionActive: false,
+                },
+            });
+            break;
+        }
+        default: {
+            console.log(`Unhandled event type ${event.type}`);
+            break;
+        }
     }
 });
 

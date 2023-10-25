@@ -48,7 +48,7 @@ export const uploadRouter = {
             );
 
             if (
-                !user.isPremium &&
+                !user.isSubscriptionActive &&
                 totalUserStorage + fileSize > STORAGE_PER_USER
             ) {
                 throw new Error(

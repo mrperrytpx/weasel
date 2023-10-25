@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE "User" ADD COLUMN     "isPremium" BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE "User" ADD COLUMN     "isSubscriptionActive" BOOLEAN NOT NULL DEFAULT false;

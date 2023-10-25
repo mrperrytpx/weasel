@@ -1,4 +1,5 @@
 import { FcCheckmark } from "react-icons/fc";
+import { AiOutlineClose } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
 type TPricingCardProps = {
@@ -18,13 +19,18 @@ export const PricingCard = ({ premium }: TPricingCardProps) => {
                 <li className="flex items-center gap-4">
                     <FcCheckmark size={20} /> <span>Unlimited Albums</span>
                 </li>
+
                 <li className="flex items-center gap-4">
                     <FcCheckmark size={20} />
-                    <span>Shareable albums</span>
+                    <span>{premium ? "50 Gigabytes of" : "250 Megabytes of"} storage</span>
                 </li>
                 <li className="flex items-center gap-4">
-                    <FcCheckmark size={20} />
-                    <span>{premium ? "Unlimited " : "250 Megabytes of"} storage</span>
+                    {premium ? (
+                        <FcCheckmark size={20} />
+                    ) : (
+                        <AiOutlineClose className="fill-red-500" size={20} />
+                    )}
+                    <span>Shareable albums</span>
                 </li>
 
                 <li className="flex items-center gap-4"></li>

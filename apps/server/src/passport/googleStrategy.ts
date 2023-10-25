@@ -1,6 +1,8 @@
 import { Profile, Strategy } from "passport-google-oauth20";
 import passport from "passport";
 import { prisma } from "@weasel/db";
+import { stripe } from "../lib/stripe";
+import { randomString } from "../utils/randomString";
 
 const googlePassport = () =>
     passport.use(
@@ -18,23 +20,31 @@ const googlePassport = () =>
                     select: {
                         id: true,
                         image: true,
-                        isPremium: true,
+                        isSubscriptionActive: true,
                     },
                 });
 
                 if (!user) {
+                    const stripeCustomer = await stripe.customers.create({
+                        name: `${profile.id}-${randomString(10)}`,
+                        metadata: {
+                            id: profile.id,
+                        },
+                    });
+
                     const newUser = await prisma.user.create({
                         data: {
                             id: profile.id,
                             email: profile._json.email,
                             image: profile._json.picture,
+                            customerId: stripeCustomer.id,
                         },
                     });
 
                     const newUserData = {
                         id: newUser.id,
                         image: newUser.image,
-                        isPremium: newUser.isPremium,
+                        isSubscriptionActive: newUser.isSubscriptionActive,
                     };
 
                     return cb(null, newUserData);
