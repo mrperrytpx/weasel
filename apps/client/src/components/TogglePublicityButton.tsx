@@ -21,23 +21,26 @@ export const TogglePublicityButton = () => {
     if (!album.data) return null;
 
     return (
-        <>
+        <div className="group relative flex items-center gap-1">
             <input
                 onChange={handleInputChecked}
                 disabled={updateAlbumPublicity.isLoading}
-                className="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-periwinkle-600 checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-periwinkle-600 checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-periwinkle-600 checked:focus:bg-periwinkle-600 checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] enabled:hover:cursor-pointer disabled:opacity-50 dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-periwinkle-400 dark:checked:after:bg-periwinkle-400 dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchChecked"
                 checked={checked}
+                type="checkbox"
+                id="switch"
+                role="switch"
+                className="relative h-6 w-12 cursor-pointer appearance-none rounded-full bg-white ring-1 ring-transparent ring-offset-white transition-colors duration-200 ease-in-out before:absolute before:left-0 before:top-0 before:inline-block before:h-6 before:w-6 before:rounded-full before:bg-periwinkle-600 before:shadow before:ring-0 before:transition-all before:duration-200 checked:bg-periwinkle-400 checked:before:left-full checked:before:-translate-x-full checked:before:bg-periwinkle-600 disabled:opacity-50 dark:bg-zinc-700 dark:before:bg-periwinkle-400 dark:checked:bg-periwinkle-400 dark:checked:before:bg-periwinkle-600 "
             />
-            <label
-                className="inline-block pl-[0.15rem] hover:cursor-pointer"
-                aria-disabled={updateAlbumPublicity.isLoading}
-                htmlFor="flexSwitchChecked"
-            >
+            <label className="cursor-pointer text-right" htmlFor="switch">
                 {album.data.isPublic ? "Public" : "Private"}
             </label>
-        </>
+            <div
+                role="tooltip"
+                className="absolute bottom-full left-1/2 z-[100] inline-block w-max max-w-[12rem] -translate-x-1/2 -translate-y-2 rounded-lg bg-zinc-900 px-3 py-2 text-center text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-75 group-hover:opacity-100 dark:bg-zinc-700"
+            >
+                Album is set to {album.data.isPublic ? "public." : "private."}
+                <div className="absolute left-1/2 top-full -mt-px h-0 w-0 -translate-x-1/2 border-8 border-solid border-transparent border-t-black" />
+            </div>
+        </div>
     );
 };

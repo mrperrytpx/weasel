@@ -39,14 +39,12 @@ const AlbumPage = () => {
 
     return (
         <main className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-col">
-            <header className="flex flex-wrap items-center justify-between gap-1 border-b border-periwinkle-300 px-4 py-2 dark:border-zinc-600">
+            <header className="flex flex-wrap items-center justify-between gap-4 border-b border-periwinkle-300 px-4 py-2 dark:border-zinc-600">
                 <span className="peer line-clamp-1 flex-1 break-all text-lg font-bold hover:line-clamp-none">
                     {album.data?.name}
                 </span>
-
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 peer-hover:self-start">
                     {location.pathname !== "/albums" && <TogglePublicityButton />}
-
                     <button
                         aria-label="Delete album."
                         onClick={handleDeleteAlbum}
@@ -72,7 +70,6 @@ const AlbumPage = () => {
             {albumInfiniteImages.data?.pages.flat().length ? (
                 <div className="mx-auto mb-8 mt-4 w-full items-center gap-4 p-4 sm:columns-2 sm:gap-6 lg:columns-3 lg:gap-8 xl:columns-4">
                     <UploadFilesForm />
-
                     {albumInfiniteImages.data?.pages.map((page, i) => (
                         <Fragment key={i}>
                             {page.map((image) => (

@@ -96,20 +96,4 @@ profileRouter.get("/", async (req, res) => {
     return res.status(200).json(profileStats);
 });
 
-profileRouter.patch("/", async (req, res) => {
-    if (!req.user?.id) return res.status(401).end("You must be logged in!");
-
-    const user = await prisma.user.update({
-        where: {
-            id: req.user.id,
-        },
-        data: {
-            isSubscriptionActive: !req.user.isSubscriptionActive,
-        },
-        select: { id: true, image: true, isSubscriptionActive: true },
-    });
-
-    return res.status(200).json(user);
-});
-
 export { profileRouter };

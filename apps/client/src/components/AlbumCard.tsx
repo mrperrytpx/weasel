@@ -3,17 +3,39 @@ import { BsTrash } from "react-icons/bs";
 import { useDeleteAlbumMutation } from "../hooks/useDeleteAlbumMutation";
 import { Link } from "react-router-dom";
 import SolidColorImage from "../assets/solid-color.jpeg";
+import { FaRegShareFromSquare } from "react-icons/fa6";
+import { ComponentProps, useState } from "react";
+import { IoCheckmarkSharp } from "react-icons/io5";
 
 type TAlbumCardProps = {
     album: TAlbum;
 };
 
 const AlbumCard = ({ album }: TAlbumCardProps) => {
+    const [copied, setCopied] = useState(false);
+
     const deleteAlbum = useDeleteAlbumMutation();
 
-    const handleDeleteAlbum = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleDeleteAlbum: ComponentProps<"button">["onClick"] = async (e) => {
         e.stopPropagation();
         await deleteAlbum.mutateAsync({ albumId: album.id });
+    };
+
+    const handleCopyAlbumUrl: ComponentProps<"button">["onClick"] = async (e) => {
+        e.stopPropagation();
+        if (copied) return;
+
+        if (typeof window != "undefined" && window.document) {
+            if (!album) return;
+            navigator.clipboard.writeText(
+                `${import.meta.env.VITE_WEBSITE_URL}/public-album/${album.id}`,
+            );
+            setCopied(true);
+
+            const turnBackTimeout = setTimeout(() => setCopied(false), 5000);
+
+            return () => clearTimeout(turnBackTimeout);
+        }
     };
 
     return (
@@ -48,6 +70,25 @@ const AlbumCard = ({ album }: TAlbumCardProps) => {
                     className="fill-black group-hover:fill-red-500 dark:fill-white"
                 />
             </button>
+            {album.isPublic && (
+                <button
+                    aria-label="Copy album's public URL."
+                    onClick={handleCopyAlbumUrl}
+                    className="group absolute left-2 top-2 rounded-md bg-white p-2 shadow dark:bg-zinc-800"
+                >
+                    {copied ? (
+                        <IoCheckmarkSharp
+                            size={20}
+                            className="stroke-black group-hover:stroke-periwinkle-600 dark:stroke-white dark:group-hover:stroke-periwinkle-400"
+                        />
+                    ) : (
+                        <FaRegShareFromSquare
+                            size={20}
+                            className="fill-black group-hover:fill-periwinkle-600 dark:fill-white dark:group-hover:fill-periwinkle-400"
+                        />
+                    )}
+                </button>
+            )}
         </article>
     );
 };

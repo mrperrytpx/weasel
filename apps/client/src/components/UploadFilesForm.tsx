@@ -34,7 +34,7 @@ export const UploadFilesForm = () => {
             className="flex break-inside-avoid flex-col items-center gap-4"
             onSubmit={handleSubmit(onSubmit)}
         >
-            <fieldset className="flex items-center gap-1">
+            <fieldset className="flex items-center gap-2">
                 <label aria-hidden className="relative h-10 max-w-[8rem] cursor-pointer">
                     <input
                         {...register("files")}
@@ -44,16 +44,16 @@ export const UploadFilesForm = () => {
                         accept="image/*"
                         aria-hidden
                         aria-label="File browser example"
-                        className="h-full w-full opacity-0"
+                        className="peer h-full w-full opacity-0"
                     />
-                    <span className="absolute inset-0 z-10 h-10 w-full select-none rounded-md bg-white px-4 py-2 shadow after:inset-0 after:line-clamp-1 after:w-full after:break-all after:content-['Choose_files...'] hover:bg-periwinkle-600 hover:text-white dark:bg-zinc-800 dark:text-white dark:hover:bg-periwinkle-600" />
+                    <span className="absolute inset-0 z-10 h-10 w-full select-none rounded-md bg-white px-4 py-2 shadow after:inset-0 after:line-clamp-1 after:w-full after:break-all after:content-['Choose_files...'] hover:bg-periwinkle-600 hover:text-white peer-focus:outline peer-focus:outline-[3px] peer-focus:outline-periwinkle-600 dark:bg-zinc-800 dark:text-white dark:hover:bg-periwinkle-600 dark:peer-focus:outline-periwinkle-400" />
                 </label>
                 {files?.length > 0 && (
                     <button
                         type="submit"
                         aria-label="Upload files."
                         disabled={uploadFiles.isLoading}
-                        className="flex h-10 w-[8rem] items-center justify-center gap-2 rounded-lg bg-white p-2 text-center text-lg font-medium shadow transition-colors duration-75 enabled:hover:bg-periwinkle-600 enabled:hover:text-periwinkle-50 enabled:focus:outline-periwinkle-600 disabled:opacity-50 dark:text-periwinkle-950 enabled:dark:hover:text-periwinkle-50 md:text-xl"
+                        className="flex h-10 w-[8rem] items-center justify-center gap-2 rounded-lg bg-white p-2 text-center text-lg font-medium shadow transition-colors duration-75 enabled:hover:bg-periwinkle-600 enabled:hover:text-periwinkle-50 enabled:focus:outline-periwinkle-600 disabled:opacity-50 dark:bg-zinc-800 dark:text-white enabled:dark:hover:text-periwinkle-50 md:text-xl"
                     >
                         <span className="flex items-center gap-2 text-sm">
                             {uploadFiles.isLoading ? (

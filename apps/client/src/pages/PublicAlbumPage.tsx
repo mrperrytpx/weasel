@@ -19,9 +19,9 @@ const PublicAlbumPage = () => {
 
     if (publicAlbum.isLoading)
         return (
-            <div className="mx-auto mt-20 space-y-4 p-4">
+            <div className="flex flex-1 flex-col items-center justify-center gap-4 p-4">
                 <LoadingSpinner color="#637ff1" size={60} />
-                <p className="text-lg font-medium text-periwinkle-900 dark:text-white">
+                <p className="text-center text-lg font-medium text-periwinkle-900 dark:text-white">
                     Loading album...
                 </p>
             </div>
@@ -29,8 +29,8 @@ const PublicAlbumPage = () => {
 
     if (!publicAlbum.data)
         return (
-            <div className="mx-auto mt-20 space-y-4 p-4">
-                <p className="text-lg font-medium text-periwinkle-900 dark:text-white">
+            <div className="flex flex-1 items-center justify-center p-4">
+                <p className="text-center text-lg font-medium text-periwinkle-900 dark:text-white">
                     This album doesn't exist or isn't public! 😥
                 </p>
             </div>
@@ -38,8 +38,8 @@ const PublicAlbumPage = () => {
 
     if (!publicAlbum.data.images.length)
         return (
-            <div className="mx-auto mt-20 space-y-4 p-4">
-                <p className="text-lg font-medium text-periwinkle-900 dark:text-white">
+            <div className="flex flex-1 items-center justify-center p-4">
+                <p className="text-center text-lg font-medium text-periwinkle-900 dark:text-white">
                     This album doesn't have any images yet! 😅
                 </p>
             </div>
