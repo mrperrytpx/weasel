@@ -3,6 +3,7 @@ import { uploadFiles } from "../utils/generateHelpers";
 import { TUploadFileMutation } from "@weasel/schemas";
 import { Image, TNewImage } from "@weasel/types";
 import { randomString } from "../utils/randomString";
+import { FILE_MAX_SIZE } from "../utils/tierStorageSizes";
 
 type TCUploadFileResponse = {
     key: string;
@@ -11,7 +12,31 @@ type TCUploadFileResponse = {
     size: number;
 };
 
-const IMAGE_MAX_SIZE = 4_194_304;
+const uploadFile = async (file: File, albumId: string, userId: string) => {
+    if (file.size >= FILE_MAX_SIZE) {
+        return {
+            status: "rejected",
+            reason: "File size too big.",
+        } satisfies PromiseRejectedResult;
+    }
+
+    const res = await uploadFiles(
+        {
+            files: [file],
+            endpoint: "imageUploader",
+            input: {
+                albumId,
+                userId,
+                fileSize: file.size,
+            },
+        },
+        {
+            url: import.meta.env.VITE_SERVER_URL + "/api/uploadthing",
+        },
+    );
+
+    return res.flat();
+};
 
 export const useUploadFilesMutation = () => {
     const queryClient = useQueryClient();
@@ -28,33 +53,7 @@ export const useUploadFilesMutation = () => {
         }
 
         const uploadedFiles: TCUploadFileResponse[] = (
-            await Promise.allSettled(
-                data.map(async (file) => {
-                    if (file.size >= IMAGE_MAX_SIZE) {
-                        return {
-                            status: "rejected",
-                            reason: "File size too big",
-                        } satisfies PromiseRejectedResult;
-                    }
-
-                    const res = await uploadFiles(
-                        {
-                            files: [file],
-                            endpoint: "imageUploader",
-                            input: {
-                                albumId,
-                                userId,
-                                fileSize: file.size,
-                            },
-                        },
-                        {
-                            url: import.meta.env.VITE_SERVER_URL + "/api/uploadthing",
-                        },
-                    );
-
-                    return res.flat();
-                }),
-            )
+            await Promise.allSettled(data.map((file) => uploadFile(file, albumId, userId)))
         )
             .filter((x) => x.status === "fulfilled")
             .map((x) => (x as PromiseFulfilledResult<TCUploadFileResponse[]>).value)
@@ -87,19 +86,18 @@ export const useUploadFilesMutation = () => {
                     url: URL.createObjectURL(img),
                     uploadStatus: "uploading",
                 } satisfies TNewImage;
-            }) satisfies TNewImage[];
+            });
 
             queryClient.setQueryData<InfiniteData<Image[]>>(
                 ["images", input.albumId],
                 (oldData) => {
                     if (!oldData) return { pageParams: [0], pages: [newImages] };
 
+                    const lastPage = [...oldData.pages[oldData.pages.length - 1], ...newImages];
+
                     return {
                         ...oldData,
-                        pages: [
-                            ...oldData.pages.slice(0, -1),
-                            [...oldData.pages[oldData.pages.length - 1], ...newImages],
-                        ],
+                        pages: [...oldData.pages.slice(0, -1), lastPage],
                     };
                 },
             );
@@ -111,6 +109,25 @@ export const useUploadFilesMutation = () => {
 
             if (!context?.newImages.length) return;
 
+            const updateImageData = (img: TNewImage) => {
+                const image = data.find((uploadedImg) => uploadedImg.name === img.name);
+
+                if (image) {
+                    return {
+                        ...img,
+                        id: image.key,
+                        name: image.name,
+                        size: image.size,
+                        uploadStatus: "finished",
+                    } satisfies TNewImage;
+                } else {
+                    return {
+                        ...img,
+                        uploadStatus: img.uploadStatus === "uploading" ? "failed" : undefined,
+                    } satisfies TNewImage;
+                }
+            };
+
             queryClient.setQueryData<InfiniteData<TNewImage[]>>(
                 ["images", input.albumId],
                 (oldData) => {
@@ -118,29 +135,7 @@ export const useUploadFilesMutation = () => {
 
                     return {
                         ...oldData,
-                        pages: oldData.pages.map((page) =>
-                            page.map((img) => {
-                                const image = data.find(
-                                    (uploadedImg) => uploadedImg.name === img.name,
-                                );
-
-                                if (image) {
-                                    return {
-                                        ...img,
-                                        id: image.key,
-                                        name: image.name,
-                                        size: image.size,
-                                        uploadStatus: "finished",
-                                    } satisfies TNewImage;
-                                } else {
-                                    return {
-                                        ...img,
-                                        uploadStatus:
-                                            img.uploadStatus === "uploading" ? "failed" : undefined,
-                                    } satisfies TNewImage;
-                                }
-                            }),
-                        ),
+                        pages: oldData.pages.map((page) => page.map(updateImageData)),
                     };
                 },
             );

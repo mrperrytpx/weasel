@@ -1,4 +1,5 @@
 import { Album, Image, User } from "@weasel/db";
+import { OurFileRouter } from "@weasel/filehost";
 
 export type TAlbum = Album & {
     images: TNewImage[] | [];
@@ -31,6 +32,7 @@ export type TProfileStats = {
         url: string;
     } | null;
     storage: number;
+    subscriptionDueDate: number | null;
 };
 
-export { type User, type Image, type Album };
+export { type User, type Image, type Album, type OurFileRouter };

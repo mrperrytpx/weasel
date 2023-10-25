@@ -1,13 +1,14 @@
 import { prisma } from "@weasel/db";
 import { TProfileStats } from "@weasel/types";
 import { Router } from "express";
+import { stripe } from "../lib/stripe";
 
 const profileRouter = Router();
 
 profileRouter.get("/", async (req, res) => {
     if (!req.user?.id) return res.status(401).end("You must be logged in!");
 
-    const data = await prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
         where: {
             id: req.user.id,
         },
@@ -19,22 +20,34 @@ profileRouter.get("/", async (req, res) => {
                 },
             },
             images: true,
+            subscriptionId: true,
         },
     });
 
-    if (!data) return res.status(404).end("User not found!");
+    if (!user) return res.status(404).end("User not found!");
+
+    // stinky code :(
+
+    const subscriptionDueDate = await (async () => {
+        if (user.subscriptionId) {
+            const subscription = await stripe.subscriptions.retrieve(
+                user.subscriptionId
+            );
+            return subscription.current_period_end;
+        }
+    })();
 
     const albumWithMostImages = (() => {
         let mostImages = 0;
         let id = "";
-        data.albums.forEach((album) => {
+        user.albums.forEach((album) => {
             if (album.images.length > mostImages) {
                 mostImages = album.images.length;
                 id = album.id;
             }
         });
 
-        const album = data.albums.find((album) => album.id === id);
+        const album = user.albums.find((album) => album.id === id);
 
         if (!album) return;
 
@@ -44,23 +57,25 @@ profileRouter.get("/", async (req, res) => {
     const largestImage = (() => {
         let largestSize = 0;
         let id = "";
-        data.images.forEach((image) => {
+        user.images.forEach((image) => {
             if (image.size > largestSize) {
                 largestSize = image.size;
                 id = image.id;
             }
         });
-        const image = data.images.find((image) => image.id === id);
+        const image = user.images.find((image) => image.id === id);
 
         if (!image) return;
 
         return image;
     })();
 
+    // 😥😪😭😭😢😢
+
     const profileStats = {
-        numOfAlbums: data.albums.length,
-        numOfImages: data.images.length,
-        storage: data.images.reduce((prev, curr) => curr.size + prev, 0),
+        numOfAlbums: user.albums.length,
+        numOfImages: user.images.length,
+        storage: user.images.reduce((prev, curr) => curr.size + prev, 0),
         albumWithMostImages: albumWithMostImages
             ? {
                   name: albumWithMostImages.name,
@@ -75,6 +90,7 @@ profileRouter.get("/", async (req, res) => {
                   url: largestImage.url,
               }
             : null,
+        subscriptionDueDate: subscriptionDueDate ? subscriptionDueDate : null,
     } satisfies TProfileStats;
 
     return res.status(200).json(profileStats);

@@ -4,9 +4,9 @@ import { prisma } from "@weasel/db";
 import { uploadInputSchema } from "@weasel/schemas";
 import { UTApi } from "uploadthing/server";
 
+const FREE_TIER_STORAGE = 262_144_000; // 250MB
+const PREMIUM__TIER_STORAGE = 53_687_091_200; // 50GB
 export const utapi = new UTApi();
-
-const STORAGE_PER_USER = 262144000;
 
 const f = createUploadthing({
     errorFormatter: (err) => {
@@ -47,13 +47,18 @@ export const uploadRouter = {
                 0
             );
 
-            if (
-                !user.isSubscriptionActive &&
-                totalUserStorage + fileSize > STORAGE_PER_USER
-            ) {
-                throw new Error(
-                    "Storage limit reached! Upgrade to premium for more storage!"
-                );
+            if (!user.isSubscriptionActive) {
+                if (totalUserStorage + fileSize > FREE_TIER_STORAGE) {
+                    throw new Error(
+                        "Storage limit reached! Upgrade to premium for more storage!"
+                    );
+                }
+            }
+
+            if (user.isSubscriptionActive) {
+                if (totalUserStorage + fileSize > PREMIUM__TIER_STORAGE) {
+                    throw new Error("Storage limit reached! o_o");
+                }
             }
 
             const userAlbum = user.albums.find((album) => album.id === albumId);

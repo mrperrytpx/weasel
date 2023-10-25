@@ -6,8 +6,7 @@ import { Link } from "react-router-dom";
 import { roundBytesToKilobytes } from "../utils/roundBytesToKilobytes";
 import { useDeleteUserMutation } from "../hooks/useDeleteUserMutation";
 import { useCompleteOrderMutation } from "../hooks/useCompleteOrderMutation";
-
-const STORAGE_PER_USER = 262_144_000;
+import { FREE_TIER_STORAGE, PREMIUM__TIER_STORAGE } from "../utils/tierStorageSizes";
 
 const ProfilePage = () => {
     const user = useUser();
@@ -57,10 +56,25 @@ const ProfilePage = () => {
                             <span className="text-lg font-medium">Storage used:</span>
                             <span>
                                 {profileStats.data?.storage} bytes
-                                {!user.data.isSubscriptionActive &&
-                                    ` out of ${STORAGE_PER_USER} bytes`}
+                                {!user.data.isSubscriptionActive
+                                    ? ` out of ${FREE_TIER_STORAGE} bytes`
+                                    : ` out of ${PREMIUM__TIER_STORAGE} bytes`}
                             </span>
                         </div>
+                        {user.data.isSubscriptionActive && (
+                            <div className="flex flex-wrap items-center justify-center gap-1 md:justify-normal">
+                                <span className="text-lg font-medium">Next billing date: </span>
+                                <span>
+                                    {new Intl.DateTimeFormat("en-GB", {
+                                        dateStyle: "long",
+                                        timeStyle: "long",
+                                        timeZone: "Europe/Berlin",
+                                    }).format(
+                                        (profileStats.data?.subscriptionDueDate as number) * 1000,
+                                    )}
+                                </span>
+                            </div>
+                        )}
 
                         <div className="flex flex-wrap items-center justify-center gap-1 md:justify-normal">
                             <span className="text-lg font-medium">Number of albums:</span>
