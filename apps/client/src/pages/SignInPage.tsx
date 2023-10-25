@@ -13,6 +13,7 @@ const SignInPage = () => {
             <div className="mx-auto mt-4 flex w-full max-w-md flex-col items-center gap-4 p-8">
                 <Link className="aspect-square w-full max-w-sm" to="/">
                     <img
+                        className="select-none"
                         src={PlayfulWeaselImage}
                         alt="A photo of a cartoonish weasel holding a black camera and resting his head on it, looking at the screen."
                     />

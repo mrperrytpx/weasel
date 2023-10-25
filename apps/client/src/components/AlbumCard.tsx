@@ -43,7 +43,7 @@ const AlbumCard = ({ album }: TAlbumCardProps) => {
             <Link to={`/albums/${album.id}`}>
                 <div className="flex aspect-square w-full items-center justify-center">
                     <img
-                        className="aspect-square w-full rounded-t-md object-cover"
+                        className="aspect-square w-full select-none rounded-t-md object-cover"
                         src={album.images[0]?.url ? album.images[0]?.url : SolidColorImage}
                         alt="Placeholder"
                     />

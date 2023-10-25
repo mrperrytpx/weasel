@@ -15,7 +15,7 @@ const HomePage = () => {
                 <section className="flex min-h-[inherit] flex-col items-center justify-center gap-8">
                     <h1 className="text-center text-4xl font-semibold">Capture. Collect. Keep.</h1>
                     <Link
-                        className="flex w-full max-w-[12rem] items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 text-center text-lg font-semibold shadow transition-colors duration-75 hover:bg-periwinkle-600 hover:text-periwinkle-50 focus:outline-periwinkle-600 dark:bg-zinc-800 dark:text-white hover:dark:bg-periwinkle-600 dark:hover:text-periwinkle-50"
+                        className="flex w-full max-w-[12rem] select-none items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 text-center text-lg font-semibold shadow transition-colors duration-75 hover:bg-periwinkle-600 hover:text-periwinkle-50 focus:outline-periwinkle-600 dark:bg-zinc-800 dark:text-white hover:dark:bg-periwinkle-600 dark:hover:text-periwinkle-50"
                         to="/albums"
                     >
                         Let's Begin
@@ -27,6 +27,7 @@ const HomePage = () => {
                         <source media="(min-width:40rem)" srcSet={WeaselAlbumsMedium} />
                         <img
                             src={WeaselAlbumsSmall}
+                            className="select-none"
                             alt="An orange weasel looking out of the frame to the right, sitting inside of a cover of a photo album. The album has brown covers and a picture of a mountain."
                         />
                     </picture>
@@ -44,6 +45,7 @@ const HomePage = () => {
                         <source media="(min-width:40rem)" srcSet={WeaselSharingMedium} />
                         <img
                             src={WeaselSharingSmall}
+                            className="select-none"
                             alt="A bigger orange weasel holding a photo album, telling stories to a smaller weasel which doesn't have hands."
                         />
                     </picture>
@@ -65,7 +67,7 @@ const HomePage = () => {
                 <section className="mb-20 flex flex-col items-center justify-center gap-8 py-32 text-center md:mb-40">
                     <h2 className="text-4xl">Start saving memories today!</h2>
                     <Link
-                        className="flex w-full max-w-[12rem] items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 text-center text-lg font-semibold shadow transition-colors duration-75 hover:bg-periwinkle-600 hover:text-periwinkle-50 focus:outline-periwinkle-600 dark:bg-zinc-800 dark:text-white hover:dark:bg-periwinkle-600 dark:hover:text-periwinkle-50"
+                        className="flex w-full max-w-[12rem] select-none items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 text-center text-lg font-semibold shadow transition-colors duration-75 hover:bg-periwinkle-600 hover:text-periwinkle-50 focus:outline-periwinkle-600 dark:bg-zinc-800 dark:text-white hover:dark:bg-periwinkle-600 dark:hover:text-periwinkle-50"
                         to="/albums"
                     >
                         Let's Begin

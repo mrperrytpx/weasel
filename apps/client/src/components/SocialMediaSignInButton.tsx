@@ -14,7 +14,7 @@ export const SocialMediaSignInButton = ({
     return (
         <button
             aria-label={`${provider} sign in.`}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border-2 bg-white text-sm text-black transition-all duration-75 hover:border-[#4285F4] hover:bg-[#4285F4] hover:text-white"
+            className="flex w-full select-none items-center justify-center gap-2 rounded-lg border-2 bg-white text-sm text-black transition-all duration-75 hover:border-[#4285F4] hover:bg-[#4285F4] hover:text-white"
             onClick={() => signIn()}
             type="button"
         >
