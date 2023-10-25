@@ -166,4 +166,22 @@ albumRouter.delete("/:albumId", async (req, res) => {
     return res.status(200).end();
 });
 
+albumRouter.get("/public/:albumId", async (req, res) => {
+    const { albumId } = req.params;
+
+    if (!albumId) return res.status(400).end("Provide an album ID!");
+
+    const album = await prisma.album.findFirst({
+        where: {
+            id: albumId,
+            isPublic: true,
+        },
+        include: {
+            images: true,
+        },
+    });
+
+    return res.status(200).json(album);
+});
+
 export { albumRouter };

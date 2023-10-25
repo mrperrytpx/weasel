@@ -12,6 +12,7 @@ import { useUser } from "./hooks/useUser";
 import TosPage from "./pages/TosPage";
 import ContactPage from "./pages/ContactPage";
 import PrivacyPage from "./pages/PrivacyPage";
+import PublicAlbumPage from "./pages/PublicAlbumPage";
 
 function App() {
     const user = useUser();
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/tos" element={<TosPage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/privacy" element={<PrivacyPage />} />
+                <Route path="/public-album/:albumId" element={<PublicAlbumPage />} />
                 <Route
                     path="/sign-in"
                     element={user?.data?.id ? <Navigate to="/albums" /> : <SignInPage />}
