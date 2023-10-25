@@ -1,9 +1,18 @@
 import { useMutation } from "@tanstack/react-query";
 import { apiInstance } from "../utils/axiosClients";
 import { getStripe } from "../utils/getStripe";
+import { useUser } from "./useUser";
+import { useNavigate } from "react-router-dom";
 
-export const useCompleteOrderMutation = () => {
-    const postCompleteOrder = async () => {
+export const useCreateCheckout = () => {
+    const user = useUser();
+    const navigate = useNavigate();
+
+    if (!user?.data) {
+        navigate("/sign-in");
+    }
+
+    const createCheckout = async () => {
         const checkoutResponse = await apiInstance.post("/api/stripe/checkout_session");
 
         const checkoutSession = checkoutResponse.data;
@@ -20,5 +29,5 @@ export const useCompleteOrderMutation = () => {
         console.warn(error.message);
     };
 
-    return useMutation(postCompleteOrder);
+    return useMutation(createCheckout);
 };

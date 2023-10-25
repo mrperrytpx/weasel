@@ -5,14 +5,14 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Link } from "react-router-dom";
 import { roundBytesToKilobytes } from "../utils/roundBytesToKilobytes";
 import { useDeleteUserMutation } from "../hooks/useDeleteUserMutation";
-import { useCompleteOrderMutation } from "../hooks/useCompleteOrderMutation";
+import { useCreateCheckout } from "../hooks/useCreateCheckout";
 import { FREE_TIER_STORAGE, PREMIUM__TIER_STORAGE } from "../utils/tierStorageSizes";
 
 const ProfilePage = () => {
     const user = useUser();
     const profileStats = useGetProfileStatsQuery();
     const deleteUser = useDeleteUserMutation();
-    const completeOrder = useCompleteOrderMutation();
+    const createCheckout = useCreateCheckout();
 
     if (!user?.data) return null;
 
@@ -37,11 +37,11 @@ const ProfilePage = () => {
                     <div className="space-y-4">
                         {!user.data.isSubscriptionActive && (
                             <button
-                                disabled={completeOrder.isLoading}
-                                onClick={async () => completeOrder.mutateAsync()}
+                                disabled={createCheckout.isLoading}
+                                onClick={async () => createCheckout.mutateAsync()}
                                 className="rounded-md bg-white px-4 py-2 shadow"
                             >
-                                {completeOrder.isLoading
+                                {createCheckout.isLoading
                                     ? "Changing plans..."
                                     : "Activate premium!"}
                             </button>
