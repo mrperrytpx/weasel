@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useGetAlbumImagesInfQuery } from "../hooks/useGetAlbumImagesInfQuery";
 import EmptyFolderImage from "../assets/empty-folder.webp";
 import { UploadFilesForm } from "../components/UploadFilesForm";
@@ -9,9 +9,11 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 import { ImageCard } from "../components/ImageCard";
 import { Fragment } from "react";
 import { useGetAlbumQuery } from "../hooks/useGetAlbumQuery";
+import { TogglePublicityButton } from "../components/TogglePublicityButton";
 
 const AlbumPage = () => {
     const params = useParams();
+    const location = useLocation();
 
     const albumId = z.string().parse(params.albumId);
     const album = useGetAlbumQuery(albumId);
@@ -41,7 +43,10 @@ const AlbumPage = () => {
                 <span className="peer line-clamp-1 flex-1 break-all text-lg font-bold hover:line-clamp-none">
                     {album.data?.name}
                 </span>
+
                 <div className="flex items-center gap-2">
+                    {location.pathname !== "/albums" && <TogglePublicityButton />}
+
                     <button
                         aria-label="Delete album."
                         onClick={handleDeleteAlbum}
