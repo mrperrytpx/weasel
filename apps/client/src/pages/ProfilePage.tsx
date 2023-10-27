@@ -12,8 +12,8 @@ const ProfilePage = () => {
     if (!user?.data) return null;
 
     return (
-        <main className="mx-auto grid w-full max-w-responsive-screen-2xl flex-1 flex-col gap-4 p-4 md:grid-cols-[minmax(0,15rem),minmax(20rem,1fr)] md:grid-rows-none">
-            <aside className="">
+        <main className="mx-auto grid w-full max-w-responsive-screen-2xl flex-col gap-4 p-4 md:flex-1 md:grid-cols-[minmax(0,12rem),minmax(20rem,1fr)] md:grid-rows-none">
+            <aside>
                 <ul className="space-y-4 text-sm font-medium">
                     <Link
                         className="transition-color group flex flex-wrap items-center gap-4 rounded-md bg-white px-4 py-2 shadow duration-75 hover:bg-periwinkle-600 hover:text-white dark:bg-zinc-800 dark:hover:bg-periwinkle-600"
@@ -54,7 +54,7 @@ const ProfilePage = () => {
             {profileStats.data ? (
                 <Outlet context={profileStats.data} />
             ) : (
-                <div className="flex flex-1 items-center justify-center">
+                <div className="mt-8 flex flex-1 items-center justify-center border-l-2 border-l-periwinkle-300 md:mt-0">
                     <LoadingSpinner color="#637ff1" size={60} />
                 </div>
             )}
