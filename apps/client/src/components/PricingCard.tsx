@@ -55,7 +55,7 @@ export const PricingCard = ({ premium }: TPricingCardProps) => {
                     </button>
                 ) : (
                     <Link
-                        to="/profile"
+                        to="/profile/billing"
                         className="transition-color mt-auto inline-block w-full select-none rounded-full bg-periwinkle-600 px-4 py-2 text-white shadow duration-75 hover:bg-periwinkle-700 hover:text-white"
                     >
                         Current Plan
@@ -100,7 +100,7 @@ export const PricingCard = ({ premium }: TPricingCardProps) => {
                 style={{
                     pointerEvents: user?.data && user.data.isSubscriptionActive ? "none" : "auto",
                 }}
-                to="/profile"
+                to="/profile/billing"
                 className="transition-color mt-auto inline-block w-full select-none rounded-full bg-periwinkle-600 px-4 py-2 text-white shadow duration-75 hover:bg-periwinkle-700 enabled:hover:text-white disabled:opacity-50 "
             >
                 {user?.data && !user.data.isSubscriptionActive ? "Current Plan" : "Get Started"}

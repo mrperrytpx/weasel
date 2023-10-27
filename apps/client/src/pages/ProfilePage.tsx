@@ -1,154 +1,63 @@
+import { Link, Outlet } from "react-router-dom";
+import { VscAccount, VscFolder, VscGear } from "react-icons/vsc";
+import { CiMoneyBill } from "react-icons/ci";
 import { useUser } from "../hooks/useUser";
-import DefaultProfileSvg from "../assets/default-profile.webp";
 import { useGetProfileStatsQuery } from "../hooks/useGetProfileStatsQuery";
 import { LoadingSpinner } from "../components/LoadingSpinner";
-import { Link } from "react-router-dom";
-import { roundBytesToKilobytes } from "../utils/roundBytesToKilobytes";
-import { useDeleteUserMutation } from "../hooks/useDeleteUserMutation";
-import { useCreateCheckout } from "../hooks/useCreateCheckout";
-import { FREE_TIER_STORAGE, PREMIUM__TIER_STORAGE } from "../utils/tierStorageSizes";
 
 const ProfilePage = () => {
     const user = useUser();
     const profileStats = useGetProfileStatsQuery();
-    const deleteUser = useDeleteUserMutation();
-    const createCheckout = useCreateCheckout();
 
     if (!user?.data) return null;
 
-    const largerProfileImageUrl = user.data?.image?.replace("s96-c", "s500-c");
-
     return (
-        <main className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-col gap-4 px-4 md:gap-32">
-            <article className="mx-auto mt-8 grid w-full max-w-responsive-screen-md gap-4 rounded-lg md:grid-cols-2 lg:mt-20">
-                <div className="grid grid-cols-1 place-content-start">
-                    <img
-                        src={largerProfileImageUrl || DefaultProfileSvg}
-                        alt={"Your profile image."}
-                        className="aspect-square w-48 select-none place-self-center rounded-full shadow md:w-64"
-                    />
+        <main className="mx-auto grid w-full max-w-responsive-screen-2xl flex-1 flex-col gap-4 p-4 md:grid-cols-[minmax(0,15rem),minmax(20rem,1fr)] md:grid-rows-none">
+            <aside className="">
+                <ul className="space-y-4 text-sm font-medium">
+                    <Link
+                        className="transition-color group flex flex-wrap items-center gap-4 rounded-md bg-white px-4 py-2 shadow duration-75 hover:bg-periwinkle-600 hover:text-white dark:bg-zinc-800 dark:hover:bg-periwinkle-600"
+                        to=""
+                    >
+                        {user.data.image ? (
+                            <img
+                                src={user.data.image}
+                                className="aspect-square w-6 select-none rounded-full"
+                                alt="Your profile image."
+                            />
+                        ) : (
+                            <VscAccount className="group-hover:fill-white" size={24} />
+                        )}{" "}
+                        Overview
+                    </Link>
+                    <Link
+                        className="transition-color group flex flex-wrap items-center gap-4 rounded-md bg-white px-4 py-2 shadow duration-75 hover:bg-periwinkle-600 hover:text-white dark:bg-zinc-800 dark:hover:bg-periwinkle-600"
+                        to="files"
+                    >
+                        <VscFolder className="group-hover:fill-white" size={24} /> Files
+                    </Link>
+                    <Link
+                        className="transition-color group flex flex-wrap items-center gap-4 rounded-md bg-white px-4 py-2 shadow duration-75 hover:bg-periwinkle-600 hover:text-white dark:bg-zinc-800 dark:hover:bg-periwinkle-600"
+                        to="billing"
+                    >
+                        <CiMoneyBill className="group-hover:fill-white" size={24} />
+                        Billing & Plans
+                    </Link>
+                    <Link
+                        className="transition-color group flex flex-wrap items-center gap-4 rounded-md bg-white px-4 py-2 shadow duration-75 hover:bg-periwinkle-600 hover:text-white dark:bg-zinc-800 dark:hover:bg-periwinkle-600"
+                        to="settings"
+                    >
+                        <VscGear className="group-hover:fill-white" size={24} /> Settings
+                    </Link>
+                </ul>
+            </aside>
+            {profileStats.data ? (
+                <Outlet context={profileStats.data} />
+            ) : (
+                <div className="flex flex-1 items-center justify-center">
+                    <LoadingSpinner color="#637ff1" size={60} />
                 </div>
-                {profileStats.isLoading ? (
-                    <div className="flex flex-col items-center justify-center gap-4">
-                        <LoadingSpinner size={56} color="#637ff1" />
-                        <p>Loading stats...</p>
-                    </div>
-                ) : (
-                    <div className="space-y-4">
-                        {!user.data.isSubscriptionActive && (
-                            <button
-                                disabled={createCheckout.isLoading}
-                                onClick={async () => createCheckout.mutateAsync()}
-                                className="rounded-md bg-white px-4 py-2 shadow"
-                            >
-                                {createCheckout.isLoading
-                                    ? "Changing plans..."
-                                    : "Activate premium!"}
-                            </button>
-                        )}
-                        <div className="flex flex-wrap items-center justify-center gap-1 md:justify-normal">
-                            <span className="text-lg font-medium">Current plan:</span>
-                            <span>
-                                {user.data.isSubscriptionActive ? "Premium plan" : "Free plan"}
-                            </span>
-                        </div>
-                        <div className="flex flex-wrap items-center justify-center gap-1 md:justify-normal">
-                            <span className="text-lg font-medium">Storage used:</span>
-                            <span>
-                                {profileStats.data?.storage} bytes
-                                {!user.data.isSubscriptionActive
-                                    ? ` out of ${FREE_TIER_STORAGE} bytes`
-                                    : ` out of ${PREMIUM__TIER_STORAGE} bytes`}
-                            </span>
-                        </div>
-                        {user.data.isSubscriptionActive && (
-                            <div className="flex flex-wrap items-center justify-center gap-1 md:justify-normal">
-                                <span className="text-lg font-medium">Next billing date: </span>
-                                <span>
-                                    {new Intl.DateTimeFormat("en-GB", {
-                                        dateStyle: "long",
-                                        timeStyle: "long",
-                                        timeZone: "Europe/Berlin",
-                                    }).format(
-                                        (profileStats.data?.subscriptionDueDate as number) * 1000,
-                                    )}
-                                </span>
-                            </div>
-                        )}
-
-                        <div className="flex flex-wrap items-center justify-center gap-1 md:justify-normal">
-                            <span className="text-lg font-medium">Number of albums:</span>
-                            <span>{profileStats.data?.numOfAlbums}</span>
-                        </div>
-                        <div className="flex flex-wrap items-center justify-center gap-1 md:justify-normal">
-                            <span className="text-lg font-medium">Number of images:</span>
-                            <span>{profileStats.data?.numOfImages}</span>
-                        </div>
-                        <div className="flex flex-col items-center gap-1 md:items-start">
-                            <p className="text-lg font-medium">Album with most images:</p>
-                            <div>
-                                {profileStats.data?.albumWithMostImages ? (
-                                    <>
-                                        <div className="space-x-2">
-                                            <span className="text-lg font-medium">Name:</span>
-                                            <Link
-                                                className="hover:text-periwinkle-600 hover:underline"
-                                                to={`/albums/${profileStats.data?.albumWithMostImages.id}`}
-                                            >
-                                                {profileStats.data?.albumWithMostImages.name}
-                                            </Link>
-                                        </div>
-                                        <div className="space-x-2">
-                                            <span className="text-lg font-medium">Images:</span>
-                                            <span>
-                                                {profileStats.data?.albumWithMostImages.numOfImages}
-                                            </span>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <p>No albums with images!</p>
-                                )}
-                            </div>
-                        </div>
-                        <div className="flex flex-col items-center gap-1 md:items-start">
-                            <p className="text-lg font-medium">Largest image:</p>
-                            <div>
-                                {profileStats.data?.largestImage ? (
-                                    <div>
-                                        <div className="space-x-2">
-                                            <span className="text-lg font-medium">Name:</span>
-                                            <a
-                                                className="underline hover:text-periwinkle-600"
-                                                href={profileStats.data?.largestImage.url}
-                                            >
-                                                {profileStats.data?.largestImage.name}
-                                            </a>
-                                        </div>
-                                        <div className="space-x-2">
-                                            <span className="text-lg font-medium">Size:</span>
-                                            <span>
-                                                {roundBytesToKilobytes(
-                                                    profileStats.data?.largestImage.size,
-                                                )}{" "}
-                                                Kilobytes
-                                            </span>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <p>No images!</p>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </article>
-            <button
-                disabled={deleteUser.isLoading}
-                onClick={async () => await deleteUser.mutateAsync()}
-                className="disabled:opacity-500 transition-color mb-8 mt-auto w-full select-none self-center rounded-md bg-white p-2 font-medium shadow duration-75 enabled:hover:bg-red-500 enabled:hover:text-white enabled:focus:bg-red-500 enabled:focus:text-white disabled:opacity-50 dark:bg-zinc-800 sm:max-w-[12rem] md:mt-0"
-            >
-                {deleteUser.isLoading ? "Goodbye..." : "DELETE ACCOUNT"}
-            </button>
+            )}
         </main>
     );
 };

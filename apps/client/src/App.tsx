@@ -13,6 +13,10 @@ import TosPage from "./pages/TosPage";
 import ContactPage from "./pages/ContactPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import PublicAlbumPage from "./pages/PublicAlbumPage";
+import { ProfileOverview } from "./components/ProfileOverview";
+import { ProfileFiles } from "./components/ProfileFiles";
+import { ProfileBilling } from "./components/ProfileBilling";
+import { ProfileSettings } from "./components/ProfileSettings";
 
 function App() {
     const user = useUser();
@@ -22,7 +26,7 @@ function App() {
             <Navbar />
 
             <Routes>
-                <Route index path="/" element={<HomePage />} />
+                <Route index element={<HomePage />} />
                 <Route path="/tos" element={<TosPage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/privacy" element={<PrivacyPage />} />
@@ -38,7 +42,12 @@ function App() {
                             <ProfilePage />
                         </ProtectedRoute>
                     }
-                />
+                >
+                    <Route index element={<ProfileOverview />} />
+                    <Route path="files" element={<ProfileFiles />} />
+                    <Route path="billing" element={<ProfileBilling />} />
+                    <Route path="settings" element={<ProfileSettings />} />
+                </Route>
 
                 <Route
                     path="/albums/create"
