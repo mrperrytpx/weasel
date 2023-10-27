@@ -5,7 +5,7 @@ import AlbumsPage from "./pages/AlbumsPage";
 import AlbumPage from "./pages/AlbumPage";
 import ProfilePage from "./pages/ProfilePage";
 import CreateAlbumPage from "./pages/CreateAlbumPage";
-import AlbumRoutesLayout from "./components/AlbumRoutesLayout";
+import AlbumRoutesLayout from "./layouts/AlbumRoutesLayout";
 import { ProtectedRoute } from "./utils/ProtectedRoute";
 import { Navbar } from "./components/Navbar";
 import { useUser } from "./hooks/useUser";
