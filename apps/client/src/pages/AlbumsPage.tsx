@@ -10,15 +10,14 @@ import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 const AlbumsPage = () => {
     const userInfiniteAlbums = useGetAllAlbumsInfQuery();
     const endRef = useRef<HTMLDivElement>(null);
-    const isIntersecting = useIntersectionObserver(endRef);
+    const entry = useIntersectionObserver(endRef, {});
 
     useEffect(() => {
-        if (userInfiniteAlbums.hasNextPage) {
-            if (isIntersecting && !userInfiniteAlbums.isFetchingNextPage) {
-                userInfiniteAlbums.fetchNextPage();
-            }
+        if (entry?.isIntersecting) {
+            userInfiniteAlbums.fetchNextPage();
         }
-    }, [isIntersecting, userInfiniteAlbums]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [entry?.isIntersecting]);
 
     return (
         <main className="flex flex-1 flex-col gap-2">
@@ -58,7 +57,13 @@ const AlbumsPage = () => {
                     </div>
                 )}
             </div>
-            <div ref={endRef} />
+            <div className="mb-4 px-4 py-2 text-center text-sm font-bold" ref={endRef}>
+                {userInfiniteAlbums.hasNextPage
+                    ? userInfiniteAlbums.isFetchingNextPage
+                        ? "Loading more albums..."
+                        : "Load more albums"
+                    : null}
+            </div>
         </main>
     );
 };

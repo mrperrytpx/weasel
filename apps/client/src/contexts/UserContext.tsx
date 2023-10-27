@@ -1,4 +1,4 @@
-import { UseQueryResult, useQuery } from "@tanstack/react-query";
+import { UseQueryResult, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createContext } from "react";
 import { apiInstance } from "../utils/axiosClients";
 import { TUser } from "@weasel/types";
@@ -10,12 +10,21 @@ type TUserContextProps = {
 };
 
 export const UserContextProvider = ({ children }: TUserContextProps) => {
+    const queryClient = useQueryClient();
+
+    const fetchUser = async () => {
+        const response = await apiInstance.get<TUser>("/api/auth/user");
+
+        if (response.statusText !== "OK") {
+            queryClient.clear();
+        }
+
+        return response.data;
+    };
+
     const userQuery = useQuery({
         queryKey: ["user"],
-        queryFn: async () => {
-            const response = await apiInstance.get<TUser>("/api/auth/user");
-            return response.data;
-        },
+        queryFn: fetchUser,
         refetchOnReconnect: true,
         refetchOnWindowFocus: true,
     });

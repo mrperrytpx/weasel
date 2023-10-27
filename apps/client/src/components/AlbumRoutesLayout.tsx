@@ -14,7 +14,7 @@ const AlbumRoutesLayout = () => {
                     </Link>
                     <Link
                         to="/albums/create"
-                        className="flex items-center justify-center gap-2 rounded-lg bg-white p-2 text-center shadow transition-colors duration-75 hover:bg-periwinkle-600 hover:text-periwinkle-50 focus:outline-periwinkle-600 dark:bg-zinc-800 dark:text-white dark:hover:bg-periwinkle-600 dark:hover:text-periwinkle-50"
+                        className="flex select-none items-center justify-center gap-2 rounded-lg bg-white p-2 text-center shadow transition-colors duration-75 hover:bg-periwinkle-600 hover:text-periwinkle-50 focus:outline-periwinkle-600 dark:bg-zinc-800 dark:text-white dark:hover:bg-periwinkle-600 dark:hover:text-periwinkle-50"
                     >
                         <AiOutlinePlusCircle size={20} />
                         <span className="group-hover:underline">Create Album</span>

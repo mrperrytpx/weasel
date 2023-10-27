@@ -11,7 +11,7 @@ const fetchAlbums = async (pageParam: number) => {
     return response.data;
 };
 
-const ALBUM_OFFSET = 8;
+const ALBUM_OFFSET = 20;
 
 export const useGetAllAlbumsInfQuery = () => {
     const user = useUser();
@@ -22,5 +22,6 @@ export const useGetAllAlbumsInfQuery = () => {
         getNextPageParam: (lastPage, pages) => {
             return lastPage.length >= ALBUM_OFFSET ? pages.flat().length : undefined;
         },
+        staleTime: Infinity,
     });
 };

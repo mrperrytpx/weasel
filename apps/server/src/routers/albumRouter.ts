@@ -22,7 +22,7 @@ albumRouter.get("/", async (req, res) => {
                     },
                     _count: true,
                 },
-                take: 8,
+                take: 20,
                 skip: offset ? +offset : 0,
                 orderBy: {
                     created_at: "asc",

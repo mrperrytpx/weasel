@@ -7,20 +7,29 @@ import { BsTrash } from "react-icons/bs";
 import { useDeleteAlbumMutation } from "../hooks/useDeleteAlbumMutation";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { ImageCard } from "../components/ImageCard";
-import { Fragment } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { useGetAlbumQuery } from "../hooks/useGetAlbumQuery";
 import { TogglePublicityButton } from "../components/TogglePublicityButton";
+import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 
 const AlbumPage = () => {
+    const endRef = useRef<HTMLDivElement>(null);
+    const entry = useIntersectionObserver(endRef, {});
+
     const params = useParams();
     const location = useLocation();
 
     const albumId = z.string().parse(params.albumId);
     const album = useGetAlbumQuery(albumId);
-
     const albumInfiniteImages = useGetAlbumImagesInfQuery(albumId);
-
     const deleteAlbum = useDeleteAlbumMutation();
+
+    useEffect(() => {
+        if (entry?.isIntersecting) {
+            albumInfiniteImages.fetchNextPage();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [entry?.isIntersecting]);
 
     const handleDeleteAlbum = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation();
@@ -93,6 +102,13 @@ const AlbumPage = () => {
                     <UploadFilesForm />
                 </div>
             )}
+            <div className="mb-4 px-4 py-2 text-center text-sm font-bold" ref={endRef}>
+                {albumInfiniteImages.hasNextPage
+                    ? albumInfiniteImages.isFetchingNextPage
+                        ? "Loading more images..."
+                        : "Load more images"
+                    : null}
+            </div>
         </main>
     );
 };
