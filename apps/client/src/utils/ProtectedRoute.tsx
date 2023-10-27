@@ -12,7 +12,7 @@ export const ProtectedRoute = ({ children }: TProtectedRouteProps) => {
     if (user?.isLoading) {
         return (
             <div className="flex flex-1 items-center justify-center">
-                <LoadingSpinner color="#637ff1" size={60} />;
+                <LoadingSpinner color="#637ff1" size={60} />
             </div>
         );
     }

@@ -22,6 +22,5 @@ export const useGetAllAlbumsInfQuery = () => {
         getNextPageParam: (lastPage, pages) => {
             return lastPage.length >= ALBUM_OFFSET ? pages.flat().length : undefined;
         },
-        staleTime: Infinity,
     });
 };

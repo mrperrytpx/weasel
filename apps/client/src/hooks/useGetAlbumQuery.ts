@@ -62,15 +62,11 @@ export const useGetAlbumQuery = (albumId: string) => {
 
             if (!allAlbums) return;
 
-            const album = allAlbums.pages.find((page) =>
-                page.find((album) => album.id === albumId),
-            )?.[0];
+            const album = allAlbums.pages.flat().find((album) => album.id === albumId);
 
             if (!album) return;
 
-            return {
-                ...album,
-            } satisfies TAlbum;
+            return album;
         },
     });
 };
