@@ -20,7 +20,7 @@ export const useGetAllAlbumsInfQuery = () => {
         queryKey: ["albums", user?.data?.id],
         queryFn: async ({ pageParam = 0 }) => fetchAlbums(pageParam),
         getNextPageParam: (lastPage, pages) => {
-            return lastPage.length >= ALBUM_OFFSET ? pages.flat().length : undefined;
+            return lastPage.length >= ALBUM_OFFSET ? pages.flat().length : undefined; // bad
         },
     });
 };
