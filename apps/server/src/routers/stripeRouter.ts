@@ -54,14 +54,9 @@ stripeRouter.delete("/subscription", async (req, res) => {
     if (!user.subscriptionId)
         return res.status(400).end("User isn't subscribed!");
 
-    const subscription = await stripe.subscriptions.update(
-        user.subscriptionId,
-        {
-            cancel_at_period_end: true,
-        }
-    );
-
-    console.log("subscription", subscription);
+    await stripe.subscriptions.update(user.subscriptionId, {
+        cancel_at_period_end: true,
+    });
 
     return res.status(200);
 });
@@ -91,8 +86,6 @@ stripeRouter.post("/webhooks", async (req, res) => {
         case "customer.subscription.created": {
             const { id, customer } = event.data.object;
 
-            console.log("create sub", id, customer);
-
             await prisma.user.update({
                 where: {
                     customerId: customer as string,
@@ -121,8 +114,6 @@ stripeRouter.post("/webhooks", async (req, res) => {
 
         case "customer.subscription.deleted": {
             const { customer } = event.data.object;
-
-            console.log("delete sub", customer);
 
             const user = await prisma.user.findFirst({
                 where: {

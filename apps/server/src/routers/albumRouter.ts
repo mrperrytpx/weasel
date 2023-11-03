@@ -56,8 +56,6 @@ albumRouter.get("/", async (req, res) => {
         },
     });
 
-    console.log("data", data);
-
     const albums = {
         albums: data!.albums,
         count: user.albums.length,

@@ -31,6 +31,23 @@ export const useGetAlbumQuery = (albumId: string) => {
                         pages: [{ albums: [response.data], count: Infinity }],
                     };
                 }
+
+                const newPages = oldData.pages.map((page) => {
+                    return {
+                        ...page,
+                        albums: page.albums.sort((a, b) => {
+                            const date1 = new Date(a.last_accessed_at).getTime();
+                            const date2 = new Date(b.last_accessed_at).getTime();
+
+                            return date1 - date2;
+                        }),
+                    } satisfies typeof page;
+                });
+
+                return {
+                    ...oldData,
+                    pages: newPages,
+                };
             },
         );
 
