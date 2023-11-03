@@ -1,7 +1,7 @@
 import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiInstance } from "../utils/axiosClients";
 import { TCreateAlbumFormVals } from "@weasel/schemas";
-import { TAlbum, TNewAlbum } from "@weasel/types";
+import { TAlbum, TInfiniteAlbums, TNewAlbum } from "@weasel/types";
 import { useUser } from "./useUser";
 
 export const useCreateAlbumMutation = () => {
@@ -18,7 +18,7 @@ export const useCreateAlbumMutation = () => {
 
     return useMutation(createAlbum, {
         onSuccess: (data) => {
-            queryClient.setQueryData<InfiniteData<TAlbum[]>>(
+            queryClient.setQueryData<InfiniteData<TInfiniteAlbums>>(
                 ["albums", user?.data?.id],
                 (oldData) => {
                     const newAlbum = {
@@ -29,12 +29,25 @@ export const useCreateAlbumMutation = () => {
                     } satisfies TAlbum;
 
                     if (!oldData) {
-                        return { pages: [[newAlbum]], pageParams: [0] };
+                        return {
+                            pages: [{ albums: [newAlbum], count: 1 }],
+                            pageParams: [undefined],
+                        };
                     } else {
-                        const lastPage = oldData.pages[oldData.pages.length - 1];
-                        lastPage.push(newAlbum);
+                        const lastPage = [
+                            {
+                                albums: [
+                                    ...oldData.pages[oldData.pages.length - 1].albums,
+                                    newAlbum,
+                                ],
+                                count: oldData.pages[oldData.pages.length - 1].count + 1,
+                            } satisfies TInfiniteAlbums,
+                        ];
 
-                        return oldData;
+                        return {
+                            ...oldData,
+                            pages: [...oldData.pages.slice(0, -1), ...lastPage],
+                        };
                     }
                 },
             );

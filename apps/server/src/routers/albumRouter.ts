@@ -21,7 +21,8 @@ albumRouter.get("/", async (req, res) => {
 
     let data;
 
-    if (cursorId) {
+    // first query check
+    if (cursorId === "0") {
         data = await prisma.user.findFirst({
             where: {
                 id: user.id,
@@ -35,10 +36,6 @@ albumRouter.get("/", async (req, res) => {
                         _count: true,
                     },
                     take: 12,
-                    skip: 1,
-                    cursor: {
-                        id: cursorId as string,
-                    },
                     orderBy: {
                         last_accessed_at: "asc",
                     },
@@ -59,6 +56,10 @@ albumRouter.get("/", async (req, res) => {
                         _count: true,
                     },
                     take: 12,
+                    skip: 1,
+                    cursor: {
+                        id: cursorId as string,
+                    },
                     orderBy: {
                         last_accessed_at: "asc",
                     },
