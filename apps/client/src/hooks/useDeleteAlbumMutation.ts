@@ -1,7 +1,7 @@
 import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiInstance } from "../utils/axiosClients";
 import { useUser } from "./useUser";
-import { TAlbum } from "@weasel/types";
+import { TInfiniteAlbums } from "@weasel/types";
 import { useLocation, useNavigate } from "react-router-dom";
 
 type TDeleteAlbumInput = {
@@ -23,23 +23,31 @@ export const useDeleteAlbumMutation = () => {
         onMutate: async (input) => {
             await queryClient.cancelQueries(["albums", user?.data?.id]);
 
-            const previousAllAlbums = queryClient.getQueryData<InfiniteData<TAlbum[]>>([
+            const previousAllAlbums = queryClient.getQueryData<InfiniteData<TInfiniteAlbums>>([
                 "albums",
                 user?.data?.id,
             ]);
 
             if (!previousAllAlbums) return;
 
-            queryClient.setQueryData<InfiniteData<TAlbum[]>>(["albums", user?.data?.id], () => {
-                const newData = previousAllAlbums.pages.map((page) =>
-                    page.filter((album) => album.id !== input.albumId),
-                );
+            queryClient.setQueryData<typeof previousAllAlbums>(
+                ["albums", user?.data?.id],
+                (oldData) => {
+                    if (!oldData) return;
 
-                return {
-                    pages: newData,
-                    pageParams: previousAllAlbums.pageParams,
-                };
-            });
+                    const newData = oldData.pages.map((page) => {
+                        return {
+                            albums: page.albums.filter((album) => album.id !== input.albumId),
+                            count: page.count - 1,
+                        } satisfies typeof page;
+                    });
+
+                    return {
+                        pages: newData,
+                        pageParams: oldData.pageParams,
+                    };
+                },
+            );
 
             return { previousAllAlbums };
         },
