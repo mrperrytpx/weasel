@@ -28,7 +28,7 @@ export const useGetAlbumQuery = (albumId: string) => {
                 if (!oldData) {
                     return {
                         pageParams: [0],
-                        pages: [{ albums: [response.data], count: 1 }],
+                        pages: [{ albums: [response.data], count: Infinity }],
                     };
                 }
             },

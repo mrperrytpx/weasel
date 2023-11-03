@@ -30,23 +30,20 @@ export const useCreateAlbumMutation = () => {
 
                     if (!oldData) {
                         return {
-                            pages: [{ albums: [newAlbum], count: 1 }],
+                            pages: [{ albums: [newAlbum], count: Infinity }],
                             pageParams: [undefined],
                         };
                     } else {
-                        const lastPage = [
+                        const firstPage = [
                             {
-                                albums: [
-                                    ...oldData.pages[oldData.pages.length - 1].albums,
-                                    newAlbum,
-                                ],
-                                count: oldData.pages[oldData.pages.length - 1].count + 1,
+                                albums: [newAlbum, ...oldData.pages[0].albums],
+                                count: oldData.pages[0].count + 1,
                             } satisfies TInfiniteAlbums,
                         ];
 
                         return {
                             ...oldData,
-                            pages: [...oldData.pages.slice(0, -1), ...lastPage],
+                            pages: [...firstPage, ...oldData.pages.slice(1)],
                         };
                     }
                 },

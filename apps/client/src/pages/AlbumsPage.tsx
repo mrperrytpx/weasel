@@ -20,25 +20,17 @@ const AlbumsPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [entry?.isIntersecting]);
 
-    if (userInfiniteAlbums.isLoading) {
-        return (
-            <main className="flex flex-1 flex-col gap-2">
-                <div className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-wrap justify-center gap-6 p-4 md:justify-start lg:gap-16">
-                    <div className="mx-auto mt-20 space-y-4 p-4">
-                        <LoadingSpinner color="#637ff1" size={60} />
-                        <p className="text-lg font-medium text-periwinkle-900 dark:text-white">
-                            Loading albums...
-                        </p>
-                    </div>
+    return (
+        <main className="flex flex-1 flex-col gap-2">
+            {userInfiniteAlbums.isLoading ? (
+                <div className="mx-auto mt-20 space-y-4 p-4">
+                    <LoadingSpinner color="#637ff1" size={60} />
+                    <p className="text-lg font-medium text-periwinkle-900 dark:text-white">
+                        Loading albums...
+                    </p>
                 </div>
-            </main>
-        );
-    }
-
-    if (!userInfiniteAlbums.data?.pages[0].albums.length) {
-        return (
-            <main className="flex flex-1 flex-col gap-2">
-                <div className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-wrap justify-center gap-6 p-4 md:justify-start lg:gap-16">
+            ) : (
+                !userInfiniteAlbums.data?.pages[0].albums.length && (
                     <div className="mx-auto mb-8 w-full max-w-xs gap-1 p-4">
                         <div className="mt-8 flex w-full flex-col items-center justify-center gap-2 lg:mt-16">
                             <div className="aspect-square w-full">
@@ -56,15 +48,10 @@ const AlbumsPage = () => {
                             </Link>
                         </div>
                     </div>
-                </div>
-            </main>
-        );
-    }
-
-    return (
-        <main className="flex flex-1 flex-col gap-2">
+                )
+            )}
             <div className="mx-auto flex w-full max-w-responsive-screen-2xl flex-1 flex-wrap justify-center gap-6 p-4 md:justify-start lg:gap-16">
-                {userInfiniteAlbums.data.pages.map((page) => (
+                {userInfiniteAlbums.data?.pages.map((page) => (
                     <Fragment key={randomString(6)}>
                         {page.albums.map((album) => (
                             <AlbumCard key={album.id} album={album} />
@@ -72,7 +59,7 @@ const AlbumsPage = () => {
                     </Fragment>
                 ))}
             </div>
-            <div className="mb-4 px-4 py-2 text-center text-sm font-bold" ref={endRef}>
+            <div ref={endRef} className="mb-4 px-4 py-2 text-center text-sm font-bold">
                 {userInfiniteAlbums.hasNextPage
                     ? userInfiniteAlbums.isFetchingNextPage
                         ? "Loading more albums..."
