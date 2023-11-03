@@ -1,6 +1,7 @@
 import { prisma } from "@weasel/db";
 import { utapi } from "@weasel/filehost";
 import { albumNameSchema } from "@weasel/schemas";
+import { TInfiniteAlbums } from "@weasel/types";
 import { Router } from "express";
 
 const albumRouter = Router();
@@ -8,32 +9,70 @@ const albumRouter = Router();
 albumRouter.get("/", async (req, res) => {
     if (!req.user?.id) return res.status(401).end("You must be logged in!");
 
-    const { offset } = req.query;
+    const { cursorId } = req.query;
 
     const user = await prisma.user.findFirst({
         where: {
             id: req.user.id,
         },
-        include: {
-            albums: {
-                include: {
-                    images: {
-                        take: 1,
-                    },
-                    _count: true,
-                },
-                take: 20,
-                skip: offset ? +offset : 0,
-                orderBy: {
-                    created_at: "asc",
-                },
-            },
-        },
     });
 
     if (!user) return res.status(401).end("No user!");
 
-    res.status(200).json(user.albums);
+    let data;
+
+    if (cursorId) {
+        data = await prisma.user.findFirst({
+            where: {
+                id: user.id,
+            },
+            include: {
+                albums: {
+                    include: {
+                        images: {
+                            take: 1,
+                        },
+                        _count: true,
+                    },
+                    take: 12,
+                    skip: 1,
+                    cursor: {
+                        id: cursorId as string,
+                    },
+                    orderBy: {
+                        last_accessed_at: "asc",
+                    },
+                },
+            },
+        });
+    } else {
+        data = await prisma.user.findFirst({
+            where: {
+                id: user.id,
+            },
+            include: {
+                albums: {
+                    include: {
+                        images: {
+                            take: 1,
+                        },
+                        _count: true,
+                    },
+                    take: 12,
+                    orderBy: {
+                        last_accessed_at: "asc",
+                    },
+                },
+            },
+        });
+    }
+
+    const albums = {
+        albums: data!.albums,
+        count: data!.albums.length,
+    } satisfies TInfiniteAlbums;
+
+    res.status(200).json(albums);
 });
 
 albumRouter.post("/", async (req, res) => {
@@ -97,7 +136,18 @@ albumRouter.get("/:albumId", async (req, res) => {
 
     if (!album) return res.status(404).end("Album doesn't exist!");
 
-    return res.status(200).json(album);
+    const date = new Date();
+
+    await prisma.album.update({
+        where: {
+            id: album.id,
+        },
+        data: {
+            last_accessed_at: date,
+        },
+    });
+
+    return res.status(200).json({ ...album, last_accessedAt: date });
 });
 
 albumRouter.patch("/:albumId", async (req, res) => {

@@ -11,7 +11,7 @@ export const ProfileOverview = () => {
     const profileStats = useOutletContext<TProfileStats>();
 
     const percentageStorage =
-        profileStats.storage /
+        profileStats.storageUsed /
         (!user?.data?.isSubscriptionActive ? FREE_TIER_STORAGE : PREMIUM__TIER_STORAGE);
 
     const formattedPercentage = new Intl.NumberFormat("en-gb", {
@@ -42,7 +42,7 @@ export const ProfileOverview = () => {
                     <h2 className="text-xl font-medium">Storage used</h2>
                     <div>
                         <p>
-                            {profileStats.storage} out of
+                            {profileStats.storageUsed} out of
                             {!user?.data?.isSubscriptionActive
                                 ? ` ${FREE_TIER_STORAGE} bytes`
                                 : ` ${PREMIUM__TIER_STORAGE} bytes`}

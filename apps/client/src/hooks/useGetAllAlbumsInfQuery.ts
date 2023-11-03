@@ -1,17 +1,13 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useUser } from "./useUser";
 import { apiInstance } from "../utils/axiosClients";
-import { TAlbum } from "@weasel/types";
+import { TInfiniteAlbums } from "@weasel/types";
 
 const fetchAlbums = async (pageParam: number) => {
-    const response = await apiInstance.get<TAlbum[]>(
-        `/api/albums?offset=${pageParam ? pageParam : 0}`,
-    );
+    const response = await apiInstance.get<TInfiniteAlbums>(`/api/albums?cursor=${pageParam}`);
 
     return response.data;
 };
-
-const ALBUM_OFFSET = 20;
 
 export const useGetAllAlbumsInfQuery = () => {
     const user = useUser();
@@ -19,8 +15,10 @@ export const useGetAllAlbumsInfQuery = () => {
     return useInfiniteQuery({
         queryKey: ["albums", user?.data?.id],
         queryFn: async ({ pageParam = 0 }) => fetchAlbums(pageParam),
-        getNextPageParam: (lastPage, pages) => {
-            return lastPage.length >= ALBUM_OFFSET ? pages.flat().length : undefined; // bad
+        getNextPageParam: (lastPage) => {
+            return lastPage.albums[lastPage.albums.length - 1]
+                ? lastPage.albums[lastPage.albums.length - 1].id
+                : undefined;
         },
     });
 };

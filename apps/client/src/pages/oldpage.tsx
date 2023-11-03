@@ -55,7 +55,7 @@ const ProfilePage = () => {
                         <div className="flex flex-wrap items-center justify-center gap-1 md:justify-normal">
                             <span className="text-lg font-medium">Storage used:</span>
                             <span>
-                                {profileStats.data?.storage} bytes
+                                {profileStats.data?.storageUsed} bytes
                                 {!user.data.isSubscriptionActive
                                     ? ` out of ${FREE_TIER_STORAGE} bytes`
                                     : ` out of ${PREMIUM__TIER_STORAGE} bytes`}

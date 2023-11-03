@@ -1,6 +1,11 @@
 import { Album, Image, User } from "@weasel/db";
 import { OurFileRouter } from "@weasel/filehost";
 
+export type TInfiniteAlbums = {
+    albums: TAlbum[];
+    count: number;
+};
+
 export type TAlbum = Album & {
     images: TNewImage[] | [];
     _count?: {
@@ -18,20 +23,25 @@ export type TNewImage = Image & {
 
 export type TUser = Pick<User, "id" | "image" | "isSubscriptionActive">;
 
+// ---------------------------------
+type TAlbumWithMostImages = {
+    name: string;
+    numOfImages: number;
+    id: string;
+};
+
+type TLargestImage = {
+    name: string;
+    size: number;
+    url: string;
+};
+
 export type TProfileStats = {
     numOfAlbums: number;
     numOfImages: number;
-    albumWithMostImages: {
-        name: string;
-        numOfImages: number;
-        id: string;
-    } | null;
-    largestImage: {
-        name: string;
-        size: number;
-        url: string;
-    } | null;
-    storage: number;
+    albumWithMostImages: TAlbumWithMostImages | null;
+    largestImage: TLargestImage | null;
+    storageUsed: number;
     subscriptionDueDate: number | null;
 };
 

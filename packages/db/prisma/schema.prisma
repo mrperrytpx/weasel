@@ -24,13 +24,14 @@ model User {
 }
 
 model Album {
-  id          String    @id @default(cuid())
-  created_at  DateTime  @default(now()) @map("createdAt")
-  owner       User      @relation(fields: [owner_id], references: [id], onDelete: Cascade)
-  owner_id    String    @map("ownerId")
-  name        String
-  images      Image[]
-  isPublic    Boolean   @default(false)   
+  id               String    @id @default(cuid())
+  created_at       DateTime  @default(now()) @map("createdAt")
+  last_accessed_at DateTime  @default(now()) @map("lastAccessedAt")
+  owner            User      @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  owner_id         String    @map("ownerId")
+  name             String
+  images           Image[]
+  isPublic         Boolean   @default(false)   
 }
 
 model Image {
