@@ -1,7 +1,7 @@
 import { InfiniteData, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { apiInstance } from "../utils/axiosClients";
 import { useUser } from "./useUser";
-import { Image, TAlbum } from "@weasel/types";
+import { Image, TAlbum, TInfiniteAlbums } from "@weasel/types";
 
 const fetchImages = async (albumId: string, pageParam: number) => {
     const response = await apiInstance.get<Image[]>(
@@ -24,14 +24,18 @@ export const useGetAlbumImagesInfQuery = (albumId: string) => {
             return lastPage.length >= IMAGES_OFFSET ? pages.flat().length : undefined;
         },
         initialData: () => {
-            const allAlbums: InfiniteData<TAlbum[]> | undefined = queryClient.getQueryData([
+            const allAlbums: InfiniteData<TInfiniteAlbums> | undefined = queryClient.getQueryData([
                 "albums",
                 user?.data?.id,
             ]);
 
             if (!allAlbums) return;
 
-            const album = allAlbums.pages.flat().find((album) => album.id === albumId);
+            const album = allAlbums.pages.reduce<TAlbum | null>((result, page) => {
+                const target = page.albums.find((album) => album.id === albumId);
+                if (target) return target;
+                return result;
+            }, null);
 
             if (!album) return;
             if (!album.images.length) return;

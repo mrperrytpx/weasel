@@ -32,12 +32,15 @@ albumRouter.get("/", async (req, res) => {
                     include: {
                         images: {
                             take: 1,
+                            orderBy: {
+                                created_at: "desc",
+                            },
                         },
                         _count: true,
                     },
                     take: 12,
                     orderBy: {
-                        last_accessed_at: "asc",
+                        last_accessed_at: "desc",
                     },
                 },
             },
@@ -52,6 +55,9 @@ albumRouter.get("/", async (req, res) => {
                     include: {
                         images: {
                             take: 1,
+                            orderBy: {
+                                created_at: "desc",
+                            },
                         },
                         _count: true,
                     },
@@ -61,7 +67,7 @@ albumRouter.get("/", async (req, res) => {
                         id: cursorId as string,
                     },
                     orderBy: {
-                        last_accessed_at: "asc",
+                        last_accessed_at: "desc",
                     },
                 },
             },
@@ -131,7 +137,11 @@ albumRouter.get("/:albumId", async (req, res) => {
             owner_id: req.user.id,
         },
         include: {
-            images: true,
+            images: {
+                orderBy: {
+                    created_at: "desc",
+                },
+            },
         },
     });
 

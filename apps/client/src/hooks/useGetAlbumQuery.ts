@@ -1,6 +1,6 @@
 import { InfiniteData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiInstance } from "../utils/axiosClients";
-import { Image, TAlbum } from "@weasel/types";
+import { Image, TAlbum, TInfiniteAlbums } from "@weasel/types";
 import { useUser } from "./useUser";
 
 const IMAGE_OFFSET = 20;
@@ -22,31 +22,17 @@ export const useGetAlbumQuery = (albumId: string) => {
             };
         });
 
-        queryClient.setQueryData<InfiniteData<TAlbum[]>>(["albums", user?.data?.id], (oldData) => {
-            if (!oldData) {
-                return {
-                    pageParams: [0],
-                    pages: [[response.data]],
-                };
-            }
-
-            if (oldData.pages.find((page) => page.find((album) => album.id === response.data.id))) {
-                return oldData;
-            }
-
-            const newData = oldData.pages.map((page, pageIdx) => {
-                if (pageIdx === oldData.pages.length - 1) {
-                    return [...page, response.data];
-                } else {
-                    return page;
+        queryClient.setQueryData<InfiniteData<TInfiniteAlbums>>(
+            ["albums", user?.data?.id],
+            (oldData) => {
+                if (!oldData) {
+                    return {
+                        pageParams: [0],
+                        pages: [{ albums: [response.data], count: 1 }],
+                    };
                 }
-            });
-
-            return {
-                pageParams: oldData.pageParams,
-                pages: newData,
-            };
-        });
+            },
+        );
 
         return response.data;
     };
@@ -55,14 +41,18 @@ export const useGetAlbumQuery = (albumId: string) => {
         queryKey: ["album", albumId],
         queryFn: fetchAlbum,
         initialData: () => {
-            const allAlbums = queryClient.getQueryData<InfiniteData<TAlbum[]>>([
+            const allAlbums = queryClient.getQueryData<InfiniteData<TInfiniteAlbums>>([
                 "albums",
                 user?.data?.id,
             ]);
 
             if (!allAlbums) return;
 
-            const album = allAlbums.pages.flat().find((album) => album.id === albumId);
+            const album = allAlbums.pages.reduce<TAlbum | null>((result, page) => {
+                const target = page.albums.find((album) => album.id === albumId);
+                if (target) return target;
+                return result;
+            }, null);
 
             if (!album) return;
 
