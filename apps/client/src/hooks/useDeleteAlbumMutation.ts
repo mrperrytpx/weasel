@@ -35,12 +35,14 @@ export const useDeleteAlbumMutation = () => {
                 (oldData) => {
                     if (!oldData) return;
 
-                    const newData = oldData.pages.map((page) => {
-                        return {
-                            albums: page.albums.filter((album) => album.id !== input.albumId),
-                            count: page.count - 1,
-                        } satisfies typeof page;
-                    });
+                    const newData = oldData.pages
+                        .map((page) => {
+                            return {
+                                albums: page.albums.filter((album) => album.id !== input.albumId),
+                                count: page.count - 1,
+                            } satisfies typeof page;
+                        })
+                        .filter((page) => page.albums.length);
 
                     return {
                         pages: newData,

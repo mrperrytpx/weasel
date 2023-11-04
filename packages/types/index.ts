@@ -21,6 +21,18 @@ export type TNewImage = Image & {
     uploadStatus?: "failed" | "finished" | "uploading";
 };
 
+export type TStrippedImage = Omit<Image, "album_id" | "owner_id"> & {
+    album: {
+        name: string;
+    };
+};
+
+export type TInfiniteFiles = {
+    files: TStrippedImage[];
+    count: number;
+    nextId: string;
+};
+
 export type TUser = Pick<User, "id" | "image" | "isSubscriptionActive">;
 
 // ---------------------------------

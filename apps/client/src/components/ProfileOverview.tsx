@@ -1,18 +1,36 @@
-import { Link, useOutletContext } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
 import { VscInfo } from "react-icons/vsc";
 import { FREE_TIER_STORAGE, PREMIUM__TIER_STORAGE } from "../utils/tierStorageSizes";
 import { roundBytesToKilobytes } from "../utils/roundBytesToKilobytes";
-import { TProfileStats } from "@weasel/types";
 import { ProfileSubrouteLayout } from "../layouts/ProfileSubrouteLayout";
+import { useGetProfileStatsQuery } from "../hooks/useGetProfileStatsQuery";
+
+type TStatCardProps = {
+    text: string;
+    span: string | number | undefined;
+};
+
+const StatCard = ({ text, span }: TStatCardProps) => {
+    return (
+        <article className="flex flex-col items-center justify-center gap-4 rounded-md bg-white p-4 shadow dark:bg-zinc-800">
+            <h2 className="text-xl font-medium">{text}</h2>
+            {span ? (
+                <span>{span}</span>
+            ) : (
+                <span className="h-6 animate-pulse rounded-full bg-gray-300 px-6" />
+            )}
+        </article>
+    );
+};
 
 export const ProfileOverview = () => {
     const user = useUser();
-    const profileStats = useOutletContext<TProfileStats>();
+    const profileStats = useGetProfileStatsQuery();
 
     const percentageStorage =
-        profileStats.storageUsed /
-        (!user?.data?.isSubscriptionActive ? FREE_TIER_STORAGE : PREMIUM__TIER_STORAGE);
+        profileStats.data?.storageUsed ||
+        0 / (!user?.data?.isSubscriptionActive ? FREE_TIER_STORAGE : PREMIUM__TIER_STORAGE);
 
     const formattedPercentage = new Intl.NumberFormat("en-gb", {
         style: "percent",
@@ -42,7 +60,7 @@ export const ProfileOverview = () => {
                     <h2 className="text-xl font-medium">Storage used</h2>
                     <div>
                         <p>
-                            {profileStats.storageUsed} out of
+                            {profileStats.data?.storageUsed} out of
                             {!user?.data?.isSubscriptionActive
                                 ? ` ${FREE_TIER_STORAGE} bytes`
                                 : ` ${PREMIUM__TIER_STORAGE} bytes`}
@@ -58,29 +76,22 @@ export const ProfileOverview = () => {
                         />
                     </div>
                 </article>
-                <article className="flex flex-col items-center justify-center gap-4 rounded-md bg-white p-4 shadow dark:bg-zinc-800">
-                    <h2 className="text-xl font-medium">Albums created</h2>
-                    <span>{profileStats.numOfAlbums}</span>
-                </article>
-                <article className="flex flex-col items-center justify-center gap-4 rounded-md bg-white p-4 shadow dark:bg-zinc-800">
-                    <h2 className="text-xl font-medium">Images stored</h2>
-                    <span>{profileStats.numOfImages}</span>
-                </article>
+                <StatCard text="Albums created" span={profileStats.data?.numOfAlbums || 0} />
+                <StatCard text="Images stored" span={profileStats.data?.numOfImages || 0} />
                 <article className="flex flex-col items-center justify-center gap-4 rounded-md bg-white p-4 shadow dark:bg-zinc-800">
                     <h2 className="text-xl font-medium">Largest Album</h2>
-                    {profileStats.albumWithMostImages ? (
+                    {profileStats.data?.albumWithMostImages ? (
                         <div className="space-y-2">
                             <Link
                                 className="underline hover:text-periwinkle-600"
-                                to={`${import.meta.env.VITE_WEBSITE_URL}/albums/${
-                                    profileStats.albumWithMostImages.id
-                                }`}
+                                to={`${import.meta.env.VITE_WEBSITE_URL}/albums/${profileStats.data
+                                    ?.albumWithMostImages.id}`}
                             >
-                                {profileStats.albumWithMostImages.name}
+                                {profileStats.data?.albumWithMostImages.name}
                             </Link>
                             <div className="space-x-2 text-center">
                                 <span className="font-medium">Images:</span>
-                                <span>{profileStats.albumWithMostImages.numOfImages}</span>
+                                <span>{profileStats.data?.albumWithMostImages.numOfImages}</span>
                             </div>
                         </div>
                     ) : (
@@ -89,18 +100,18 @@ export const ProfileOverview = () => {
                 </article>
                 <article className="flex flex-col items-center justify-center gap-4 rounded-md bg-white p-2 shadow dark:bg-zinc-800">
                     <h2 className="text-xl font-medium">Largest Image</h2>
-                    {profileStats.largestImage ? (
+                    {profileStats.data?.largestImage ? (
                         <div className="space-y-2 text-center">
                             <a
                                 className="underline hover:text-periwinkle-600"
-                                href={profileStats.largestImage.url}
+                                href={profileStats.data?.largestImage.url}
                             >
-                                {profileStats.largestImage.name}
+                                {profileStats.data?.largestImage.name}
                             </a>
                             <div className="space-x-2">
                                 <span className="text-lg font-medium">Size:</span>
                                 <span>
-                                    {roundBytesToKilobytes(profileStats.largestImage.size)}{" "}
+                                    {roundBytesToKilobytes(profileStats.data?.largestImage.size)}{" "}
                                     Kilobytes
                                 </span>
                             </div>

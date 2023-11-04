@@ -3,6 +3,7 @@ import { useUpdateAlbumPublicityMutation } from "../hooks/useUpdateAlbumPublicit
 import { z } from "zod";
 import { useState } from "react";
 import { useGetAlbumQuery } from "../hooks/useGetAlbumQuery";
+import { useUser } from "../hooks/useUser";
 
 export const TogglePublicityButton = () => {
     const params = useParams();
@@ -10,6 +11,7 @@ export const TogglePublicityButton = () => {
 
     const updateAlbumPublicity = useUpdateAlbumPublicityMutation();
     const album = useGetAlbumQuery(albumId);
+    const user = useUser();
 
     const [checked, setChecked] = useState<boolean | undefined>(album.data?.isPublic);
 
@@ -19,6 +21,7 @@ export const TogglePublicityButton = () => {
     };
 
     if (!album.data) return null;
+    if (!user?.data?.isSubscriptionActive) return null;
 
     return (
         <div className="group relative flex items-center gap-1">

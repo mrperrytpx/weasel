@@ -26,6 +26,10 @@ export const useGetAlbumQuery = (albumId: string) => {
                     return oldData;
                 }
 
+                if (oldData.pages[0].albums[0].id === album.id) {
+                    return oldData;
+                }
+
                 const newPages = oldData.pages
                     .map((page, idx) => {
                         if (idx === 0) {
