@@ -77,7 +77,7 @@ const AlbumPage = () => {
                 </div>
             </header>
 
-            {albumInfiniteImages.data?.pages[0].images.length ? (
+            {albumInfiniteImages.data?.pages.reduce((acc, curr) => acc + curr.images.length, 0) ? (
                 <div className="mx-auto mb-8 mt-4 w-full items-center gap-4 p-4 sm:columns-2 sm:gap-6 lg:columns-3 lg:gap-8 xl:columns-4">
                     <UploadFilesForm />
                     {albumInfiniteImages.data?.pages.map((page) => (

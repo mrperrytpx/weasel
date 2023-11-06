@@ -50,7 +50,7 @@ export const ProfileFiles = () => {
                         Loading files...
                     </p>
                 </div>
-            ) : !infiniteFiles.data?.pages[0]?.files.length ? (
+            ) : !infiniteFiles.data?.pages.reduce((acc, curr) => acc + curr.files.length, 0) ? (
                 <div className="">
                     <p className="text-center text-lg font-medium text-periwinkle-900 dark:text-white">
                         You haven't uploaded any files yet! 😅

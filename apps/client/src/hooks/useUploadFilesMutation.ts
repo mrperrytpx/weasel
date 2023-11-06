@@ -188,8 +188,6 @@ export const useUploadFilesMutation = () => {
         },
         onError: (_err, input, context) => {
             queryClient.setQueryData(["images", input.albumId], context?.albumImages);
-        },
-        onSettled: (_data, _err, input) => {
             setTimeout(async () => {
                 await queryClient.invalidateQueries(["images", input.albumId]);
             }, 5000);

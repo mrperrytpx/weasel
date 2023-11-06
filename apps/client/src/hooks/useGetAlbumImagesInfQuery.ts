@@ -59,17 +59,11 @@ export const useGetAlbumImagesInfQuery = (albumId: string) => {
         queryFn: async ({ pageParam = 0 }) => fetchImages(albumId, pageParam),
         enabled: !!albumId,
         getNextPageParam: (lastPage, pages) => {
-            if (!lastPage?.images?.length) return undefined;
-
             const totalFetchedImages = pages.reduce(
                 (acc, curr) => acc + curr.images.length || 0,
                 0,
             );
             if (totalFetchedImages >= lastPage.count) {
-                return undefined;
-            }
-
-            if (lastPage.count === 0) {
                 return undefined;
             }
 
