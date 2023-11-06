@@ -24,6 +24,7 @@ export type TNewImage = Image & {
 export type TStrippedImage = Omit<Image, "album_id" | "owner_id"> & {
     album: {
         name: string;
+        id: string;
     };
 };
 

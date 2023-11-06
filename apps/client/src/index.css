@@ -7,5 +7,5 @@ body {
 }
 
 .active {
-    @apply bg-periwinkle-600 text-white dark:bg-periwinkle-600;
+    @apply bg-periwinkle-600 text-white dark:bg-periwinkle-600 !important;
 }

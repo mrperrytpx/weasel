@@ -16,12 +16,24 @@ imageRouter.get("/", async (req, res) => {
             id: req.user.id,
         },
         include: {
-            images: true,
+            images: {
+                orderBy: {
+                    created_at: "desc",
+                },
+            },
             _count: true,
         },
     });
 
     if (!user) return res.status(401).end("You must be logged in");
+
+    if (!user.images.length) {
+        return res.status(200).json({
+            count: 0,
+            files: [],
+            nextId: null,
+        });
+    }
 
     const images = (await prisma.image.findMany({
         where: {
@@ -31,6 +43,7 @@ imageRouter.get("/", async (req, res) => {
             album: {
                 select: {
                     name: true,
+                    id: true,
                 },
             },
             created_at: true,
@@ -54,6 +67,8 @@ imageRouter.get("/", async (req, res) => {
         files: images,
         nextId: images[images.length - 1].id,
     } satisfies TInfiniteFiles;
+
+    console.log("data", data);
 
     return res.status(200).json(data);
 });

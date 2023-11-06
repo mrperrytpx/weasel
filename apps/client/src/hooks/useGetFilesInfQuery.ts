@@ -15,11 +15,9 @@ export const useGetFilesInfQuery = () => {
     return useInfiniteQuery({
         queryKey: ["all-files", user?.data?.id],
         queryFn: ({ pageParam = 0 }) => fetchAlbums(pageParam),
-        getNextPageParam: (lastPage, pages) => {
-            const totalFetchedFiles = pages.reduce((acc, curr) => acc + curr.files.length, 0);
-            if (totalFetchedFiles >= lastPage.count) {
-                return undefined;
-            }
+        getNextPageParam: (lastPage) => {
+            if (!lastPage.nextId) return undefined;
+
             return lastPage.nextId;
         },
     });
