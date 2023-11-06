@@ -4,15 +4,17 @@ import { ProfileSubrouteLayout } from "../layouts/ProfileSubrouteLayout";
 import { randomString } from "../utils/randomString";
 import { roundBytesToKilobytes } from "../utils/roundBytesToKilobytes";
 import { LoadingSpinner } from "./LoadingSpinner";
-import { Fragment } from "react";
+import { Fragment, useRef } from "react";
 import { useDeleteImageMutation } from "../hooks/useDeleteImageMutation";
+import { Link } from "react-router-dom";
 
 export const ProfileFiles = () => {
     const infiniteFiles = useGetFilesInfQuery();
+    const endRef = useRef<HTMLButtonElement>(null);
 
     const deleteImage = useDeleteImageMutation();
 
-    const handleDeleteAlbum = async (imageId: string, albumId: string) => {
+    const handleDeleteImage = async (imageId: string, albumId: string) => {
         await deleteImage.mutateAsync({ imageId, albumId });
     };
 
@@ -33,69 +35,103 @@ export const ProfileFiles = () => {
                     </p>
                 </div>
             ) : (
-                <table className="w-full rounded-md bg-white">
-                    <thead className="border-b-2">
-                        <tr>
-                            <th className="text-left">
-                                <div className="px-2 py-4">Name</div>
-                            </th>
-                            <th className="text-left">
-                                <div className="px-2 py-4">Album</div>
-                            </th>
-                            <th className="text-left">
-                                <div className="px-2 py-4">Date Uploaded</div>
-                            </th>
-                            <th className="text-left">
-                                <div className="px-2 py-4">Size</div>
-                            </th>
-                            <th className="w-10"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {infiniteFiles.data?.pages.map((page) => (
-                            <Fragment key={randomString(6)}>
-                                {page.files.map((file) => (
-                                    <tr key={file.id}>
-                                        <td>
-                                            <div className="line-clamp-1 p-2">{file.name}</div>
-                                        </td>
-                                        <td>
-                                            <div className="line-clamp-1 p-2">
-                                                {file.album.name}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="p-2">
-                                                {new Intl.DateTimeFormat("en-GB", {
-                                                    dateStyle: "long",
-                                                }).format(new Date(file.created_at))}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="p-2">
-                                                {roundBytesToKilobytes(file.size)}KB
-                                            </div>
-                                        </td>
-                                        <td className="w-min">
-                                            <button
-                                                aria-label="Delete the file."
-                                                onClick={() =>
-                                                    handleDeleteAlbum(file.id, file.album.id)
-                                                }
-                                                className="group w-min rounded-md bg-white p-2 dark:bg-zinc-800"
-                                            >
-                                                <BsTrash
-                                                    size={20}
-                                                    className="fill-black group-hover:fill-red-500 dark:fill-white"
-                                                />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </Fragment>
-                        ))}
-                    </tbody>
-                </table>
+                <>
+                    <table className="w-full max-w-5xl table-fixed overflow-x-scroll rounded-md bg-white dark:bg-zinc-800">
+                        <thead className="w-full border-b-2 dark:border-zinc-700">
+                            <tr className="w-full">
+                                <th className="px-2 py-4 text-left">
+                                    <div>Name</div>
+                                </th>
+                                <th className="px-2 py-4 text-left">
+                                    <div>Album</div>
+                                </th>
+
+                                <th className="w-[5rem] px-2 py-4 text-left">
+                                    <div>Size</div>
+                                </th>
+                                <th className="hidden w-[10rem] px-2 py-4 text-left sm:table-cell">
+                                    <div>Date Uploaded</div>
+                                </th>
+                                <th className="w-[2.5rem] px-2 py-4 text-left" />
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {infiniteFiles.data?.pages.map((page) => (
+                                <Fragment key={randomString(6)}>
+                                    {page.files.map((file) => (
+                                        <tr
+                                            className="group/tr border-b-2 last:border-none dark:border-zinc-700 dark:hover:bg-zinc-700"
+                                            key={file.id}
+                                        >
+                                            <td className="truncate pl-2">
+                                                <a
+                                                    href={file.url}
+                                                    target="_blank"
+                                                    className="hover:text-periwinkle-600 hover:underline dark:hover:text-periwinkle-400"
+                                                >
+                                                    {file.name}
+                                                </a>
+                                            </td>
+                                            <td className="truncate pl-2">
+                                                <Link
+                                                    to={`/albums/${file.album.id}`}
+                                                    className="hover:text-periwinkle-600 hover:underline dark:hover:text-periwinkle-400"
+                                                >
+                                                    {file.album.name}
+                                                </Link>
+                                            </td>
+
+                                            <td className="p-2 text-sm">
+                                                <div className="">
+                                                    {roundBytesToKilobytes(file.size)}KB
+                                                </div>
+                                            </td>
+                                            <td className="hidden p-2 text-sm font-medium sm:table-cell">
+                                                <div>
+                                                    {new Intl.DateTimeFormat("en-GB", {
+                                                        dateStyle: "long",
+                                                    }).format(new Date(file.created_at))}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button
+                                                    title="Delete the file."
+                                                    aria-label="Delete the file."
+                                                    onClick={() =>
+                                                        handleDeleteImage(file.id, file.album.id)
+                                                    }
+                                                    disabled={deleteImage.isLoading}
+                                                    className="group rounded-md bg-white p-2 disabled:opacity-50 dark:bg-zinc-800 dark:group-hover/tr:bg-zinc-700"
+                                                >
+                                                    {deleteImage.isLoading ? (
+                                                        <LoadingSpinner size={20} color="#637ff1" />
+                                                    ) : (
+                                                        <BsTrash
+                                                            size={20}
+                                                            className="fill-black group-hover:fill-red-500 dark:fill-white  dark:group-hover:fill-red-500"
+                                                        />
+                                                    )}
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </Fragment>
+                            ))}
+                        </tbody>
+                    </table>
+                    <button
+                        onClick={() => infiniteFiles.fetchNextPage()}
+                        disabled={!infiniteFiles.hasNextPage}
+                        ref={endRef}
+                        className="mb-4 pl-2 text-center text-sm font-bold disabled:hidden"
+                    >
+                        {infiniteFiles.hasNextPage
+                            ? infiniteFiles.isFetchingNextPage
+                                ? "Loading more files..."
+                                : "Load more files"
+                            : null}
+                    </button>
+                </>
             )}
         </ProfileSubrouteLayout>
     );

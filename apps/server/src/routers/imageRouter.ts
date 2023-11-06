@@ -68,8 +68,6 @@ imageRouter.get("/", async (req, res) => {
         nextId: images[images.length - 1].id,
     } satisfies TInfiniteFiles;
 
-    console.log("data", data);
-
     return res.status(200).json(data);
 });
 
