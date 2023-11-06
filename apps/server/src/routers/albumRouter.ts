@@ -1,7 +1,7 @@
-import { Album, prisma } from "@weasel/db";
+import { prisma } from "@weasel/db";
 import { utapi } from "@weasel/filehost";
 import { albumNameSchema } from "@weasel/schemas";
-import { TInfiniteAlbums } from "@weasel/types";
+import { TAlbum, TInfiniteAlbums } from "@weasel/types";
 import { Router } from "express";
 
 const albumRouter = Router();
@@ -120,7 +120,7 @@ albumRouter.get("/:albumId", async (req, res) => {
 
     if (!albumId) return res.status(400).end("Provide an album ID!");
 
-    const album = await prisma.album.findFirst({
+    const album = (await prisma.album.findFirst({
         where: {
             id: albumId,
             owner_id: req.user.id,
@@ -131,8 +131,9 @@ albumRouter.get("/:albumId", async (req, res) => {
                     created_at: "desc",
                 },
             },
+            _count: true,
         },
-    });
+    })) satisfies TAlbum | null;
 
     if (!album) return res.status(404).end("Album doesn't exist!");
 
@@ -149,7 +150,7 @@ albumRouter.get("/:albumId", async (req, res) => {
 
     return res
         .status(200)
-        .json({ ...album, last_accessed_at: date } satisfies Album);
+        .json({ ...album, last_accessed_at: date } satisfies TAlbum);
 });
 
 albumRouter.patch("/:albumId", async (req, res) => {
@@ -168,7 +169,6 @@ albumRouter.patch("/:albumId", async (req, res) => {
                 where: {
                     id: albumId,
                 },
-                take: 1,
             },
         },
     });
@@ -230,6 +230,7 @@ albumRouter.get("/public/:albumId", async (req, res) => {
         },
         include: {
             images: true,
+            _count: true,
         },
     });
 

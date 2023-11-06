@@ -1,6 +1,6 @@
 import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiInstance } from "../utils/axiosClients";
-import { TAlbum } from "@weasel/types";
+import { TAlbum, TInfiniteAlbums } from "@weasel/types";
 import { useUser } from "./useUser";
 
 type TUpdateAlbumPublicity = {
@@ -22,14 +22,14 @@ export const useUpdateAlbumPublicityMutation = () => {
 
             const oldAlbumData = queryClient.getQueryData<TAlbum>(["album", vars.albumId]);
 
-            const allOldAlbumsData = queryClient.getQueryData<InfiniteData<TAlbum[]>>([
+            const allOldAlbumsData = queryClient.getQueryData<InfiniteData<TInfiniteAlbums>>([
                 "albums",
                 user?.data?.id,
             ]);
 
             if (!oldAlbumData && !allOldAlbumsData) return;
 
-            queryClient.setQueryData<TAlbum>(["album", vars.albumId], (oldData) => {
+            queryClient.setQueryData<typeof oldAlbumData>(["album", vars.albumId], (oldData) => {
                 if (!oldData) return;
 
                 return {
@@ -37,18 +37,19 @@ export const useUpdateAlbumPublicityMutation = () => {
                     isPublic: !oldData.isPublic,
                 };
             });
-            queryClient.setQueryData<InfiniteData<TAlbum[]>>(
+            queryClient.setQueryData<typeof allOldAlbumsData>(
                 ["albums", user?.data?.id],
                 (oldData) => {
                     if (!oldData) return;
 
-                    const newData = oldData.pages.map((page) =>
-                        page.map((album) =>
+                    const newData = oldData.pages.map((page) => ({
+                        ...page,
+                        albums: page.albums.map((album) =>
                             album.id === vars.albumId
                                 ? { ...album, isPublic: !album.isPublic }
                                 : album,
                         ),
-                    );
+                    }));
 
                     return {
                         pageParams: oldData.pageParams,

@@ -52,7 +52,7 @@ const AlbumCard = ({ album }: TAlbumCardProps) => {
                     <p title={album.name} className="break-word line-clamp-1 font-medium">
                         {album.name}
                     </p>
-                    <p className="text-sm font-medium">Images: {album._count?.images}</p>
+                    <p className="text-sm font-medium">Images: {album._count.images}</p>
                     <p className="line-clamp-1 break-all rounded-b-md pr-1 text-right text-xs font-semibold italic opacity-80">
                         {new Intl.DateTimeFormat("en-GB", {
                             dateStyle: "long",

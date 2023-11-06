@@ -56,8 +56,6 @@ export const useGetAlbumQuery = (albumId: string) => {
 
         const response = await apiInstance.get<TAlbum>(`/api/albums/${albumId}`);
 
-        if (!response.data) return;
-
         return response.data;
     };
 

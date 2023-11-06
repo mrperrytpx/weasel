@@ -46,7 +46,7 @@ export const useGetAlbumImagesInfQuery = (albumId: string) => {
             }, null);
 
             if (!album) return;
-            if (!album._count?.images) return;
+            if (!album._count.images) return;
 
             return {
                 pageParams: [0],

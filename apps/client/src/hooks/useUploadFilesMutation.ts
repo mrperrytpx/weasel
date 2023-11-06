@@ -130,10 +130,7 @@ export const useUploadFilesMutation = () => {
                         uploadStatus: "finished",
                     } satisfies TNewImage;
                 } else {
-                    return {
-                        ...img,
-                        uploadStatus: img.uploadStatus === "uploading" ? "failed" : undefined,
-                    } satisfies TNewImage;
+                    return img;
                 }
             };
 

@@ -8,7 +8,7 @@ export type TInfiniteAlbums = {
 
 export type TAlbum = Album & {
     images: TNewImage[];
-    _count?: {
+    _count: {
         images: number;
     };
 };
