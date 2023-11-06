@@ -223,13 +223,20 @@ albumRouter.get("/public/:albumId", async (req, res) => {
 
     if (!albumId) return res.status(400).end("Provide an album ID!");
 
+    const { offset } = req.query;
+
+    if (!offset) return res.status(400).end("I don't know where to start :(");
+
     const album = await prisma.album.findFirst({
         where: {
             id: albumId,
             isPublic: true,
         },
         include: {
-            images: true,
+            images: {
+                take: 2,
+                skip: offset ? +offset : 0,
+            },
             _count: true,
         },
     });
