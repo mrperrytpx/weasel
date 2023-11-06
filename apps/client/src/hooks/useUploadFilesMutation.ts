@@ -1,7 +1,7 @@
 import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadFiles } from "../utils/generateHelpers";
 import { TUploadFileMutation } from "@weasel/schemas";
-import { Image, TNewImage } from "@weasel/types";
+import { TInfiniteImages, TNewImage } from "@weasel/types";
 import { randomString } from "../utils/randomString";
 import { FILE_MAX_SIZE } from "../utils/tierStorageSizes";
 
@@ -64,7 +64,7 @@ export const useUploadFilesMutation = () => {
 
     return useMutation(uploadMutation, {
         onMutate: (input) => {
-            const albumImages = queryClient.getQueryData<InfiniteData<Image[]>>([
+            const albumImages = queryClient.getQueryData<InfiniteData<TInfiniteImages>>([
                 "images",
                 input.albumId,
             ]);
@@ -88,19 +88,28 @@ export const useUploadFilesMutation = () => {
                 } satisfies TNewImage;
             });
 
-            queryClient.setQueryData<InfiniteData<Image[]>>(
-                ["images", input.albumId],
-                (oldData) => {
-                    if (!oldData) return { pageParams: [0], pages: [newImages] };
-
-                    const lastPage = [...oldData.pages[oldData.pages.length - 1], ...newImages];
-
+            queryClient.setQueryData<typeof albumImages>(["images", input.albumId], (oldData) => {
+                if (!oldData)
                     return {
-                        ...oldData,
-                        pages: [...oldData.pages.slice(0, -1), lastPage],
+                        pageParams: [0],
+                        pages: [
+                            {
+                                count: Infinity,
+                                images: [...newImages],
+                            },
+                        ],
                     };
-                },
-            );
+
+                const lastPage = {
+                    count: oldData.pages[0].count + newImages.length,
+                    images: [...oldData.pages[oldData.pages.length - 1].images, ...newImages],
+                };
+
+                return {
+                    pageParams: oldData.pageParams,
+                    pages: [...oldData.pages.slice(0, -1), lastPage],
+                };
+            });
 
             return { albumImages, newImages };
         },
@@ -128,14 +137,17 @@ export const useUploadFilesMutation = () => {
                 }
             };
 
-            queryClient.setQueryData<InfiniteData<TNewImage[]>>(
+            queryClient.setQueryData<InfiniteData<TInfiniteImages>>(
                 ["images", input.albumId],
                 (oldData) => {
                     if (!oldData) return;
 
                     return {
                         ...oldData,
-                        pages: oldData.pages.map((page) => page.map(updateImageData)),
+                        pages: oldData.pages.map((page) => ({
+                            ...page,
+                            images: page.images.map(updateImageData),
+                        })),
                     };
                 },
             );

@@ -26,6 +26,13 @@ albumRouter.get("/", async (req, res) => {
 
     if (!user) return res.status(401).end("No user!");
 
+    if (!user.albums.length) {
+        return res.status(200).json({
+            albums: [],
+            count: 0,
+        });
+    }
+
     const data = await prisma.user.findFirst({
         where: {
             id: user.id,
@@ -46,7 +53,7 @@ albumRouter.get("/", async (req, res) => {
                 cursor: {
                     id:
                         cursorId === "0"
-                            ? user.albums[0]?.id
+                            ? user.albums[0].id
                             : (cursorId as string),
                 },
                 orderBy: {

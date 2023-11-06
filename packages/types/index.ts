@@ -7,7 +7,7 @@ export type TInfiniteAlbums = {
 };
 
 export type TAlbum = Album & {
-    images: TNewImage[] | [];
+    images: TNewImage[];
     _count?: {
         images: number;
     };
@@ -31,6 +31,11 @@ export type TInfiniteFiles = {
     files: TStrippedImage[];
     count: number;
     nextId: string;
+};
+
+export type TInfiniteImages = {
+    images: TNewImage[];
+    count: number;
 };
 
 export type TUser = Pick<User, "id" | "image" | "isSubscriptionActive">;

@@ -11,6 +11,7 @@ import { Fragment, useEffect, useRef } from "react";
 import { useGetAlbumQuery } from "../hooks/useGetAlbumQuery";
 import { TogglePublicityButton } from "../components/TogglePublicityButton";
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
+import { randomString } from "../utils/randomString";
 
 const AlbumPage = () => {
     const endRef = useRef<HTMLDivElement>(null);
@@ -76,12 +77,12 @@ const AlbumPage = () => {
                 </div>
             </header>
 
-            {albumInfiniteImages.data?.pages.flat().length ? (
+            {albumInfiniteImages.data?.pages[0].images.length ? (
                 <div className="mx-auto mb-8 mt-4 w-full items-center gap-4 p-4 sm:columns-2 sm:gap-6 lg:columns-3 lg:gap-8 xl:columns-4">
                     <UploadFilesForm />
-                    {albumInfiniteImages.data?.pages.map((page, i) => (
-                        <Fragment key={i}>
-                            {page.map((image) => (
+                    {albumInfiniteImages.data?.pages.map((page) => (
+                        <Fragment key={randomString(6)}>
+                            {page.images.map((image) => (
                                 <ImageCard image={image} key={image.id} />
                             ))}
                         </Fragment>

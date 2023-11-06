@@ -1,9 +1,7 @@
 import { InfiniteData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiInstance } from "../utils/axiosClients";
-import { Image, TAlbum, TInfiniteAlbums } from "@weasel/types";
+import { TAlbum, TInfiniteAlbums } from "@weasel/types";
 import { useUser } from "./useUser";
-
-const IMAGE_OFFSET = 20;
 
 export const useGetAlbumQuery = (albumId: string) => {
     const queryClient = useQueryClient();
@@ -13,17 +11,17 @@ export const useGetAlbumQuery = (albumId: string) => {
         queryClient.setQueryData<InfiniteData<TInfiniteAlbums>>(
             ["albums", user?.data?.id],
             (oldData) => {
-                if (!oldData) {
-                    return {
-                        pageParams: [0],
-                        pages: [{ albums: [response.data], count: Infinity }],
-                    };
-                }
-
                 const album = queryClient.getQueryData<TAlbum>(["album", albumId]);
 
                 if (!album) {
                     return oldData;
+                }
+
+                if (!oldData) {
+                    return {
+                        pageParams: [0],
+                        pages: [{ albums: [album], count: Infinity }],
+                    };
                 }
 
                 if (oldData.pages[0].albums[0].id === album.id) {
@@ -34,7 +32,10 @@ export const useGetAlbumQuery = (albumId: string) => {
                     .map((page, idx) => {
                         if (idx === 0) {
                             return {
-                                albums: [album, ...page.albums],
+                                albums: [
+                                    album,
+                                    ...page.albums.filter((album) => album.id !== albumId),
+                                ],
                                 count: page.count,
                             } satisfies typeof page;
                         }
@@ -55,15 +56,7 @@ export const useGetAlbumQuery = (albumId: string) => {
 
         const response = await apiInstance.get<TAlbum>(`/api/albums/${albumId}`);
 
-        queryClient.setQueryData<InfiniteData<Image[]>>(["images", albumId], () => {
-            return {
-                pageParams:
-                    response.data.images.length >= IMAGE_OFFSET
-                        ? [response.data.images.length]
-                        : [0],
-                pages: [response.data.images],
-            };
-        });
+        if (!response.data) return;
 
         return response.data;
     };

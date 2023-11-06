@@ -1,6 +1,6 @@
-import { prisma } from "@weasel/db";
+import { Image, prisma } from "@weasel/db";
 import { utapi } from "@weasel/filehost";
-import { TInfiniteFiles, TStrippedImage } from "@weasel/types";
+import { TInfiniteFiles, TInfiniteImages, TStrippedImage } from "@weasel/types";
 import { Router } from "express";
 
 const imageRouter = Router();
@@ -17,6 +17,7 @@ imageRouter.get("/", async (req, res) => {
         },
         include: {
             images: true,
+            _count: true,
         },
     });
 
@@ -49,7 +50,7 @@ imageRouter.get("/", async (req, res) => {
     })) satisfies TStrippedImage[];
 
     const data = {
-        count: user.images.length,
+        count: user._count.images,
         files: images,
         nextId: images[images.length - 1].id,
     } satisfies TInfiniteFiles;
@@ -86,27 +87,58 @@ imageRouter.delete("/", async (req, res) => {
     return res.status(200).end();
 });
 
-// public album
 imageRouter.get("/:albumId", async (req, res) => {
     if (!req.user?.id) return res.status(401).end("You must be logged in!");
 
     const { albumId } = req.params;
-    const { offset } = req.query;
+    const { cursorId } = req.query;
 
     if (!albumId) return res.status(400).end("Provide an album ID!");
 
-    const images = await prisma.image.findMany({
+    const user = await prisma.user.findFirst({
         where: {
-            album_id: albumId,
+            id: req.user.id,
         },
-        take: 20,
-        skip: offset ? +offset : 0,
-        orderBy: {
-            created_at: "asc",
+        include: {
+            images: {
+                orderBy: {
+                    created_at: "desc",
+                },
+            },
+            _count: true,
         },
     });
 
-    return res.status(200).json(images);
+    if (!user) return res.status(401).end("You must be logged in");
+
+    if (!user.images.length) {
+        return res.status(200).json({
+            count: 0,
+            images: [],
+        });
+    }
+
+    const images = (await prisma.image.findMany({
+        where: {
+            owner_id: user.id,
+            album_id: albumId,
+        },
+        take: 2,
+        skip: cursorId === "0" ? 0 : 1,
+        cursor: {
+            id: cursorId === "0" ? user.images[0].id : (cursorId as string),
+        },
+        orderBy: {
+            created_at: "desc",
+        },
+    })) satisfies Image[];
+
+    const data = {
+        count: user.images.length,
+        images,
+    } satisfies TInfiniteImages;
+
+    return res.status(200).json(data);
 });
 
 export { imageRouter };

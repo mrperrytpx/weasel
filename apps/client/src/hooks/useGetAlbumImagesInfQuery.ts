@@ -1,16 +1,15 @@
 import { InfiniteData, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { apiInstance } from "../utils/axiosClients";
 import { useUser } from "./useUser";
-import { Image, TAlbum, TInfiniteAlbums } from "@weasel/types";
+import { TAlbum, TInfiniteAlbums, TInfiniteImages } from "@weasel/types";
 
-const fetchImages = async (albumId: string, pageParam: number) => {
-    const response = await apiInstance.get<Image[]>(
-        `/api/images/${albumId}?offset=${pageParam ? pageParam : 0}`,
+const fetchImages = async (albumId: string, pageParam: string) => {
+    const response = await apiInstance.get<TInfiniteImages>(
+        `/api/images/${albumId}?cursorId=${pageParam}`,
     );
+
     return response.data;
 };
-
-const IMAGES_OFFSET = 20;
 
 export const useGetAlbumImagesInfQuery = (albumId: string) => {
     const user = useUser();
@@ -21,7 +20,16 @@ export const useGetAlbumImagesInfQuery = (albumId: string) => {
         queryFn: async ({ pageParam = 0 }) => fetchImages(albumId, pageParam),
         enabled: !!albumId,
         getNextPageParam: (lastPage, pages) => {
-            return lastPage.length >= IMAGES_OFFSET ? pages.flat().length : undefined;
+            const totalFetchedImages = pages.reduce((acc, curr) => acc + curr.images.length, 0);
+            if (totalFetchedImages >= lastPage.count) {
+                return undefined;
+            }
+
+            if (lastPage.images[lastPage.images.length - 1]) {
+                return lastPage.images[lastPage.images.length - 1].id;
+            }
+
+            return undefined;
         },
         initialData: () => {
             const allAlbums: InfiniteData<TInfiniteAlbums> | undefined = queryClient.getQueryData([
@@ -38,11 +46,16 @@ export const useGetAlbumImagesInfQuery = (albumId: string) => {
             }, null);
 
             if (!album) return;
-            if (!album.images.length) return;
+            if (!album._count?.images) return;
 
             return {
                 pageParams: [0],
-                pages: [[...album.images]],
+                pages: [
+                    {
+                        images: [...album.images],
+                        count: album._count.images,
+                    },
+                ],
             };
         },
     });
