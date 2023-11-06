@@ -28,8 +28,6 @@ export const useDeleteAlbumMutation = () => {
                 user?.data?.id,
             ]);
 
-            if (!previousAllAlbums) return;
-
             queryClient.setQueryData<typeof previousAllAlbums>(
                 ["albums", user?.data?.id],
                 (oldData) => {
@@ -43,6 +41,18 @@ export const useDeleteAlbumMutation = () => {
                             } satisfies typeof page;
                         })
                         .filter((page) => page.albums.length);
+
+                    if (!newData.length) {
+                        return {
+                            pageParams: oldData.pageParams,
+                            pages: [
+                                {
+                                    count: Infinity,
+                                    albums: [],
+                                },
+                            ],
+                        };
+                    }
 
                     return {
                         pages: newData,

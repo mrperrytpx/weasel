@@ -1,9 +1,10 @@
 import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadFiles } from "../utils/generateHelpers";
 import { TUploadFileMutation } from "@weasel/schemas";
-import { TInfiniteImages, TNewImage } from "@weasel/types";
+import { TInfiniteAlbums, TInfiniteImages, TNewImage } from "@weasel/types";
 import { randomString } from "../utils/randomString";
 import { FILE_MAX_SIZE } from "../utils/tierStorageSizes";
+import { useUser } from "./useUser";
 
 type TCUploadFileResponse = {
     key: string;
@@ -40,6 +41,7 @@ const uploadFile = async (file: File, albumId: string, userId: string) => {
 
 export const useUploadFilesMutation = () => {
     const queryClient = useQueryClient();
+    const user = useUser();
 
     const uploadMutation = async ({
         files,
@@ -145,6 +147,41 @@ export const useUploadFilesMutation = () => {
                             ...page,
                             images: page.images.map(updateImageData),
                         })),
+                    };
+                },
+            );
+
+            queryClient.setQueryData<InfiniteData<TInfiniteAlbums>>(
+                ["albums", user?.data?.id],
+                (oldData) => {
+                    if (!oldData) return;
+
+                    const newPages = oldData.pages.map((page) => {
+                        const albumInCache = page.albums.find(
+                            (album) => album.id === input.albumId,
+                        );
+                        if (albumInCache) {
+                            return {
+                                ...page,
+                                albums: page.albums.map(
+                                    (album) =>
+                                        ({
+                                            ...album,
+                                            _count: {
+                                                images:
+                                                    album._count.images + context.newImages.length,
+                                            },
+                                        }) satisfies typeof album,
+                                ),
+                            } satisfies typeof page;
+                        } else {
+                            return page;
+                        }
+                    });
+
+                    return {
+                        pageParams: oldData.pageParams,
+                        pages: newPages,
                     };
                 },
             );

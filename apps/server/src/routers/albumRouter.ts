@@ -130,6 +130,7 @@ albumRouter.get("/:albumId", async (req, res) => {
                 orderBy: {
                     created_at: "desc",
                 },
+                take: 0,
             },
             _count: true,
         },

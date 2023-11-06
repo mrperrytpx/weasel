@@ -16,7 +16,7 @@ export const useGetFilesInfQuery = () => {
         queryKey: ["all-files", user?.data?.id],
         queryFn: ({ pageParam = 0 }) => fetchAlbums(pageParam),
         getNextPageParam: (lastPage, pages) => {
-            if (!lastPage.nextId) return undefined;
+            if (!lastPage?.nextId) return undefined;
             const totalFetchedFiles = pages.reduce((acc, curr) => acc + curr.files.length, 0);
             if (totalFetchedFiles >= lastPage.count) {
                 return undefined;

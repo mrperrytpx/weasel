@@ -8,15 +8,37 @@ import { Fragment, useRef } from "react";
 import { useDeleteImageMutation } from "../hooks/useDeleteImageMutation";
 import { Link } from "react-router-dom";
 
+type TDeleteFileButtonProps = {
+    imageId: string;
+    albumId: string;
+};
+
+const DeleteFileButton = ({ imageId, albumId }: TDeleteFileButtonProps) => {
+    const deleteImage = useDeleteImageMutation();
+
+    return (
+        <button
+            title="Delete the file."
+            aria-label="Delete the file."
+            onClick={async () => await deleteImage.mutateAsync({ imageId, albumId })}
+            disabled={deleteImage.isLoading}
+            className="group rounded-md bg-white p-2 disabled:opacity-50 dark:bg-zinc-800 dark:group-hover/tr:bg-zinc-700"
+        >
+            {deleteImage.isLoading ? (
+                <LoadingSpinner size={20} color="#637ff1" />
+            ) : (
+                <BsTrash
+                    size={20}
+                    className="fill-black group-hover:fill-red-500 dark:fill-white  dark:group-hover:fill-red-500"
+                />
+            )}
+        </button>
+    );
+};
+
 export const ProfileFiles = () => {
     const infiniteFiles = useGetFilesInfQuery();
     const endRef = useRef<HTMLButtonElement>(null);
-
-    const deleteImage = useDeleteImageMutation();
-
-    const handleDeleteImage = async (imageId: string, albumId: string) => {
-        await deleteImage.mutateAsync({ imageId, albumId });
-    };
 
     return (
         <ProfileSubrouteLayout>
@@ -94,24 +116,10 @@ export const ProfileFiles = () => {
                                                 </div>
                                             </td>
                                             <td>
-                                                <button
-                                                    title="Delete the file."
-                                                    aria-label="Delete the file."
-                                                    onClick={() =>
-                                                        handleDeleteImage(file.id, file.album.id)
-                                                    }
-                                                    disabled={deleteImage.isLoading}
-                                                    className="group rounded-md bg-white p-2 disabled:opacity-50 dark:bg-zinc-800 dark:group-hover/tr:bg-zinc-700"
-                                                >
-                                                    {deleteImage.isLoading ? (
-                                                        <LoadingSpinner size={20} color="#637ff1" />
-                                                    ) : (
-                                                        <BsTrash
-                                                            size={20}
-                                                            className="fill-black group-hover:fill-red-500 dark:fill-white  dark:group-hover:fill-red-500"
-                                                        />
-                                                    )}
-                                                </button>
+                                                <DeleteFileButton
+                                                    imageId={file.id}
+                                                    albumId={file.album.id}
+                                                />
                                             </td>
                                         </tr>
                                     ))}
