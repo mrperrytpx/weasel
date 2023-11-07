@@ -112,8 +112,6 @@ export const useGetAlbumImagesInfQuery = (albumId: string) => {
                 };
             }
 
-            // console.log("no allAlbumFiles Sadge");
-
             const allAlbums: InfiniteData<TInfiniteAlbums> | undefined = queryClient.getQueryData([
                 "albums",
                 user?.data?.id,

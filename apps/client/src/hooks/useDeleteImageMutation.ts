@@ -1,6 +1,6 @@
 import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiInstance } from "../utils/axiosClients";
-import { TAlbum, TInfiniteAlbums, TInfiniteFiles, TInfiniteImages } from "@weasel/types";
+import { TInfiniteAlbums, TInfiniteFiles, TInfiniteImages } from "@weasel/types";
 import { useUser } from "./useUser";
 
 type TDeleteImageInput = {
@@ -26,8 +26,6 @@ export const useDeleteImageMutation = () => {
             const previousAlbumImagesData = queryClient.getQueryData<InfiniteData<TInfiniteImages>>(
                 ["images", input.albumId],
             );
-
-            const previousAlbumData = queryClient.getQueryData<TAlbum>(["images", input.albumId]);
 
             const previousFilesData = queryClient.getQueryData<InfiniteData<TInfiniteFiles>>([
                 "all-files",
@@ -161,14 +159,12 @@ export const useDeleteImageMutation = () => {
             return {
                 previousAlbumImagesData,
                 previousFilesData,
-                previousAlbumData,
                 previousAllAlbumsData,
             };
         },
         onError: (_err, input, context) => {
             queryClient.setQueryData(["images", input.albumId], context?.previousAlbumImagesData);
             queryClient.setQueryData(["all-files", user?.data?.id], context?.previousFilesData);
-            queryClient.setQueryData(["album", input.albumId], context?.previousAlbumData);
             queryClient.setQueryData(["albums", user?.data?.id], context?.previousAllAlbumsData);
         },
     });

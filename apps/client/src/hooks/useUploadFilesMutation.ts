@@ -61,7 +61,7 @@ export const useUploadFilesMutation = () => {
             .map((x) => (x as PromiseFulfilledResult<TCUploadFileResponse[]>).value)
             .flat();
 
-        return uploadedFiles;
+        return uploadedFiles.reverse();
     };
 
     return useMutation(uploadMutation, {
@@ -97,19 +97,19 @@ export const useUploadFilesMutation = () => {
                         pages: [
                             {
                                 count: Infinity,
-                                images: [...newImages],
+                                images: newImages,
                             },
                         ],
                     };
 
                 const lastPage = {
                     count: oldData.pages[0].count + newImages.length,
-                    images: [...oldData.pages[oldData.pages.length - 1].images, ...newImages],
+                    images: [...newImages, ...oldData.pages[oldData.pages.length - 1].images],
                 };
 
                 return {
                     pageParams: oldData.pageParams,
-                    pages: [...oldData.pages.slice(0, -1), lastPage],
+                    pages: [lastPage, ...oldData.pages.slice(0, -1)],
                 };
             });
 
@@ -167,6 +167,9 @@ export const useUploadFilesMutation = () => {
                                     (album) =>
                                         ({
                                             ...album,
+                                            images: [
+                                                context.newImages[context.newImages.length - 1],
+                                            ],
                                             _count: {
                                                 images:
                                                     album._count.images + context.newImages.length,
