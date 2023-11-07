@@ -35,13 +35,16 @@ export const useGetAlbumImagesInfQuery = (albumId: string) => {
                         if (albumInPage) {
                             return {
                                 ...page,
-                                albums: page.albums.map(
-                                    (album) =>
-                                        ({
+                                albums: page.albums.map((album) => {
+                                    if (album.id === albumInPage.id) {
+                                        return {
                                             ...album,
                                             images: [response.data.images[0]],
-                                        }) satisfies typeof album,
-                                ),
+                                        } satisfies typeof album;
+                                    } else {
+                                        return album;
+                                    }
+                                }),
                             } satisfies typeof page;
                         } else {
                             return page;
