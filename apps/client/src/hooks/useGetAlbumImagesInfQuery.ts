@@ -1,7 +1,7 @@
 import { InfiniteData, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { apiInstance } from "../utils/axiosClients";
 import { useUser } from "./useUser";
-import { TAlbum, TInfiniteAlbums, TInfiniteFiles, TInfiniteImages, TNewImage } from "@weasel/types";
+import { TAlbum, TInfiniteAlbums, TInfiniteImages } from "@weasel/types";
 
 export const useGetAlbumImagesInfQuery = (albumId: string) => {
     const user = useUser();
@@ -64,6 +64,7 @@ export const useGetAlbumImagesInfQuery = (albumId: string) => {
         queryFn: async ({ pageParam = 0 }) => fetchImages(albumId, pageParam),
         enabled: !!albumId,
         staleTime: Infinity,
+        keepPreviousData: true,
         getNextPageParam: (lastPage, pages) => {
             const totalFetchedImages = pages.reduce(
                 (acc, curr) => acc + curr.images.length || 0,
@@ -76,43 +77,7 @@ export const useGetAlbumImagesInfQuery = (albumId: string) => {
             return lastPage.images[lastPage.images.length - 1]?.id;
         },
         initialData: () => {
-            const allFilesInCache = queryClient.getQueryData<InfiniteData<TInfiniteFiles>>([
-                "all-files",
-                user?.data?.id,
-            ]);
-
-            const allAlbumImages = allFilesInCache?.pages
-                .map((page) => page.files)
-                .flat()
-                .filter((file) => file.album.id === albumId)
-                .map(
-                    (file) =>
-                        ({
-                            created_at: file.created_at,
-                            id: file.id,
-                            name: file.name,
-                            size: file.size,
-                            url: file.url,
-                            album_id: file.album.id,
-                            owner_id: user!.data!.id,
-                        }) satisfies TNewImage,
-                );
-
-            console.log("allAlbumFiles", allAlbumImages);
-
-            if (allAlbumImages?.length) {
-                return {
-                    pages: [
-                        {
-                            images: allAlbumImages,
-                            count: Infinity,
-                        },
-                    ],
-                    pageParams: [allAlbumImages[allAlbumImages.length - 1].id],
-                };
-            }
-
-            const allAlbums: InfiniteData<TInfiniteAlbums> | undefined = queryClient.getQueryData([
+            const allAlbums = queryClient.getQueryData<InfiniteData<TInfiniteAlbums>>([
                 "albums",
                 user?.data?.id,
             ]);
@@ -128,11 +93,13 @@ export const useGetAlbumImagesInfQuery = (albumId: string) => {
             if (!album) return;
             if (!album._count.images) return;
 
+            console.log("allAlbums", allAlbums);
+
             return {
                 pageParams: [0],
                 pages: [
                     {
-                        images: [...album.images],
+                        images: album.images,
                         count: album._count.images,
                     },
                 ],

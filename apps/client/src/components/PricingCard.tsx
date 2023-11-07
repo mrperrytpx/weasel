@@ -21,7 +21,7 @@ export const PricingCard = ({ premium }: TPricingCardProps) => {
                 className="relative flex w-full flex-col gap-8 rounded-lg bg-white p-6 shadow-md dark:bg-zinc-900"
             >
                 <h3 className="text-2xl font-semibold">Premium Plan</h3>
-                <p className="text-xl">€10 / month</p>
+                <p className="text-xl">€5 / month</p>
                 <ul className="space-y-2">
                     <li className="flex items-center gap-4">
                         <FcCheckmark size={20} /> <span>Unlimited Albums</span>
