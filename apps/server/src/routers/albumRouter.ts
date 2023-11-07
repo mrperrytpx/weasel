@@ -48,7 +48,7 @@ albumRouter.get("/", async (req, res) => {
                     },
                     _count: true,
                 },
-                take: 2,
+                take: 16,
                 skip: cursorId === "0" ? 0 : 1,
                 cursor: {
                     id:
@@ -235,7 +235,7 @@ albumRouter.get("/public/:albumId", async (req, res) => {
         },
         include: {
             images: {
-                take: 2,
+                take: 20,
                 skip: offset ? +offset : 0,
             },
             _count: true,

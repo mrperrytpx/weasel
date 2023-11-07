@@ -52,7 +52,7 @@ imageRouter.get("/", async (req, res) => {
             size: true,
             url: true,
         },
-        take: 2,
+        take: 20,
         skip: cursorId === "0" ? 0 : 1,
         cursor: {
             id: cursorId === "0" ? user.images[0]?.id : (cursorId as string),
@@ -137,7 +137,7 @@ imageRouter.get("/:albumId", async (req, res) => {
             owner_id: user.id,
             album_id: albumId,
         },
-        take: 2,
+        take: 20,
         skip: cursorId === "0" ? 0 : 1,
         cursor: {
             id: cursorId === "0" ? user.images[0].id : (cursorId as string),

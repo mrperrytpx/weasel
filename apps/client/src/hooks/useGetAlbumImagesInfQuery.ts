@@ -98,30 +98,6 @@ export const useGetAlbumImagesInfQuery = (albumId: string) => {
                 );
 
             if (allAlbumImages?.length) {
-                // queryClient.setQueryData<InfiniteData<TInfiniteAlbums>>(
-                //     ["albums", user?.data?.id],
-                //     (oldData) => {
-                //         if (!oldData) return;
-
-                //         return {
-                //             pageParams: oldData.pageParams,
-                //             pages: oldData.pages.map((page) => ({
-                //                 ...page,
-                //                 albums: page.albums.map((album) => {
-                //                     if (album.id === albumId) {
-                //                         return {
-                //                             ...album,
-                //                             images: allAlbumImages,
-                //                         } satisfies typeof album;
-                //                     } else {
-                //                         return album;
-                //                     }
-                //                 }),
-                //             })),
-                //         };
-                //     },
-                // );
-
                 return {
                     pages: [
                         {

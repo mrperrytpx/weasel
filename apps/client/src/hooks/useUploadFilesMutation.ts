@@ -1,7 +1,13 @@
 import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadFiles } from "../utils/generateHelpers";
 import { TUploadFileMutation } from "@weasel/schemas";
-import { TInfiniteAlbums, TInfiniteImages, TNewImage } from "@weasel/types";
+import {
+    TInfiniteAlbums,
+    TInfiniteFiles,
+    TInfiniteImages,
+    TNewImage,
+    TStrippedImage,
+} from "@weasel/types";
 import { randomString } from "../utils/randomString";
 import { FILE_MAX_SIZE } from "../utils/tierStorageSizes";
 import { useUser } from "./useUser";
@@ -149,6 +155,54 @@ export const useUploadFilesMutation = () => {
                             ...page,
                             images: page.images.map(updateImageData),
                         })),
+                    };
+                },
+            );
+
+            queryClient.setQueryData<InfiniteData<TInfiniteFiles>>(
+                ["all-files", user?.data?.id],
+                (oldData) => {
+                    if (!oldData) {
+                        return {
+                            pageParams: [0],
+                            pages: [
+                                {
+                                    count: Infinity,
+                                    files: context.newImages.map(
+                                        (img) =>
+                                            ({
+                                                ...img,
+                                                album: {
+                                                    id: img.album_id,
+                                                    name: "Idk",
+                                                },
+                                            }) satisfies TStrippedImage,
+                                    ),
+                                    nextId: context.newImages[context.newImages.length - 1].id,
+                                } satisfies TInfiniteFiles,
+                            ],
+                        };
+                    }
+
+                    return {
+                        pageParams: oldData.pageParams,
+                        pages: [
+                            ...oldData.pages,
+                            {
+                                count: Infinity,
+                                files: context.newImages.map(
+                                    (img) =>
+                                        ({
+                                            ...img,
+                                            album: {
+                                                id: img.album_id,
+                                                name: "Idk",
+                                            },
+                                        }) satisfies TStrippedImage,
+                                ),
+                                nextId: context.newImages[context.newImages.length - 1].id,
+                            } satisfies TInfiniteFiles,
+                        ],
                     };
                 },
             );
