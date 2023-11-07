@@ -110,18 +110,6 @@ export const useDeleteImageMutation = () => {
                 },
             );
 
-            queryClient.setQueryData<typeof previousAlbumData>(
-                ["album", input.albumId],
-                (oldData) => {
-                    if (!oldData) return;
-
-                    return {
-                        ...oldData,
-                        images: oldData.images.filter((img) => img.id !== input.imageId),
-                    } satisfies TAlbum;
-                },
-            );
-
             queryClient.setQueryData<typeof previousAllAlbumsData>(
                 ["albums", user?.data?.id],
                 (oldData) => {

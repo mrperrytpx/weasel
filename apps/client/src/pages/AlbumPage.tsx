@@ -77,7 +77,17 @@ const AlbumPage = () => {
                 </div>
             </header>
 
-            {albumInfiniteImages.data?.pages.reduce((acc, curr) => acc + curr.images.length, 0) ? (
+            {albumInfiniteImages.isLoading ? (
+                <div className="mx-auto mt-20 space-y-4 p-4">
+                    <LoadingSpinner size={60} />
+                    <p className="text-lg font-medium text-periwinkle-900 dark:text-white">
+                        Loading images...
+                    </p>
+                </div>
+            ) : albumInfiniteImages.data?.pages.reduce(
+                  (acc, curr) => acc + curr.images.length,
+                  0,
+              ) ? (
                 <div className="mx-auto mb-8 mt-4 w-full items-center gap-4 p-4 sm:columns-2 sm:gap-6 lg:columns-3 lg:gap-8 xl:columns-4">
                     <UploadFilesForm />
                     {albumInfiniteImages.data?.pages.map((page) => (
@@ -103,6 +113,8 @@ const AlbumPage = () => {
                     <UploadFilesForm />
                 </div>
             )}
+
+            {}
             <div className="mb-4 px-4 py-2 text-center text-sm font-bold" ref={endRef}>
                 {albumInfiniteImages.hasNextPage
                     ? albumInfiniteImages.isFetchingNextPage
