@@ -121,15 +121,28 @@ export const useDeleteImageMutation = () => {
                             if (albumInCache) {
                                 return {
                                     ...page,
-                                    albums: page.albums.map((album) => ({
-                                        ...album,
-                                        images: album.images.filter(
-                                            (image) => image.id !== input.imageId,
-                                        ),
-                                        _count: {
-                                            images: album._count.images - 1,
-                                        },
-                                    })),
+                                    albums: page.albums.map((album) => {
+                                        if (album.id === albumInCache.id) {
+                                            const albumImages = queryClient
+                                                .getQueryData<InfiniteData<TInfiniteImages>>([
+                                                    "images",
+                                                    album.id,
+                                                ])
+                                                ?.pages.map((page) => page.images)
+                                                .flat()
+                                                .filter((image) => image.id !== input.imageId);
+
+                                            return {
+                                                ...album,
+                                                images: albumImages || [],
+                                                _count: {
+                                                    images: album._count.images - 1,
+                                                },
+                                            };
+                                        } else {
+                                            return album;
+                                        }
+                                    }),
                                 };
                             } else {
                                 return page;
@@ -169,6 +182,8 @@ export const useDeleteImageMutation = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries(["profile-stats", user?.data?.id]);
+            queryClient.invalidateQueries(["all-files", user?.data?.id]);
+            queryClient.invalidateQueries(["albums", user?.data?.id]);
         },
     });
 };

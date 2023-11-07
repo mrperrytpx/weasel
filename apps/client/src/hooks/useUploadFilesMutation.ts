@@ -165,9 +165,9 @@ export const useUploadFilesMutation = () => {
                         if (albumInCache) {
                             return {
                                 ...page,
-                                albums: page.albums.map(
-                                    (album) =>
-                                        ({
+                                albums: page.albums.map((album) => {
+                                    if (album.id === albumInCache.id) {
+                                        return {
                                             ...album,
                                             images: [
                                                 context.newImages[context.newImages.length - 1],
@@ -176,8 +176,11 @@ export const useUploadFilesMutation = () => {
                                                 images:
                                                     album._count.images + context.newImages.length,
                                             },
-                                        }) satisfies typeof album,
-                                ),
+                                        };
+                                    } else {
+                                        return album;
+                                    }
+                                }),
                             } satisfies typeof page;
                         } else {
                             return page;

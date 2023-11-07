@@ -1,6 +1,6 @@
 import { InfiniteData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiInstance } from "../utils/axiosClients";
-import { TAlbum, TInfiniteAlbums } from "@weasel/types";
+import { TAlbum, TInfiniteAlbums, TInfiniteImages } from "@weasel/types";
 import { useUser } from "./useUser";
 
 export const useGetAlbumQuery = (albumId: string) => {
@@ -17,10 +17,20 @@ export const useGetAlbumQuery = (albumId: string) => {
                     return oldData;
                 }
 
+                const albumImages = queryClient
+                    .getQueryData<InfiniteData<TInfiniteImages>>(["images", album.id])
+                    ?.pages.map((page) => page.images)
+                    .flat();
+
                 if (!oldData) {
                     return {
                         pageParams: [0],
-                        pages: [{ albums: [album], count: Infinity }],
+                        pages: [
+                            {
+                                albums: [{ ...album, images: albumImages || [] } satisfies TAlbum],
+                                count: Infinity,
+                            },
+                        ],
                     };
                 }
 
