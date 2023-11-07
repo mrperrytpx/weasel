@@ -3,14 +3,14 @@ import { apiInstance } from "../utils/axiosClients";
 import { useUser } from "./useUser";
 import { TInfiniteFiles } from "@weasel/types";
 
-const fetchAlbums = async (pageParam: string) => {
-    const response = await apiInstance.get<TInfiniteFiles>(`/api/images?cursorId=${pageParam}`);
-
-    return response.data;
-};
-
 export const useGetFilesInfQuery = () => {
     const user = useUser();
+
+    const fetchAlbums = async (pageParam: string) => {
+        const response = await apiInstance.get<TInfiniteFiles>(`/api/images?cursorId=${pageParam}`);
+
+        return response.data;
+    };
 
     return useInfiniteQuery({
         queryKey: ["all-files", user?.data?.id],

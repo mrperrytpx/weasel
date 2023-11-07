@@ -117,6 +117,7 @@ imageRouter.get("/:albumId", async (req, res) => {
                 orderBy: {
                     created_at: "desc",
                 },
+                where: { album_id: albumId },
             },
             _count: true,
         },
