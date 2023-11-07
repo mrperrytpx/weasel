@@ -167,5 +167,8 @@ export const useDeleteImageMutation = () => {
             queryClient.setQueryData(["all-files", user?.data?.id], context?.previousFilesData);
             queryClient.setQueryData(["albums", user?.data?.id], context?.previousAllAlbumsData);
         },
+        onSuccess: () => {
+            queryClient.invalidateQueries(["profile-stats", user?.data?.id]);
+        },
     });
 };

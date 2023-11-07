@@ -118,6 +118,8 @@ export const useUploadFilesMutation = () => {
         onSuccess: async (data, input, context) => {
             if (!data) return;
 
+            await queryClient.invalidateQueries(["profile-stats", user?.data?.id]);
+
             if (!context?.newImages.length) return;
 
             const updateImageData = (img: TNewImage) => {

@@ -96,6 +96,8 @@ export const useDeleteAlbumMutation = () => {
         },
         onSuccess: async (_data, input) => {
             await queryClient.invalidateQueries(["albums", user?.data?.id]);
+            queryClient.invalidateQueries(["profile-stats", user?.data?.id]);
+
             if (location.pathname !== "/albums") {
                 navigate("/albums");
             }
