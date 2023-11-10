@@ -72,6 +72,7 @@ export const useGetAlbumQuery = (albumId: string) => {
     return useQuery({
         queryKey: ["album", albumId],
         queryFn: fetchAlbum,
+        staleTime: 1000,
         initialData: () => {
             const allAlbums = queryClient.getQueryData<InfiniteData<TInfiniteAlbums>>([
                 "albums",

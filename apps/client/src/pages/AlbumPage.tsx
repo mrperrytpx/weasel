@@ -58,7 +58,7 @@ const AlbumPage = () => {
                     <button
                         aria-label="Delete album."
                         onClick={handleDeleteAlbum}
-                        className="group p-2 disabled:opacity-50"
+                        className="group p-2 disabled:pointer-events-none disabled:opacity-50"
                     >
                         {deleteAlbum.isLoading ? (
                             <LoadingSpinner size={20} color="#637ff1" />

@@ -46,7 +46,7 @@ const CreateAlbumPage = () => {
                     <button
                         type="submit"
                         disabled={createAlbum.isLoading}
-                        className="w-full rounded-lg bg-white p-4 text-center text-lg font-medium shadow transition-colors duration-75 enabled:hover:bg-periwinkle-600 enabled:hover:text-periwinkle-50 enabled:focus:outline-periwinkle-600 disabled:opacity-50 dark:bg-zinc-800 dark:text-white md:text-xl"
+                        className="w-full rounded-lg bg-white p-4 text-center text-lg font-medium shadow transition-colors duration-75 enabled:hover:bg-periwinkle-600 enabled:hover:text-periwinkle-50 enabled:focus:outline-periwinkle-600 disabled:pointer-events-none disabled:opacity-50 dark:bg-zinc-800 dark:text-white md:text-xl"
                     >
                         {createAlbum.isLoading ? "Creating your album..." : "Create!"}
                     </button>

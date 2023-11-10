@@ -49,7 +49,7 @@ export const PricingCard = ({ premium }: TPricingCardProps) => {
                     <button
                         disabled={createCheckout.isLoading}
                         onClick={async () => await createCheckout.mutateAsync()}
-                        className="transition-color mt-auto inline-block w-full select-none rounded-full bg-periwinkle-600 px-4 py-2 text-white shadow duration-75 enabled:hover:bg-periwinkle-700 enabled:hover:text-white disabled:opacity-50"
+                        className="transition-color mt-auto inline-block w-full select-none rounded-full bg-periwinkle-600 px-4 py-2 text-white shadow duration-75 enabled:hover:bg-periwinkle-700 enabled:hover:text-white disabled:pointer-events-none disabled:opacity-50"
                     >
                         {createCheckout.isLoading ? "Upgrading..." : "Upgrade"}
                     </button>
@@ -101,7 +101,7 @@ export const PricingCard = ({ premium }: TPricingCardProps) => {
                     pointerEvents: user?.data && user.data.isSubscriptionActive ? "none" : "auto",
                 }}
                 to="/profile/billing"
-                className="transition-color mt-auto inline-block w-full select-none rounded-full bg-periwinkle-600 px-4 py-2 text-white shadow duration-75 hover:bg-periwinkle-700 enabled:hover:text-white disabled:opacity-50 "
+                className="transition-color mt-auto inline-block w-full select-none rounded-full bg-periwinkle-600 px-4 py-2 text-white shadow duration-75 hover:bg-periwinkle-700 enabled:hover:text-white disabled:pointer-events-none disabled:opacity-50 "
             >
                 {user?.data && !user.data.isSubscriptionActive ? "Current Plan" : "Get Started"}
             </Link>

@@ -31,7 +31,7 @@ export const useCreateAlbumMutation = () => {
                     if (!oldData) {
                         return {
                             pages: [{ albums: [newAlbum], count: Infinity }],
-                            pageParams: [undefined],
+                            pageParams: [0],
                         };
                     } else {
                         const firstPage = [

@@ -61,7 +61,7 @@ export const useGetAlbumImagesInfQuery = (albumId: string) => {
         queryKey: ["images", albumId],
         queryFn: async ({ pageParam = 0 }) => fetchImages(albumId, pageParam),
         enabled: !!albumId,
-        staleTime: Infinity,
+        staleTime: 1000,
         keepPreviousData: true,
         getNextPageParam: (lastPage, pages) => {
             const totalFetchedImages = pages.reduce(
@@ -74,7 +74,7 @@ export const useGetAlbumImagesInfQuery = (albumId: string) => {
 
             return lastPage.images[lastPage.images.length - 1]?.id;
         },
-        initialData: () => {
+        placeholderData: () => {
             const allFilesInCache = queryClient.getQueryData<InfiniteData<TInfiniteFiles>>([
                 "all-files",
                 user?.data?.id,

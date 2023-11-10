@@ -32,7 +32,7 @@ export const TogglePublicityButton = () => {
                 type="checkbox"
                 id="switch"
                 role="switch"
-                className="relative h-6 w-12 cursor-pointer appearance-none rounded-full bg-white ring-1 ring-transparent ring-offset-white transition-colors duration-200 ease-in-out before:absolute before:left-0 before:top-0 before:inline-block before:h-6 before:w-6 before:rounded-full before:bg-periwinkle-600 before:shadow before:ring-0 before:transition-all before:duration-200 checked:bg-periwinkle-400 checked:before:left-full checked:before:-translate-x-full checked:before:bg-periwinkle-600 disabled:opacity-50 dark:bg-zinc-700 dark:before:bg-periwinkle-400 dark:checked:bg-periwinkle-400 dark:checked:before:bg-periwinkle-600 "
+                className="relative h-6 w-12 cursor-pointer appearance-none rounded-full bg-white ring-1 ring-transparent ring-offset-white transition-colors duration-200 ease-in-out before:absolute before:left-0 before:top-0 before:inline-block before:h-6 before:w-6 before:rounded-full before:bg-periwinkle-600 before:shadow before:ring-0 before:transition-all before:duration-200 checked:bg-periwinkle-400 checked:before:left-full checked:before:-translate-x-full checked:before:bg-periwinkle-600 disabled:pointer-events-none disabled:opacity-50 dark:bg-zinc-700 dark:before:bg-periwinkle-400 dark:checked:bg-periwinkle-400 dark:checked:before:bg-periwinkle-600 "
             />
             <label className="cursor-pointer text-right" htmlFor="switch">
                 {album.data.isPublic ? "Public" : "Private"}

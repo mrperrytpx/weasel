@@ -2,7 +2,7 @@ import { BsTrash } from "react-icons/bs";
 import { useGetFilesInfQuery } from "../hooks/useGetFilesInfQuery";
 import { ProfileSubrouteLayout } from "../layouts/ProfileSubrouteLayout";
 import { randomString } from "../utils/randomString";
-import { roundBytesToKilobytes } from "../utils/roundBytesToKilobytes";
+import { convertBytesToPalletableSize } from "../utils/convertBytesToPalletableSize";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { Fragment, useRef } from "react";
 import { useDeleteImageMutation } from "../hooks/useDeleteImageMutation";
@@ -22,13 +22,13 @@ const DeleteFileButton = ({ imageId, albumId }: TDeleteFileButtonProps) => {
             aria-label="Delete the file."
             onClick={async () => await deleteImage.mutateAsync({ imageId, albumId })}
             disabled={deleteImage.isLoading}
-            className="group rounded-md bg-white p-2 disabled:opacity-50 dark:bg-zinc-800 dark:group-hover/tr:bg-zinc-700"
+            className="group rounded-md bg-white p-4 disabled:pointer-events-none disabled:opacity-50 dark:bg-zinc-800 dark:group-hover/tr:bg-zinc-700"
         >
             {deleteImage.isLoading ? (
-                <LoadingSpinner size={20} color="#637ff1" />
+                <LoadingSpinner size={16} color="#637ff1" />
             ) : (
                 <BsTrash
-                    size={20}
+                    size={16}
                     className="fill-black group-hover:fill-red-500 dark:fill-white  dark:group-hover:fill-red-500"
                 />
             )}
@@ -58,80 +58,82 @@ export const ProfileFiles = () => {
                 </div>
             ) : (
                 <>
-                    <table className="w-full max-w-5xl table-fixed overflow-x-scroll rounded-md bg-white dark:bg-zinc-800">
-                        <thead className="w-full border-b-2 dark:border-zinc-700">
-                            <tr className="w-full">
-                                <th className="px-2 py-4 text-left">
-                                    <div>Name</div>
-                                </th>
-                                <th className="px-2 py-4 text-left">
-                                    <div>Album</div>
-                                </th>
+                    <div className="w-full max-w-5xl overflow-x-auto">
+                        <table className="w-full  rounded-md bg-white dark:bg-zinc-800">
+                            <thead className="border-b-2 dark:border-zinc-700">
+                                <tr>
+                                    <th className="p-4 text-left">
+                                        <div>Name</div>
+                                    </th>
+                                    <th className="p-4 text-left">
+                                        <div>Album</div>
+                                    </th>
 
-                                <th className="w-[5rem] px-2 py-4 text-left">
-                                    <div>Size</div>
-                                </th>
-                                <th className="hidden w-[10rem] px-2 py-4 text-left sm:table-cell">
-                                    <div>Date Uploaded</div>
-                                </th>
-                                <th className="w-[2.5rem] px-2 py-4 text-left" />
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {infiniteFiles.data?.pages.map((page) => (
-                                <Fragment key={randomString(6)}>
-                                    {page.files.map((file) => (
-                                        <tr
-                                            className="group/tr border-b-2 last:border-none dark:border-zinc-700 dark:hover:bg-zinc-700"
-                                            key={file.id}
-                                        >
-                                            <td className="truncate pl-2">
-                                                <a
-                                                    href={file.url}
-                                                    target="_blank"
-                                                    className="hover:text-periwinkle-600 hover:underline dark:hover:text-periwinkle-400"
-                                                >
-                                                    {file.name}
-                                                </a>
-                                            </td>
-                                            <td className="truncate pl-2">
-                                                <Link
-                                                    to={`/albums/${file.album.id}`}
-                                                    className="hover:text-periwinkle-600 hover:underline dark:hover:text-periwinkle-400"
-                                                >
-                                                    {file.album.name}
-                                                </Link>
-                                            </td>
+                                    <th className="w-[5rem] p-4 text-left">
+                                        <div>Size</div>
+                                    </th>
+                                    <th className="table-cell w-[7.5rem] p-4 text-left">
+                                        <div>Date</div>
+                                    </th>
+                                    <th className="w-[2.5rem] p-2 text-left" />
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {infiniteFiles.data?.pages.map((page) => (
+                                    <Fragment key={randomString(6)}>
+                                        {page.files.map((file) => (
+                                            <tr
+                                                className="group/tr w-full border-b-2 last:border-none dark:border-zinc-700 dark:hover:bg-zinc-700"
+                                                key={file.id}
+                                            >
+                                                <td className="truncate pl-2">
+                                                    <a
+                                                        href={file.url}
+                                                        target="_blank"
+                                                        className="hover:text-periwinkle-600 hover:underline dark:hover:text-periwinkle-400"
+                                                    >
+                                                        {file.name}
+                                                    </a>
+                                                </td>
+                                                <td className="truncate pl-2">
+                                                    <Link
+                                                        to={`/albums/${file.album.id}`}
+                                                        className="hover:text-periwinkle-600 hover:underline dark:hover:text-periwinkle-400"
+                                                    >
+                                                        {file.album.name}
+                                                    </Link>
+                                                </td>
 
-                                            <td className="p-2 text-sm">
-                                                <div className="">
-                                                    {roundBytesToKilobytes(file.size)}KB
-                                                </div>
-                                            </td>
-                                            <td className="hidden p-2 text-sm font-medium sm:table-cell">
-                                                <div>
-                                                    {new Intl.DateTimeFormat("en-GB", {
-                                                        dateStyle: "long",
-                                                    }).format(new Date(file.created_at))}
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <DeleteFileButton
-                                                    imageId={file.id}
-                                                    albumId={file.album.id}
-                                                />
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </Fragment>
-                            ))}
-                        </tbody>
-                    </table>
+                                                <td className="px-4 py-2 text-sm">
+                                                    <div className="">
+                                                        {convertBytesToPalletableSize(file.size)}
+                                                    </div>
+                                                </td>
+                                                <td className=" table-cell px-4 py-2 text-sm font-medium">
+                                                    <div>
+                                                        {new Intl.DateTimeFormat("en-GB", {
+                                                            dateStyle: "short",
+                                                        }).format(new Date(file.created_at))}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <DeleteFileButton
+                                                        imageId={file.id}
+                                                        albumId={file.album.id}
+                                                    />
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </Fragment>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                     <button
                         onClick={() => infiniteFiles.fetchNextPage()}
                         disabled={!infiniteFiles.hasNextPage}
                         ref={endRef}
-                        className="mb-4 pl-2 text-center text-sm font-bold disabled:hidden"
+                        className="mb-4 pl-2 text-center text-sm font-bold disabled:pointer-events-none disabled:opacity-50"
                     >
                         {infiniteFiles.hasNextPage
                             ? infiniteFiles.isFetchingNextPage

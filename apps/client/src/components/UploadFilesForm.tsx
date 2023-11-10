@@ -53,7 +53,7 @@ export const UploadFilesForm = () => {
                         type="submit"
                         aria-label="Upload files."
                         disabled={uploadFiles.isLoading}
-                        className="flex h-10 w-[8rem] items-center justify-center gap-2 rounded-lg bg-white p-2 text-center text-lg font-medium shadow transition-colors duration-75 enabled:hover:bg-periwinkle-600 enabled:hover:text-periwinkle-50 enabled:focus:outline-periwinkle-600 disabled:opacity-50 dark:bg-zinc-800 dark:text-white enabled:dark:hover:text-periwinkle-50 md:text-xl"
+                        className="flex h-10 w-[8rem] items-center justify-center gap-2 rounded-lg bg-white p-2 text-center text-lg font-medium shadow transition-colors duration-75 enabled:hover:bg-periwinkle-600 enabled:hover:text-periwinkle-50 enabled:focus:outline-periwinkle-600 disabled:pointer-events-none disabled:opacity-50 dark:bg-zinc-800 dark:text-white enabled:dark:hover:text-periwinkle-50 md:text-xl"
                     >
                         <span className="flex items-center gap-2 text-sm">
                             {uploadFiles.isLoading ? (
