@@ -4,9 +4,14 @@ import { ProfileSubrouteLayout } from "../layouts/ProfileSubrouteLayout";
 import { Portal } from "./Portal";
 import WeaselCryingSmall from "../assets/weasel-crying-small.webp";
 import WeaselCryingMedium from "../assets/weasel-crying-medium.webp";
+import { useUser } from "../hooks/useUser";
+import { useGetProfileStatsQuery } from "../hooks/useGetProfileStatsQuery";
+import { Link } from "react-router-dom";
 
 export const ProfileSettings = () => {
     const deleteUser = useDeleteUserMutation();
+    const profileStats = useGetProfileStatsQuery();
+    const user = useUser();
 
     const [isModalMounted, setIsModalMounted] = useState(false);
 
@@ -17,13 +22,51 @@ export const ProfileSettings = () => {
 
     return (
         <ProfileSubrouteLayout>
-            <h1 className="text-center text-2xl font-bold md:text-left">Setting</h1>
-            <div className="mt-4 w-full rounded-lg">
-                <header className="flex items-center justify-between">
-                    <div className="flex flex-col gap-1">
-                        <h2 className="break-normal text-lg font-medium sm:text-xl">Danger Zone</h2>
-                        <h3>Delete my Account - this action is unreversable!</h3>
+            <h1 className="text-center text-2xl font-bold md:text-left">Settings</h1>
+            {user?.data?.isSubscriptionActive && (
+                <article className="w-full space-y-4 rounded-lg py-4">
+                    <header className="flex items-center">
+                        <hgroup className="flex flex-col gap-1">
+                            <h2 className="break-normal text-lg font-medium sm:text-xl">
+                                Subscription
+                            </h2>
+                            <p>Details about your subscription.</p>
+                        </hgroup>
+                    </header>
+                    <div className="flex w-full flex-col items-start">
+                        <div className="flex items-center gap-2">
+                            <p>Current plan:</p>
+                            <p>Premium Plan</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <p>Next billing date:</p>
+                            {profileStats.data ? (
+                                <span>
+                                    {new Intl.DateTimeFormat("en-GB", {
+                                        dateStyle: "full",
+                                    }).format(
+                                        new Date(+profileStats.data.subscriptionDueDate! * 1000),
+                                    )}
+                                </span>
+                            ) : (
+                                <span className="mt-1 inline-block h-5 w-48 animate-pulse rounded-full bg-gray-400 align-sub opacity-25" />
+                            )}
+                        </div>
                     </div>
+                    <Link
+                        to="/profile/billing"
+                        className="inline-block min-w-[10rem] rounded-md bg-white px-4 py-2 text-sm font-medium text-red-500 shadow transition-colors duration-75 hover:bg-red-500 hover:text-white focus-visible:bg-red-500 focus-visible:text-white dark:bg-zinc-800 dark:hover:bg-red-500 dark:focus-visible:bg-red-500"
+                    >
+                        Cancel your subscription
+                    </Link>
+                </article>
+            )}
+            <article className="mt-4 w-full rounded-lg py-4">
+                <header className="flex items-center">
+                    <hgroup className="flex flex-col gap-1">
+                        <h2 className="break-normal text-lg font-medium sm:text-xl">Danger Zone</h2>
+                        <p>Delete my Account - this action is unreversable!</p>
+                    </hgroup>
                 </header>
                 <div className="mt-4 flex w-full flex-col items-start gap-4">
                     <button
@@ -34,7 +77,7 @@ export const ProfileSettings = () => {
                         {deleteUser.isLoading ? "Goodbye..." : "Delete"}
                     </button>
                 </div>
-            </div>
+            </article>
             {isModalMounted && (
                 <Portal>
                     <dialog className="relative inset-0 flex h-full w-full flex-col items-center bg-periwinkle-50 p-4 dark:bg-black dark:text-white">

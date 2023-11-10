@@ -56,9 +56,12 @@ stripeRouter.delete("/subscription", async (req, res) => {
 
     await stripe.subscriptions.update(user.subscriptionId, {
         cancel_at_period_end: true,
+        metadata: {
+            isCancelling: "yes",
+        },
     });
 
-    return res.status(200);
+    return res.status(200).end();
 });
 
 stripeRouter.post("/webhooks", async (req, res) => {
@@ -95,6 +98,23 @@ stripeRouter.post("/webhooks", async (req, res) => {
                     subscriptionId: id,
                 },
             });
+            break;
+        }
+
+        case "customer.subscription.updated": {
+            const { metadata, customer } = event.data.object;
+
+            if (metadata?.isCancelling === "yes") {
+                await prisma.user.update({
+                    where: {
+                        customerId: customer as string,
+                    },
+                    data: {
+                        isSubscriptionActive: false,
+                    },
+                });
+            }
+
             break;
         }
 
