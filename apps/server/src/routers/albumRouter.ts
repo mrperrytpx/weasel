@@ -1,8 +1,8 @@
 import { prisma } from "@weasel/db";
-import { utapi } from "@weasel/filehost";
 import { albumNameSchema } from "@weasel/schemas";
 import { TAlbum, TInfiniteAlbums } from "@weasel/types";
 import { Router } from "express";
+import { utapi } from "../lib/uploadthing";
 
 const albumRouter = Router();
 

@@ -27,20 +27,14 @@ const uploadFile = async (file: File, albumId: string, userId: string) => {
         } satisfies PromiseRejectedResult;
     }
 
-    const res = await uploadFiles(
-        {
-            files: [file],
-            endpoint: "imageUploader",
-            input: {
-                albumId,
-                userId,
-                fileSize: file.size,
-            },
+    const res = await uploadFiles("imageUploader", {
+        files: [file],
+        input: {
+            albumId,
+            userId,
+            fileSize: file.size,
         },
-        {
-            url: import.meta.env.VITE_SERVER_URL + "/api/uploadthing",
-        },
-    );
+    });
 
     return res.flat();
 };

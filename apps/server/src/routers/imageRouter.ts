@@ -1,7 +1,7 @@
 import { Image, prisma } from "@weasel/db";
-import { utapi } from "@weasel/filehost";
 import { TInfiniteFiles, TInfiniteImages, TStrippedImage } from "@weasel/types";
 import { Router } from "express";
+import { utapi } from "../lib/uploadthing";
 
 const imageRouter = Router();
 

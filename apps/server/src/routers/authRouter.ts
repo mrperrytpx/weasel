@@ -1,8 +1,8 @@
 import { prisma } from "@weasel/db";
 import { Router } from "express";
 import passport from "passport";
-import { utapi } from "@weasel/filehost";
 import { stripe } from "../lib/stripe";
+import { utapi } from "../lib/uploadthing";
 
 const authRouter = Router();
 

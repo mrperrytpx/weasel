@@ -1,5 +1,5 @@
 import { Album, Image, User } from "@weasel/db";
-import { OurFileRouter } from "@weasel/filehost";
+import { OurFileRouter } from "@weasel/server/src/lib/uploadthing";
 
 export type TInfiniteAlbums = {
     albums: TAlbum[];

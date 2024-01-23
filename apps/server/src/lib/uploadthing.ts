@@ -6,6 +6,7 @@ import { UTApi } from "uploadthing/server";
 
 const FREE_TIER_STORAGE = 262_144_000; // 250MB
 const PREMIUM__TIER_STORAGE = 53_687_091_200; // 50GB
+
 export const utapi = new UTApi();
 
 const f = createUploadthing({
@@ -29,6 +30,8 @@ export const uploadRouter = {
         .input(uploadInputSchema)
         .middleware(async ({ input }) => {
             const { albumId, userId, fileSize } = input;
+
+            console.log("fileSize in middleware", fileSize);
 
             const user = await prisma.user.findFirst({
                 where: {
@@ -74,8 +77,11 @@ export const uploadRouter = {
         .onUploadComplete(async ({ file, metadata }) => {
             const { key, name, size, url } = file;
 
+            console.log("file in onUploadComplete", file);
+
             if (size !== metadata.fileSize) {
                 utapi.deleteFiles(name);
+                return;
             }
 
             const album = await prisma.album.findFirst({

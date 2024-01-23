@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { createUploadthingExpressHandler } from "uploadthing/express";
-import { uploadRouter } from "@weasel/filehost";
 import {
     albumRouter,
     authRouter,
@@ -8,6 +7,7 @@ import {
     profileRouter,
     stripeRouter,
 } from "./routers";
+import { uploadRouter } from "./lib/uploadthing";
 
 const api = Router();
 
