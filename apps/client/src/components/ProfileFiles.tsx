@@ -69,7 +69,7 @@ export const ProfileFiles = () => {
                                         <div>Album</div>
                                     </th>
 
-                                    <th className="w-[5rem] p-4 text-left">
+                                    <th className="w-[7.5rem] p-4 text-left">
                                         <div>Size</div>
                                     </th>
                                     <th className="table-cell w-[7.5rem] p-4 text-left">
@@ -86,7 +86,7 @@ export const ProfileFiles = () => {
                                                 className="group/tr w-full border-b-2 last:border-none dark:border-zinc-700 dark:hover:bg-zinc-700"
                                                 key={file.id}
                                             >
-                                                <td className="truncate pl-2">
+                                                <td className="truncate pl-4">
                                                     <a
                                                         href={file.url}
                                                         target="_blank"
@@ -95,7 +95,7 @@ export const ProfileFiles = () => {
                                                         {file.name}
                                                     </a>
                                                 </td>
-                                                <td className="truncate pl-2">
+                                                <td className="truncate pl-4">
                                                     <Link
                                                         to={`/albums/${file.album.id}`}
                                                         className="hover:text-periwinkle-600 hover:underline dark:hover:text-periwinkle-400"
@@ -109,7 +109,7 @@ export const ProfileFiles = () => {
                                                         {convertBytesToPalletableSize(file.size)}
                                                     </div>
                                                 </td>
-                                                <td className=" table-cell px-4 py-2 text-sm font-medium">
+                                                <td className="table-cell px-4 py-2 text-sm font-medium">
                                                     <div>
                                                         {new Intl.DateTimeFormat("en-GB", {
                                                             dateStyle: "short",
@@ -133,7 +133,7 @@ export const ProfileFiles = () => {
                         onClick={() => infiniteFiles.fetchNextPage()}
                         disabled={!infiniteFiles.hasNextPage}
                         ref={endRef}
-                        className="mb-4 pl-2 text-center text-sm font-bold disabled:pointer-events-none disabled:opacity-50"
+                        className="mb-4 pl-4 text-center text-sm font-bold disabled:pointer-events-none disabled:opacity-50"
                     >
                         {infiniteFiles.hasNextPage
                             ? infiniteFiles.isFetchingNextPage

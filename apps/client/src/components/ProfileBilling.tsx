@@ -83,18 +83,19 @@ export const ProfileBilling = () => {
                 </div>
             </article>
             {/*  */}
-            <article className="dark:border-zinc-700 dark:bg-zinc-900">
+            <article>
                 <h2 className="flex-1 self-start text-center text-lg font-bold md:text-left">
                     Available plans
                 </h2>
-                <div className="mt-4 flex flex-col gap-4">
-                    <div className="grid w-full max-w-xs gap-4 self-center rounded-lg border border-periwinkle-300 bg-white p-4 md:max-w-none md:grid-cols-[2fr,3fr,minmax(0,8rem)]">
-                        <h3 className="text-center text-lg font-medium md:text-left">Free Plan</h3>
-                        <ul className="list-disc pl-4 md:place-self-start">
-                            <li>Unlimited number of albums</li>
-
-                            <li>250MB of available storage</li>
-                        </ul>
+                <div className="mt-2 flex flex-col gap-4">
+                    <div className="grid w-full gap-4 self-center rounded-lg border border-periwinkle-300 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900 md:max-w-none md:grid-cols-[2fr,3fr,minmax(0,8rem)]">
+                        <h3 className="text-center text-lg font-medium md:text-left">Free</h3>
+                        <div className="flex justify-center md:justify-start">
+                            <ul className="list-disc pl-4">
+                                <li>Unlimited number of albums</li>
+                                <li>250MB of available storage</li>
+                            </ul>
+                        </div>
                         <button
                             disabled={createCheckout.isLoading}
                             onClick={async () => await createCheckout.mutateAsync()}
@@ -103,15 +104,18 @@ export const ProfileBilling = () => {
                             {createCheckout.isLoading ? "Upgrading..." : "Upgrade"}
                         </button>
                     </div>
-                    <div className="grid w-full max-w-xs gap-4 self-center rounded-lg border border-periwinkle-300 bg-white p-4 md:max-w-none md:grid-cols-[2fr,3fr,minmax(0,8rem)]">
-                        <h3 className="text-center text-lg font-medium md:text-left">
-                            Premium Plan
-                        </h3>
-                        <ul className="list-disc pl-4 md:place-self-start">
-                            <li>Unlimited number of albums</li>
-                            <li>50GB of available storage</li>
-                            <li>Option to make albums public</li>
-                        </ul>
+                    <div className="grid w-full gap-4 self-center rounded-lg border border-periwinkle-300 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900 md:max-w-none md:grid-cols-[2fr,3fr,minmax(0,8rem)]">
+                        <div className="text-center md:text-left">
+                            <h3 className="text-lg font-medium">Premium</h3>
+                            <p>5€ / month</p>
+                        </div>
+                        <div className="flex justify-center md:justify-start">
+                            <ul className="list-disc pl-4">
+                                <li>Unlimited number of albums</li>
+                                <li>50GB of available storage</li>
+                                <li>Option to make albums public</li>
+                            </ul>
+                        </div>
                         <button
                             disabled={createCheckout.isLoading}
                             onClick={async () => await createCheckout.mutateAsync()}
@@ -120,23 +124,29 @@ export const ProfileBilling = () => {
                             {createCheckout.isLoading ? "Upgrading..." : "Upgrade"}
                         </button>
                     </div>
-                    <div className="grid w-full max-w-xs gap-4 self-center rounded-lg border border-periwinkle-300 bg-white p-4 md:max-w-none md:grid-cols-[2fr,3fr,minmax(0,8rem)]">
-                        <h3 className="text-center text-lg font-medium md:text-left">
-                            Premium Plan
-                        </h3>
-                        <ul className="list-disc pl-4 md:place-self-start">
-                            <li>Unlimited number of albums</li>
-                            <li>Unlimited storage</li>
-                            <li>Option to make albums public</li>
-                            <li>Option for other users to upload to your albums</li>
-                        </ul>
-                        <button
-                            disabled={createCheckout.isLoading}
-                            onClick={async () => await createCheckout.mutateAsync()}
-                            className="min-w-[7.5rem] max-w-[7.5rem] select-none place-self-center rounded-md bg-periwinkle-600 px-4 py-2 text-white shadow transition-colors duration-75 enabled:hover:bg-periwinkle-700 enabled:hover:text-white disabled:pointer-events-none disabled:opacity-50 md:place-self-start"
-                        >
-                            {createCheckout.isLoading ? "Upgrading..." : "Upgrade"}
-                        </button>
+                    <div className="rounded-lg bg-gradient-to-tr from-blue-500 via-red-500 to-yellow-500 p-[1px]">
+                        <div className="relative grid w-full gap-4 self-center rounded-lg bg-white p-4 dark:bg-zinc-900 md:max-w-none md:grid-cols-[2fr,3fr,minmax(0,8rem)]">
+                            <div className="text-center md:text-left">
+                                <h3 className="bg-gradient-to-b from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-lg font-bold text-transparent">
+                                    UNLIMITED
+                                </h3>
+                                <p>10€ / month</p>
+                            </div>
+                            <div className="flex justify-center md:justify-start">
+                                <ul className="list-disc pl-4">
+                                    <li>Unlimited number of albums</li>
+                                    <li>Unlimited storage</li>
+                                    <li>Option to make albums public</li>
+                                    <li>Option for other users to upload to your albums</li>
+                                </ul>
+                            </div>
+                            <button
+                                disabled={true}
+                                className="min-w-[7.5rem] select-none place-self-center rounded-md bg-periwinkle-600 px-4 py-2 text-white shadow transition-colors duration-75 enabled:hover:bg-periwinkle-700 enabled:hover:text-white disabled:pointer-events-none disabled:opacity-50 md:max-w-[7.5rem] md:place-self-start"
+                            >
+                                Soon!
+                            </button>
+                        </div>
                     </div>
                 </div>
             </article>

@@ -31,8 +31,6 @@ export const uploadRouter = {
         .middleware(async ({ input }) => {
             const { albumId, userId, fileSize } = input;
 
-            console.log("fileSize in middleware", fileSize);
-
             const user = await prisma.user.findFirst({
                 where: {
                     id: userId,

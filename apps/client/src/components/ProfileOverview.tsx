@@ -84,8 +84,9 @@ export const ProfileOverview = () => {
                         <div className="space-y-2">
                             <Link
                                 className="underline hover:text-periwinkle-600"
-                                to={`${import.meta.env.VITE_WEBSITE_URL}/albums/${profileStats.data
-                                    ?.albumWithMostImages.id}`}
+                                to={`${import.meta.env.VITE_WEBSITE_URL}/albums/${
+                                    profileStats.data?.albumWithMostImages.id
+                                }`}
                             >
                                 {profileStats.data?.albumWithMostImages.name}
                             </Link>

@@ -61,7 +61,7 @@ export const ProfileSettings = () => {
                     </Link>
                 </article>
             )}
-            <article className="mt-4 w-full rounded-lg py-4">
+            <article className="rounded-lg border border-periwinkle-300 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900">
                 <header className="flex items-center">
                     <hgroup className="flex flex-col gap-1">
                         <h2 className="break-normal text-lg font-medium sm:text-xl">Danger Zone</h2>
@@ -72,7 +72,7 @@ export const ProfileSettings = () => {
                     <button
                         onClick={() => setIsModalMounted((old) => !old)}
                         disabled={deleteUser.isLoading}
-                        className="min-w-[10rem] rounded-md bg-white px-4 py-2 text-sm font-medium text-red-500 shadow transition-colors duration-75 hover:bg-red-500 hover:text-white focus-visible:bg-red-500 focus-visible:text-white disabled:pointer-events-none disabled:opacity-50  dark:bg-zinc-800 dark:hover:bg-red-500 dark:focus-visible:bg-red-500"
+                        className="min-w-[10rem] rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white shadow transition-colors duration-75 hover:bg-red-700 hover:text-white focus-visible:bg-red-700 focus-visible:text-white disabled:pointer-events-none disabled:opacity-50 dark:bg-red-500 dark:hover:bg-red-700 dark:focus-visible:bg-red-700"
                     >
                         {deleteUser.isLoading ? "Goodbye..." : "Delete"}
                     </button>

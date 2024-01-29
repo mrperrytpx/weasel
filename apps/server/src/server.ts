@@ -44,4 +44,8 @@ app.use("/api", asyncHandler(api));
 app.use(defaultErrorHandler);
 app.use(errorHandler);
 
+process.on("uncaughtException", function (err) {
+    console.log(err);
+});
+
 export { app };

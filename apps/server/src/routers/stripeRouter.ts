@@ -25,7 +25,7 @@ stripeRouter.post("/checkout_session", async (req, res) => {
         payment_method_types: ["card"],
         line_items: [
             {
-                price: process.env.STRIPE_PRICE_ID as string,
+                price: process.env.STRIPE_PREM_PRICE_ID as string,
                 quantity: 1,
             },
         ],
