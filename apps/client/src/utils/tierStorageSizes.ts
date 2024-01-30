@@ -1,3 +1,3 @@
 export const FREE_TIER_STORAGE = 262_144_000; // 250MB
-export const PREMIUM__TIER_STORAGE = 53_687_091_200; // 50GB
+export const PREMIUM_TIER_STORAGE = 53_687_091_200; // 50GB
 export const FILE_MAX_SIZE = 4_194_304;

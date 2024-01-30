@@ -57,11 +57,12 @@ const HomePage = () => {
                         </p>
                     </div>
                 </section>
-                <section className="mb-32 flex flex-col items-center justify-center gap-8 text-center md:mb-40 md:gap-16">
+                <section className="mb-32 flex w-full flex-col items-center justify-center gap-8 text-center md:mb-40 md:gap-16">
                     <h2 className="text-4xl">Our Pricing</h2>
-                    <div className="grid grid-rows-2 gap-8 md:grid-cols-2 md:grid-rows-none md:gap-16">
+                    <div className="grid grid-rows-2 gap-8 md:grid-cols-3 md:grid-rows-none md:gap-16">
                         <PricingCard />
-                        <PricingCard premium />
+                        <PricingCard plan="premium" />
+                        <PricingCard plan="ultimate" />
                     </div>
                 </section>
                 <section className="mb-20 flex flex-col items-center justify-center gap-8 py-32 text-center md:mb-40">

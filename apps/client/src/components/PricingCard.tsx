@@ -5,14 +5,14 @@ import { useUser } from "../hooks/useUser";
 import { useCreateCheckout } from "../hooks/useCreateCheckout";
 
 type TPricingCardProps = {
-    premium?: boolean;
+    plan?: "premium" | "ultimate";
 };
 
-export const PricingCard = ({ premium }: TPricingCardProps) => {
+export const PricingCard = ({ plan }: TPricingCardProps) => {
     const user = useUser();
     const createCheckout = useCreateCheckout();
 
-    if (premium) {
+    if (plan === "premium") {
         return (
             <article
                 style={{
@@ -67,6 +67,48 @@ export const PricingCard = ({ premium }: TPricingCardProps) => {
                         Current Plan
                     </p>
                 )}
+            </article>
+        );
+    }
+
+    if (plan === "ultimate") {
+        return (
+            <article className="relative rounded-lg bg-gradient-to-tr  from-blue-500 via-red-500 to-yellow-500 p-[1px] ">
+                <div className="rounded-lg bg-white dark:bg-zinc-900">
+                    <div className="flex w-full flex-col gap-8 rounded-lg bg-white p-6 shadow-md first-of-type:opacity-60 dark:bg-zinc-900">
+                        <h3 className="text-2xl font-semibold">Ultimate Plan</h3>
+                        <p className="text-xl">10€ / month</p>
+                        <ul className="space-y-2">
+                            <li className="flex items-center gap-4">
+                                <FcCheckmark size={20} /> <span>Unlimited Albums</span>
+                            </li>
+
+                            <li className="flex items-center gap-4">
+                                <FcCheckmark size={20} />
+                                <span>Unlimited Storage</span>
+                            </li>
+                            <li className="flex items-center gap-4">
+                                <FcCheckmark size={20} />
+                                <span>Shareable albums</span>
+                            </li>
+                            <li className="flex items-center gap-4">
+                                <FcCheckmark size={20} />
+                                <span>Editable albums by other users</span>
+                            </li>
+
+                            <li className="flex items-center gap-4"></li>
+                        </ul>
+                        <button
+                            disabled={true}
+                            className="mt-auto inline-block w-full select-none rounded-full bg-periwinkle-600 px-4 py-2 text-white shadow transition-colors duration-75 enabled:hover:bg-periwinkle-700 enabled:hover:text-white disabled:pointer-events-none disabled:opacity-50"
+                        >
+                            Coming Soon!
+                        </button>
+                    </div>
+                </div>
+                <p className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-md bg-green-500 px-2 py-1 text-sm font-bold text-white">
+                    Coming Soon!
+                </p>
             </article>
         );
     }
