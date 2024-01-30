@@ -15,7 +15,7 @@ type TStatCardProps = {
 const StatCard = ({ text, span }: TStatCardProps) => {
     return (
         <article className="flex flex-col items-center justify-center gap-4 rounded-md bg-white p-4 shadow dark:bg-zinc-800">
-            <h2 className="text-xl font-medium">{text}</h2>
+            <h2 className="text-center text-xl font-medium">{text}</h2>
             {span ? (
                 <span>{span}</span>
             ) : (

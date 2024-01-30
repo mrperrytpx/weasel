@@ -24,7 +24,7 @@ export const ProfileSettings = () => {
         <ProfileSubrouteLayout>
             <h1 className="text-center text-2xl font-bold md:text-left">Settings</h1>
             {user?.data?.isSubscriptionActive && (
-                <article className="w-full space-y-4 rounded-lg py-4">
+                <article className="w-full space-y-4 rounded-lg border border-periwinkle-300 bg-white p-4 py-4 dark:border-zinc-700 dark:bg-zinc-900">
                     <header className="flex items-center">
                         <hgroup className="flex flex-col gap-1">
                             <h2 className="break-normal text-lg font-medium sm:text-xl">
@@ -35,11 +35,11 @@ export const ProfileSettings = () => {
                     </header>
                     <div className="flex w-full flex-col items-start">
                         <div className="flex items-center gap-2">
-                            <p>Current plan:</p>
+                            <p className="font-medium">Current plan:</p>
                             <p>Premium Plan</p>
                         </div>
                         <div className="flex items-center gap-2">
-                            <p>Next billing date:</p>
+                            <p className="font-medium">Next billing date:</p>
                             {profileStats.data ? (
                                 <span>
                                     {new Intl.DateTimeFormat("en-GB", {
@@ -55,7 +55,7 @@ export const ProfileSettings = () => {
                     </div>
                     <Link
                         to="/profile/billing"
-                        className="inline-block min-w-[10rem] rounded-md bg-white px-4 py-2 text-sm font-medium text-red-500 shadow transition-colors duration-75 hover:bg-red-500 hover:text-white focus-visible:bg-red-500 focus-visible:text-white dark:bg-zinc-800 dark:hover:bg-red-500 dark:focus-visible:bg-red-500"
+                        className="inline-block min-w-[10rem] rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white shadow transition-colors duration-75 hover:bg-red-700 focus-visible:bg-red-700 "
                     >
                         Cancel your subscription
                     </Link>
@@ -65,14 +65,17 @@ export const ProfileSettings = () => {
                 <header className="flex items-center">
                     <hgroup className="flex flex-col gap-1">
                         <h2 className="break-normal text-lg font-medium sm:text-xl">Danger Zone</h2>
-                        <p>Delete my Account - this action is unreversable!</p>
+                        <p>
+                            Delete my Account - this action is{" "}
+                            <span className="font-bold">unreversable!</span>
+                        </p>
                     </hgroup>
                 </header>
                 <div className="mt-4 flex w-full flex-col items-start gap-4">
                     <button
                         onClick={() => setIsModalMounted((old) => !old)}
                         disabled={deleteUser.isLoading}
-                        className="min-w-[10rem] rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white shadow transition-colors duration-75 hover:bg-red-700 hover:text-white focus-visible:bg-red-700 focus-visible:text-white disabled:pointer-events-none disabled:opacity-50 dark:bg-red-500 dark:hover:bg-red-700 dark:focus-visible:bg-red-700"
+                        className="min-w-[10rem] rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white shadow transition-colors duration-75 hover:bg-red-700 focus-visible:bg-red-700 disabled:pointer-events-none disabled:opacity-50 dark:bg-red-500 dark:hover:bg-red-700 dark:focus-visible:bg-red-700"
                     >
                         {deleteUser.isLoading ? "Goodbye..." : "Delete"}
                     </button>

@@ -48,6 +48,19 @@ stripeRouter.delete("/subscription", async (req, res) => {
         where: {
             id: req.user.id,
         },
+        include: {
+            albums: true,
+        },
+    });
+
+    await prisma.album.updateMany({
+        where: {
+            owner_id: user?.id,
+            isPublic: true,
+        },
+        data: {
+            isPublic: false,
+        },
     });
 
     if (!user) return res.status(404).end("User not found!");
@@ -64,6 +77,7 @@ stripeRouter.delete("/subscription", async (req, res) => {
     return res.status(200).end();
 });
 
+// stripe listen --forward-to localhost:3000/api/stripe/webhooks
 stripeRouter.post("/webhooks", async (req, res) => {
     const buf = await buffer(req);
     const sig = req.headers["stripe-signature"];

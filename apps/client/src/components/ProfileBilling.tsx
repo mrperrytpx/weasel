@@ -29,11 +29,11 @@ export const ProfileBilling = () => {
                 </p>
             </hgroup>
             <article className="rounded-lg border border-periwinkle-300 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900">
-                <div className="grid gap-4 md:grid-cols-[2fr,3fr,minmax(0,8rem)]">
+                <div className="grid gap-4 md:grid-cols-[2fr,3fr,minmax(0,16rem)]">
                     <h2 className="flex-1 self-start text-center text-lg font-bold md:text-left">
                         Current Plan
                     </h2>
-                    <div className="flex-1 self-start text-center md:text-left ">
+                    <div className="flex-1 self-start text-center md:text-left">
                         <p className="text-lg">
                             <strong>{user?.data?.isSubscriptionActive ? "Premium" : "Free"}</strong>{" "}
                             <span>({user?.data?.isSubscriptionActive ? "50GB" : "250MB"})</span>
@@ -50,10 +50,12 @@ export const ProfileBilling = () => {
                         </p>
                     </div>
                     {user?.data?.isSubscriptionActive ? (
-                        <div className="flex flex-col items-end">
-                            <p className="text-lg font-medium">Next billing date</p>
+                        <div className="flex flex-col items-center md:items-end">
+                            <p className="text-center text-lg font-medium md:text-right">
+                                Next billing date
+                            </p>
                             {profileStats.data ? (
-                                <span className="text-right">
+                                <span className="text-center md:text-right">
                                     {new Intl.DateTimeFormat("en-GB", {
                                         dateStyle: "full",
                                     }).format(
@@ -66,19 +68,21 @@ export const ProfileBilling = () => {
                             <button
                                 disabled={deleteSub.isLoading}
                                 onClick={() => setIsCancelMounted((old) => !old)}
-                                className="mt-2 min-w-[7.5rem] max-w-[7.5rem] rounded-md bg-white px-4 py-2 text-sm font-medium text-red-500 shadow transition-colors duration-75 hover:bg-red-500 hover:text-white focus-visible:bg-red-500 focus-visible:text-white disabled:pointer-events-none disabled:opacity-50  dark:bg-zinc-800 dark:hover:bg-red-500 dark:focus-visible:bg-red-500"
+                                className="mt-2 w-full min-w-[minmax(100%,7.5rem)] max-w-[7.5rem] rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white shadow transition-colors duration-75 hover:bg-red-700  focus-visible:bg-red-700 disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-red-700 dark:focus-visible:bg-red-700"
                             >
                                 {deleteSub.isLoading ? "Cancelling..." : "Cancel"}
                             </button>
                         </div>
                     ) : (
-                        <button
-                            disabled={createCheckout.isLoading}
-                            onClick={async () => await createCheckout.mutateAsync()}
-                            className="min-w-[7.5rem] max-w-[7.5rem] select-none place-self-center rounded-md bg-periwinkle-600 px-4 py-2 text-white shadow transition-colors duration-75 enabled:hover:bg-periwinkle-700 enabled:hover:text-white disabled:pointer-events-none disabled:opacity-50 md:place-self-start"
-                        >
-                            {createCheckout.isLoading ? "Upgrading..." : "Upgrade"}
-                        </button>
+                        <div className="flex flex-col items-center md:items-end">
+                            <button
+                                disabled={createCheckout.isLoading}
+                                onClick={async () => await createCheckout.mutateAsync()}
+                                className="w-full min-w-[minmax(100%,7.5rem)] max-w-[7.5rem] select-none rounded-md bg-periwinkle-600 px-4 py-2 text-white shadow transition-colors duration-75 enabled:hover:bg-periwinkle-700 enabled:hover:text-white disabled:pointer-events-none disabled:opacity-50"
+                            >
+                                {createCheckout.isLoading ? "Upgrading..." : "Upgrade"}
+                            </button>
+                        </div>
                     )}
                 </div>
             </article>
@@ -88,7 +92,7 @@ export const ProfileBilling = () => {
                     Available plans
                 </h2>
                 <div className="mt-2 flex flex-col gap-4">
-                    <div className="grid w-full gap-4 self-center rounded-lg border border-periwinkle-300 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900 md:max-w-none md:grid-cols-[2fr,3fr,minmax(0,8rem)]">
+                    <div className="grid w-full gap-4 self-center rounded-lg border border-periwinkle-300 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900 md:max-w-none md:grid-cols-[2fr,3fr,minmax(0,16rem)]">
                         <h3 className="text-center text-lg font-medium md:text-left">Free</h3>
                         <div className="flex justify-center md:justify-start">
                             <ul className="list-disc pl-4">
@@ -96,15 +100,17 @@ export const ProfileBilling = () => {
                                 <li>250MB of available storage</li>
                             </ul>
                         </div>
-                        <button
-                            disabled={createCheckout.isLoading}
-                            onClick={async () => await createCheckout.mutateAsync()}
-                            className="min-w-[7.5rem] max-w-[7.5rem] select-none place-self-center rounded-md bg-periwinkle-600 px-4 py-2 text-white shadow transition-colors duration-75 enabled:hover:bg-periwinkle-700 enabled:hover:text-white disabled:pointer-events-none disabled:opacity-50 md:place-self-start"
-                        >
-                            {createCheckout.isLoading ? "Upgrading..." : "Upgrade"}
-                        </button>
+                        <div className="flex flex-col items-center md:items-end">
+                            <button
+                                disabled={createCheckout.isLoading}
+                                onClick={async () => await createCheckout.mutateAsync()}
+                                className="w-full min-w-[minmax(100%,7.5rem)] max-w-[7.5rem] select-none rounded-md bg-periwinkle-600 px-4 py-2 text-white shadow transition-colors duration-75 enabled:hover:bg-periwinkle-700 enabled:hover:text-white disabled:pointer-events-none disabled:opacity-50"
+                            >
+                                {createCheckout.isLoading ? "Upgrading..." : "Upgrade"}
+                            </button>
+                        </div>
                     </div>
-                    <div className="grid w-full gap-4 self-center rounded-lg border border-periwinkle-300 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900 md:max-w-none md:grid-cols-[2fr,3fr,minmax(0,8rem)]">
+                    <div className="grid w-full gap-4 self-center rounded-lg border border-periwinkle-300 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900 md:max-w-none md:grid-cols-[2fr,3fr,minmax(0,16rem)]">
                         <div className="text-center md:text-left">
                             <h3 className="text-lg font-medium">Premium</h3>
                             <p>5€ / month</p>
@@ -116,16 +122,18 @@ export const ProfileBilling = () => {
                                 <li>Option to make albums public</li>
                             </ul>
                         </div>
-                        <button
-                            disabled={createCheckout.isLoading}
-                            onClick={async () => await createCheckout.mutateAsync()}
-                            className="min-w-[7.5rem] max-w-[7.5rem] select-none place-self-center rounded-md bg-periwinkle-600 px-4 py-2 text-white shadow transition-colors duration-75 enabled:hover:bg-periwinkle-700 enabled:hover:text-white disabled:pointer-events-none disabled:opacity-50 md:place-self-start"
-                        >
-                            {createCheckout.isLoading ? "Upgrading..." : "Upgrade"}
-                        </button>
+                        <div className="flex flex-col items-center md:items-end">
+                            <button
+                                disabled={createCheckout.isLoading}
+                                onClick={async () => await createCheckout.mutateAsync()}
+                                className="w-full min-w-[minmax(100%,7.5rem)] max-w-[7.5rem] select-none rounded-md bg-periwinkle-600 px-4 py-2 text-white shadow transition-colors duration-75 enabled:hover:bg-periwinkle-700 enabled:hover:text-white disabled:pointer-events-none disabled:opacity-50 "
+                            >
+                                {createCheckout.isLoading ? "Upgrading..." : "Upgrade"}
+                            </button>
+                        </div>
                     </div>
                     <div className="rounded-lg bg-gradient-to-tr from-blue-500 via-red-500 to-yellow-500 p-[1px]">
-                        <div className="relative grid w-full gap-4 self-center rounded-lg bg-white p-4 dark:bg-zinc-900 md:max-w-none md:grid-cols-[2fr,3fr,minmax(0,8rem)]">
+                        <div className="relative grid w-full gap-4 self-center rounded-lg bg-white p-4 dark:bg-zinc-900 md:max-w-none md:grid-cols-[2fr,3fr,minmax(0,16rem)]">
                             <div className="text-center md:text-left">
                                 <h3 className="bg-gradient-to-b from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-lg font-bold text-transparent">
                                     UNLIMITED
@@ -140,12 +148,14 @@ export const ProfileBilling = () => {
                                     <li>Option for other users to upload to your albums</li>
                                 </ul>
                             </div>
-                            <button
-                                disabled={true}
-                                className="min-w-[7.5rem] select-none place-self-center rounded-md bg-periwinkle-600 px-4 py-2 text-white shadow transition-colors duration-75 enabled:hover:bg-periwinkle-700 enabled:hover:text-white disabled:pointer-events-none disabled:opacity-50 md:max-w-[7.5rem] md:place-self-start"
-                            >
-                                Soon!
-                            </button>
+                            <div className="flex flex-col items-center md:items-end">
+                                <button
+                                    disabled={true}
+                                    className="w-full min-w-[minmax(100%,7.5rem)] max-w-[7.5rem] select-none rounded-md bg-periwinkle-600 px-4 py-2 text-white shadow transition-colors duration-75 enabled:hover:bg-periwinkle-700 enabled:hover:text-white disabled:pointer-events-none disabled:opacity-50 md:max-w-[7.5rem]"
+                                >
+                                    Soon!
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
