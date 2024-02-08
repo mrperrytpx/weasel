@@ -16,11 +16,7 @@ const StatCard = ({ text, span }: TStatCardProps) => {
     return (
         <article className="flex flex-col items-center justify-center gap-4 rounded-md bg-white p-4 shadow dark:bg-zinc-800">
             <h2 className="text-center text-xl font-medium">{text}</h2>
-            {span ? (
-                <span>{span}</span>
-            ) : (
-                <span className="h-6 animate-pulse rounded-full bg-gray-300 px-6" />
-            )}
+            <span>{span}</span>
         </article>
     );
 };
@@ -56,7 +52,14 @@ export const ProfileOverview = () => {
                     to upgrade!
                 </div>
             )}
-            <h1 className="pl-2 text-center text-2xl font-bold md:text-left">Profile Overview</h1>
+            <div className="flex-start flex gap-2">
+                <h1 className="pl-2 text-center text-2xl font-bold md:text-left">
+                    Profile Overview
+                </h1>
+                {profileStats.isFetching && !profileStats.isLoading && (
+                    <LoadingSpinner size={28} color="#637ff1" />
+                )}
+            </div>
 
             {profileStats.isLoading ? (
                 <div className="flex flex-col gap-4">

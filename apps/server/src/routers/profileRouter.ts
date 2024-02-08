@@ -27,13 +27,17 @@ profileRouter.get("/", async (req, res) => {
     if (!user) return res.status(404).end("User not found!");
 
     // stinky code :(
-
     const subscriptionDueDate = await (async () => {
         if (user.subscriptionId) {
-            const subscription = await stripe.subscriptions.retrieve(
-                user.subscriptionId
-            );
-            return subscription.current_period_end;
+            try {
+                const subscription = await stripe.subscriptions.retrieve(
+                    user.subscriptionId
+                );
+
+                return subscription.current_period_end;
+            } catch (e) {
+                return undefined;
+            }
         }
     })();
 
@@ -71,7 +75,6 @@ profileRouter.get("/", async (req, res) => {
     })();
 
     // 😥😪😭😭😢😢
-
     const profileStats = {
         numOfAlbums: user.albums.length,
         numOfImages: user.images.length,

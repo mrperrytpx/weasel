@@ -42,7 +42,12 @@ export const ProfileFiles = () => {
 
     return (
         <ProfileSubrouteLayout>
-            <h1 className="text-center text-2xl font-bold md:text-left">Your Files</h1>
+            <div className="flex-start flex gap-2">
+                <h1 className="text-center text-2xl font-bold md:text-left">Your Files</h1>
+                {infiniteFiles.isFetching && !infiniteFiles.isLoading && (
+                    <LoadingSpinner size={28} color="#637ff1" />
+                )}
+            </div>
             {infiniteFiles.isLoading ? (
                 <div className="flex flex-col gap-4">
                     <LoadingSpinner color="#637ff1" size={60} />
