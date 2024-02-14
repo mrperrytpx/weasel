@@ -17,7 +17,7 @@
         "client": "npm --workspace=@weasel/client run dev",
         "server": "npm --workspace=@weasel/server run dev",
         "build:server": "npm run ptypes && npm run build:db && npm run build:schemas && npm --workspace=@weasel/server run build",
-        "build:client": "npm --workspace=@weasel/schemas run build && npm --workspace=@weasel/client run build",
+        "build:client": "npm --workspace=@weasel/client run build",
         "start:server": "npm --workspace=@weasel/server run start",
         "start:client": "npm --workspace=@weasel/client start",
         "install:client": "npm --workspace=@weasel/schemas install && npm --workspace=@weasel/client install"
