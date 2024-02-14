@@ -20,6 +20,7 @@ export const Footer = () => {
                             Contact
                         </Link>
                         <Link
+                            id="privacy"
                             className="rounded-md text-center transition-all duration-75 hover:text-periwinkle-600 hover:underline dark:hover:text-periwinkle-400 sm:inline-block"
                             to="/privacy"
                         >
