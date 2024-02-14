@@ -21,12 +21,9 @@ export const Navbar = () => {
     const [isMenuExpanded, setIsMenuExpanded] = useState(false);
 
     const logout = async () => {
-        const data = await apiInstance.post("/api/auth/logout");
-
-        if (data.statusText === "OK") {
-            queryClient.clear();
-            navigate(0);
-        }
+        await apiInstance.post("/api/auth/logout");
+        queryClient.clear();
+        navigate(0);
     };
 
     useEffect(() => setIsMenuExpanded(false), [location]);
