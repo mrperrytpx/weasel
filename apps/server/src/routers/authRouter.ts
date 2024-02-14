@@ -18,7 +18,7 @@ authRouter.get(
         session: true,
     }),
     function (_req, res) {
-        res.redirect(process.env.WEBSITE_URL as string);
+        res.redirect(process.env.CLIENT_URL as string);
     }
 );
 
