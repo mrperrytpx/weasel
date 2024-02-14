@@ -16,13 +16,13 @@
         "build:schemas": "cd ./packages/schemas/ && npm run build",
         "client": "npm --workspace=@weasel/client run dev",
         "server": "npm --workspace=@weasel/server run dev",
-        "build:server": "npm --workspace=@weasel/server run build",
-        "start:server": "npm --workspace=@weasel/server run start"
+        "build:server": "npm run ptypes && npm run build:db && npm run build:schemas && npm --workspace=@weasel/server run build",
+        "build:client": "npm --workspace=@weasel/schemas run build && npm --workspace=@weasel/client run build",
+        "start:server": "npm --workspace=@weasel/server run start",
+        "start:client": "npm --workspace=@weasel/client start",
+        "install:client": "npm --workspace=@weasel/schemas install && npm --workspace=@weasel/client install"
     },
     "keywords": [],
     "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "@types/stripe-v3": "^3.1.33"
-    }
+    "license": "ISC"
 }
