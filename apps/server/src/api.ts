@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createUploadthingExpressHandler } from "uploadthing/express";
+import { createRouteHandler } from "uploadthing/express";
 import {
     albumRouter,
     authRouter,
@@ -19,7 +19,7 @@ api.use("/stripe", stripeRouter);
 
 api.use(
     "/uploadthing",
-    createUploadthingExpressHandler({
+    createRouteHandler({
         router: uploadRouter,
         config: {
             callbackUrl: process.env.UPLOADTHING_URL as string,

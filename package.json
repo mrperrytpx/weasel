@@ -19,7 +19,8 @@
         "build:client": "npm run ptypes && npm --workspace=@weasel/schemas run build && npm --workspace=@weasel/client run build",
         "start:server": "npm --workspace=@weasel/server run start",
         "start:client": "npm --workspace=@weasel/client run start",
-        "install:client": "npm --workspace=@weasel/schemas install && npm --workspace=@weasel/client install"
+        "install:client": "npm --workspace=@weasel/schemas install && npm --workspace=@weasel/client install",
+        "xd": "npx --workspace=@weasel/db prisma generate && npm --workspace=@weasel/schemas run build && npm --workspace=@weasel/client run build"
     },
     "keywords": [],
     "author": "",
