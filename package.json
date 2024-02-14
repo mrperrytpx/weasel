@@ -12,7 +12,6 @@
         "studio": "cd ./packages/db/ && npx prisma studio",
         "migrate": "cd ./packages/db/ && npx prisma migrate dev",
         "build:db": "cd ./packages/db/ && npm run build",
-        "build:filehost": "cd ./packages/filehost/ && npm run build",
         "build:schemas": "cd ./packages/schemas/ && npm run build",
         "client": "npm --workspace=@weasel/client run dev",
         "server": "npm --workspace=@weasel/server run dev",

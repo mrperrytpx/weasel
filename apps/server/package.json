@@ -28,7 +28,6 @@
     },
     "dependencies": {
         "@weasel/db": "*",
-        "@weasel/filehost": "*",
         "@weasel/schemas": "*",
         "cors": "^2.8.5",
         "dotenv": "^16.4.0",
