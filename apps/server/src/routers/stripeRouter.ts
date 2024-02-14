@@ -1,4 +1,3 @@
-/// <reference types="stripe-event-types" />
 import { Router } from "express";
 import { stripe } from "../lib/stripe";
 import Stripe from "stripe";
@@ -83,15 +82,11 @@ stripeRouter.post("/webhooks", async (req, res) => {
     const sig = req.headers["stripe-signature"];
     const scrt = process.env.STRIPE_WEBHOOK_KEY;
 
-    let event;
+    let event: Stripe.Event;
 
     try {
         if (!sig || !scrt) return res.status(400).end("No");
-        event = stripe.webhooks.constructEvent(
-            buf,
-            sig,
-            scrt
-        ) as Stripe.DiscriminatedEvent;
+        event = stripe.webhooks.constructEvent(buf, sig, scrt);
     } catch (error) {
         let message = "Unknown Error";
         if (error instanceof Error) message = error.message;
