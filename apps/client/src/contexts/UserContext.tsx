@@ -1,25 +1,25 @@
-import { UseQueryResult, useQuery, useQueryClient } from "@tanstack/react-query";
+import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import { createContext } from "react";
 import { apiInstance } from "../utils/axiosClients";
 import { TUser } from "@weasel/types";
 
-export const UserContext = createContext<UseQueryResult<TUser, unknown> | null>(null);
+export const UserContext = createContext<UseQueryResult<TUser | null, unknown> | null>(null);
 
 type TUserContextProps = {
     children: React.ReactElement | React.ReactElement[];
 };
 
 export const UserContextProvider = ({ children }: TUserContextProps) => {
-    const queryClient = useQueryClient();
-
     const fetchUser = async () => {
-        const response = await apiInstance.get<TUser>("/api/auth/user");
+        console.log("what");
+        try {
+            const response = await apiInstance.get<TUser>("/api/auth/user");
+            console.log("resp", response);
 
-        if (response.statusText !== "OK") {
-            queryClient.clear();
+            return response.data;
+        } catch (e) {
+            return null;
         }
-
-        return response.data;
     };
 
     const userQuery = useQuery({

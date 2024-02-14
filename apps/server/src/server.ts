@@ -33,7 +33,7 @@ app.use(
         saveUninitialized: false,
         cookie: {
             httpOnly: true,
-            sameSite: "lax",
+            sameSite: "strict",
             secure: process.env?.NODE_ENV === "development" ? false : true,
             signed: true,
             maxAge: 60 * 60 * 24 * 7 * 1000,

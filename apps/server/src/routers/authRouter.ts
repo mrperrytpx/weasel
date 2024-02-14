@@ -23,6 +23,8 @@ authRouter.get(
 );
 
 authRouter.get("/user", (req, res) => {
+    console.log("req.user", req.user);
+
     res.send(req.user);
 });
 

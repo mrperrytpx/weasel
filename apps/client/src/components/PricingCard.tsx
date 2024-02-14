@@ -16,7 +16,7 @@ export const PricingCard = ({ plan }: TPricingCardProps) => {
         return (
             <article
                 style={{
-                    border: user?.data && user.data.isSubscriptionActive ? "2px solid #4666e5" : "",
+                    border: user?.data?.isSubscriptionActive ? "2px solid #4666e5" : "",
                 }}
                 className="relative flex w-full flex-col gap-8 rounded-lg bg-white p-6 shadow-md dark:bg-zinc-900"
             >
