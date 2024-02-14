@@ -31,6 +31,11 @@ app.use(
         secret: process.env.COOKIE_SECRET as string,
         resave: true,
         saveUninitialized: true,
+        cookie: {
+            httpOnly: true,
+            sameSite: "none",
+            secure: true,
+        },
     })
 );
 
