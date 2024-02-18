@@ -106,7 +106,7 @@ export const PricingCard = ({ plan }: TPricingCardProps) => {
                         </button>
                     </div>
                 </div>
-                <p className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-md bg-green-500 px-2 py-1 text-sm font-bold text-white">
+                <p className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-md bg-green-600 px-2 py-1 text-sm font-bold text-white">
                     Coming Soon!
                 </p>
             </article>

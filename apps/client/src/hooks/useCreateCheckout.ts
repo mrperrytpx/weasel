@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import { apiInstance } from "../utils/axiosClients";
-import { getStripe } from "../utils/getStripe";
 import { useUser } from "./useUser";
 
 export const useCreateCheckout = () => {
@@ -18,11 +17,13 @@ export const useCreateCheckout = () => {
             return;
         }
 
-        const stripe = await getStripe();
-        const { error } = await stripe!.redirectToCheckout({
-            sessionId: checkoutSession.id,
+        import("../utils/getStripe").then(async ({ getStripe }) => {
+            const stripe = await getStripe();
+            const { error } = await stripe!.redirectToCheckout({
+                sessionId: checkoutSession.id,
+            });
+            console.warn(error.message);
         });
-        console.warn(error.message);
     };
 
     return useMutation(createCheckout);

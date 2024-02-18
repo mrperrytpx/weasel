@@ -17,11 +17,12 @@ export const MobileMenu = ({ isMenuExpanded, setIsMenuExpanded }: TMobileMenuPro
     const navigate = useNavigate();
 
     const logout = async () => {
-        const data = await apiInstance.post("/api/auth/logout");
-
-        if (data.statusText === "OK") {
+        try {
+            await apiInstance.post("/api/auth/logout");
             queryClient.clear();
             navigate(0);
+        } catch (e) {
+            return null;
         }
     };
 

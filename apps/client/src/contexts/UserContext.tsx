@@ -11,11 +11,8 @@ type TUserContextProps = {
 
 export const UserContextProvider = ({ children }: TUserContextProps) => {
     const fetchUser = async () => {
-        console.log("what");
         try {
             const response = await apiInstance.get<TUser>("/api/auth/user");
-            console.log("resp", response);
-
             return response.data;
         } catch (e) {
             return null;

@@ -21,9 +21,13 @@ export const Navbar = () => {
     const [isMenuExpanded, setIsMenuExpanded] = useState(false);
 
     const logout = async () => {
-        await apiInstance.post("/api/auth/logout");
-        queryClient.clear();
-        navigate(0);
+        try {
+            await apiInstance.post("/api/auth/logout");
+            queryClient.clear();
+            navigate(0);
+        } catch (e) {
+            return null;
+        }
     };
 
     useEffect(() => setIsMenuExpanded(false), [location]);
@@ -41,7 +45,9 @@ export const Navbar = () => {
                 </Link>
                 <ul className="flex items-center gap-4">
                     {user?.isLoading ? (
-                        <LoadingSpinner size={28} />
+                        <li>
+                            <LoadingSpinner size={28} />
+                        </li>
                     ) : (
                         <>
                             {user?.data?.id && location.pathname !== "/albums" && (
@@ -68,7 +74,9 @@ export const Navbar = () => {
                                 </li>
                             ) : (
                                 location.pathname !== "/sign-in" && (
-                                    <Link to="/sign-in">Sign In</Link>
+                                    <li>
+                                        <Link to="/sign-in">Sign In</Link>
+                                    </li>
                                 )
                             )}
                             {user?.data?.id && (
