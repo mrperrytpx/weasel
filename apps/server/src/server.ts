@@ -26,6 +26,7 @@ app.use((req, res, next) => {
     }
 });
 
+app.enable("trust proxy");
 app.use(
     session({
         secret: process.env.COOKIE_SECRET as string,
