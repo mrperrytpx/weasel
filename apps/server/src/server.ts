@@ -40,7 +40,6 @@ app.use(
             signed: true,
             maxAge: 60 * 60 * 24 * 7 * 1000,
         },
-        proxy: true,
     })
 );
 
