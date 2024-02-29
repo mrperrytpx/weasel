@@ -30,8 +30,8 @@ app.enable("trust proxy");
 app.use(
     session({
         secret: process.env.COOKIE_SECRET as string,
-        resave: true,
-        saveUninitialized: false,
+        resave: false,
+        saveUninitialized: true,
         cookie: {
             httpOnly: true,
             sameSite:
