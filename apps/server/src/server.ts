@@ -26,11 +26,12 @@ app.use((req, res, next) => {
     }
 });
 
+app.enable("trust proxy");
 app.use(
     session({
         secret: process.env.COOKIE_SECRET as string,
-        resave: true,
-        saveUninitialized: false,
+        resave: false,
+        saveUninitialized: true,
         cookie: {
             httpOnly: true,
             sameSite:
@@ -39,7 +40,6 @@ app.use(
             signed: true,
             maxAge: 60 * 60 * 24 * 7 * 1000,
         },
-        proxy: true,
     })
 );
 
