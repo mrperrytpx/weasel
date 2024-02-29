@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import SignInPage from "./pages/SignInPage";
+// import SignInPage from "./pages/SignInPage";
 import AlbumsPage from "./pages/AlbumsPage";
 import AlbumPage from "./pages/AlbumPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -17,6 +17,9 @@ import { ProfileOverview } from "./components/ProfileOverview";
 import { ProfileFiles } from "./components/ProfileFiles";
 import { ProfileBilling } from "./components/ProfileBilling";
 import { ProfileSettings } from "./components/ProfileSettings";
+import { lazy } from "react";
+
+const SignInPage = lazy(() => import("./pages/SignInPage"));
 
 function App() {
     const user = useUser();
