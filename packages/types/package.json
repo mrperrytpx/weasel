@@ -8,8 +8,8 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@weasel/db": "*",
-        "@weasel/server": "*"
+        "@weasel/db": "workspace:*",
+        "@weasel/server": "workspace:*"
     },
     "devDependencies": {
         "typescript": "^5.3.3"
